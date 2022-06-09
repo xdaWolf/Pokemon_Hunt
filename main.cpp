@@ -1,4 +1,8 @@
 #include <SFML/Graphics.hpp>
+#include <stdio.h>
+#include <iostream>
+#include <string>
+#include <stdlib.h>
 
 int main()
 {
