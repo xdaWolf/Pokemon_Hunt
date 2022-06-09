@@ -3,7 +3,8 @@
         {
             "name": "Win32",
             "includePath": [
-                "${workspaceFolder}/**"
+                "${workspaceFolder}/**",
+                "C:\\VSC Programmieren\\C++\\Zweites Semester\\ProgrammierenAufgabe\\src\\include"
             ],
             "defines": [
                 "_DEBUG",
@@ -13,7 +14,8 @@
             "cStandard": "gnu17",
             "cppStandard": "gnu++17",
             "intelliSenseMode": "windows-gcc-x64",
-            "compilerPath": "C:/VSC MinGW/bin/g++.exe"
+            "compilerPath": "C:/mingw64 SFML/bin/g++.exe",
+            "configurationProvider": "ms-vscode.makefile-tools"
         }
     ],
     "version": 4
