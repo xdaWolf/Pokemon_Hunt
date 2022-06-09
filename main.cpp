@@ -5,14 +5,14 @@
 #include <string>
 #include <SDL2/SDL.h>
 
-const int WIDTH = 800, HEIGHT = 600;
+const int WIDTH = 100, HEIGHT = 200;
 
 int main( int argc, char *argv[] )
 {
     
     SDL_Init(SDL_INIT_EVERYTHING);
 
-    SDL_Window *window = SDL_CreateWindow( "Hello SDL World", SDL_WINDOWPOS_UNDEFINED, WIDTH, HEIGHT, SDL_WINDOW_ALLOW_HIGHDPI, NULL );
+    SDL_Window *window = SDL_CreateWindow( "Hello SDL World", SDL_WINDOWPOS_CENTERED, WIDTH, HEIGHT, NULL );
 
     if(window == NULL)
     {
