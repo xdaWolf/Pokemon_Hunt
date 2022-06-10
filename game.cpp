@@ -4,12 +4,21 @@
 
 void Game::initVariables()
 {
+    // init variables
     this->window = nullptr;
+
 }
 
 void Game::initWindow()
 {
-    this->window = new sf::RenderWindow(sf::VideoMode::getDesktopMode(), "Pokemon-Hunt", sf::Style::Titlebar | sf::Style::Default);
+    this->window = new sf::RenderWindow(sf::VideoMode::getDesktopMode(), "Pokemon-Hunt");
+    //texture = new sf::Texture(); //??????
+    //sprite = new sf::Sprite();
+    texture.loadFromFile("backgroundv1.png");
+    texture.setSmooth(true);
+    sprite.setTexture(texture);
+    sprite.setOrigin(sf::Vector2f(texture.getSize().x / 2,texture.getSize().y / 2));
+    sprite.setPosition(sf::Vector2f(window->getSize().x / 2, window->getSize().y / 2));
 }
 
 //Constructor / Destructor
@@ -69,8 +78,9 @@ void Game::render() //displays the game data / game field
         Renders the game field
     */
     
-    this->window->clear(sf::Color(0,0,255,255));
+    /*this->window->clear();*/
 
+    this->window->draw(sprite);
     //Draw game objects
     this->window->display();
 }

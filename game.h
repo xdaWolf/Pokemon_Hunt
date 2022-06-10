@@ -20,6 +20,11 @@ class Game
     sf::RenderWindow* window;
     sf::Event event;
 
+    //Game objects
+    sf::Sprite sprite;
+    sf::Texture texture;
+
+
     //functions
     void initVariables();
     void initWindow();
