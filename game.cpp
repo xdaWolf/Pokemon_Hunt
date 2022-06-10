@@ -69,7 +69,7 @@ void Game::render() //displays the game data / game field
         Renders the game field
     */
     
-    this->window->clear(sf::Color(255,0,0,255));
+    this->window->clear(sf::Color(0,0,255,255));
 
     //Draw game objects
     this->window->display();
