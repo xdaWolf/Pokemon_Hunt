@@ -5,7 +5,7 @@
 
 #include "game.h"
 
-//In Konsole: mingw32-make und dann main
+//in cmd type: mingw32-make
 
 int main(int argc, char* argv[])
 {
