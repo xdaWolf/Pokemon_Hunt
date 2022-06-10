@@ -1,30 +1,29 @@
-#include <SFML/Graphics.hpp>
 #include <stdio.h>
 #include <iostream>
 #include <string>
 #include <stdlib.h>
 
+#include "game.h"
+
+//In Konsole: mingw32-make und dann main
+
 int main(int argc, char* argv[])
 {
+    using namespace sf;
 
-    std::cout << "Hello World!" << std::endl;
+    // init Game engine
+    Game game;
 
-    sf::RenderWindow window(sf::VideoMode(200, 200), "SFML works!");
-    sf::CircleShape shape(100.f);
-    shape.setFillColor(sf::Color::Green);
+    // Game loop
 
-    while (window.isOpen())
+    while (game.getWindowIsOpen())
     {
-        sf::Event event;
-        while (window.pollEvent(event))
-        {
-            if (event.type == sf::Event::Closed)
-                window.close();
-        }
+        // Update
+        game.update();
 
-        window.clear();
-        window.draw(shape);
-        window.display();
+        // Render
+        game.render();
+
     }
 
     return 0;
