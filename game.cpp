@@ -14,7 +14,7 @@ void Game::initWindow()
     this->window = new sf::RenderWindow(sf::VideoMode::getDesktopMode(), "Pokemon-Hunt");
     //texture = new sf::Texture(); //??????
     //sprite = new sf::Sprite();
-    texture.loadFromFile("backgroundv1.png");
+    texture.loadFromFile("resources/backgroundv1.png");
     texture.setSmooth(true);
     sprite.setTexture(texture);
     sprite.setOrigin(sf::Vector2f(texture.getSize().x / 2,texture.getSize().y / 2));
