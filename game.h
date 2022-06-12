@@ -6,6 +6,9 @@
 #include <SFML/Network.hpp>
 #include <SFML/Graphics.hpp>
 
+#include "enemy.cpp"
+#include "field.cpp"
+
 #ifndef GAME_H_
 #define GAME_H_
 
@@ -17,17 +20,17 @@ class Game
 {
     private:
     // variables
-    sf::RenderWindow* window;
-    sf::Event event;
 
     //Game objects
-    sf::Sprite sprite;
-    sf::Texture texture;
+    Enemy enemy1, enemy2, enemy3;
+    Field field;
+
 
 
     //functions
     void initVariables();
     void initWindow();
+    void initEnemies();
 
     public:
     // Constructor / Destructor
@@ -35,12 +38,6 @@ class Game
         ~Game();
 
     //Variables
-    const bool getWindowIsOpen() const;
-
-    // functions
-    void pollEvents();
-    void update(); // update the game data
-    void render();
     
 };
 
