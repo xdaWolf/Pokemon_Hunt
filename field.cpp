@@ -1,7 +1,10 @@
 #include "field.h"
+class Game;
 
 Field::Field()
 {
+
+    
     this->field = new sf::RenderWindow(sf::VideoMode::getDesktopMode(), "Pokemon-Hunt");
     //texture = new sf::Texture(); //??????
     //sprite = new sf::Sprite();
@@ -47,8 +50,6 @@ void Field::pollEvents()
 
 void Field::update() //manages all the game data
 {
-
-
     this->pollEvents();
 }
 
@@ -61,7 +62,7 @@ void Field::render() //displays the game data / game field
     /*this->field->clear();*/
 
     this->field->draw(sprite);
-    this->field->draw(enemy1);
+    //this->field->draw(Game.getEnemy1().getSprite());
     //Draw game objects
     this->field->display();
 }

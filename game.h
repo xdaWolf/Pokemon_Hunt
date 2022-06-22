@@ -6,8 +6,8 @@
 #include <SFML/Network.hpp>
 #include <SFML/Graphics.hpp>
 
-#include "enemy.cpp"
-#include "field.cpp"
+#include "enemy.h"
+#include "field.h"
 
 #ifndef GAME_H_
 #define GAME_H_
@@ -16,29 +16,33 @@
     Class that manages all the data of the game
 */
 
+
 class Game
 {
     private:
     // variables
-
+    class Enemy enemy1, enemy2, enemy3;
+    class Field field;
     //Game objects
-    Enemy enemy1, enemy2, enemy3;
-    Field field;
-
-
+    
 
     //functions
     void initVariables();
-    void initWindow();
+    void initField();
     void initEnemies();
 
     public:
     // Constructor / Destructor
-        Game();
-        ~Game();
+    Game();
+    ~Game();
 
     //Variables
-    
+    sf::RenderWindow* getGameField();
+    Field getField();
+    Enemy getEnemy1();
+    Enemy getEnemy2();
+    Enemy getEnemy3();
+    Game getGame();
 };
 
 #endif

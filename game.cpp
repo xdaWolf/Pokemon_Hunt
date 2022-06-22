@@ -1,17 +1,19 @@
 #include "game.h"
+#include "enemy.h"
+#include "field.h"
 
 //private functions
 
 void Game::initVariables()
 {
     // init variables
-    this->window = nullptr;
+    this->field.field = nullptr;
 
 }
 
-void Game::initWindow()
+void Game::initField()
 {
-    this->window = new Window();
+    field = Field();
 }
 
 void Game::initEnemies()
@@ -27,16 +29,45 @@ void Game::initEnemies()
 Game::Game()
 {
     this->initVariables();
-    this->initWindow();
+    this->initField();
     this->initEnemies();
-    this->window->pollEvents();
-    this->window->update();
-    this->window->render();
+
 }
 
 Game::~Game()
 {
-    this->window->~Window();
+    // delete all objects
+    //delete this->field;
+}
+
+sf::RenderWindow* Game::getGameField()
+{
+    return this->field.field;
+}
+
+Field Game::getField()
+{
+    return this->field;
+}
+
+Enemy Game::getEnemy1()	
+{
+    return this->enemy1;
+}
+
+Enemy Game::getEnemy2()	
+{
+    return this->enemy2;
+}
+
+Enemy Game::getEnemy3()	
+{
+    return this->enemy3;
+}
+
+Game Game::getGame()
+{
+    return *this;
 }
 
 

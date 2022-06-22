@@ -6,11 +6,12 @@
 #include <SFML/Network.hpp>
 #include <SFML/Graphics.hpp>
 
-#include "enemy.cpp"
+//#include "game.h"
 
 #ifndef FIELD_H_
 #define FIELD_H_
 
+class Game;
 /*
     Class that is used to create the gamefield
 */
@@ -21,8 +22,7 @@ class Field
     private:
 
     // variables
-    Enemy enemy1, enemy2, enemy3;
-
+    
 
     public:
 
@@ -31,6 +31,7 @@ class Field
     sf::Event event;
     sf::Sprite sprite;
     sf::Texture texture;
+    //class Game game;
 
     //Constructors / Destructors
         Field();
@@ -41,8 +42,6 @@ class Field
     void render();
 
     const bool getFieldIsOpen() const;
-
-
 
 };
 

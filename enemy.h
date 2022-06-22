@@ -6,7 +6,6 @@
 #include <SFML/Network.hpp>
 #include <SFML/Graphics.hpp>
 
-#include "field.cpp"
 
 #ifndef ENEMY_H_
 #define ENEMY_H_
@@ -21,6 +20,7 @@ class Enemy
     // variables
     sf::RectangleShape shape;
     sf::Texture texture;
+    sf::Sprite sprite;
 
     //Field field;
 
@@ -31,6 +31,8 @@ class Enemy
     // Constructor / Destructor
         Enemy();
         ~Enemy();
+
+    sf::Sprite getSprite();
 
 
 };

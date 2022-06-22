@@ -3,26 +3,29 @@
 #include <string>
 #include <stdlib.h>
 
+
 #include "game.h"
 
 //in cmd type: mingw32-make
 
 int main(int argc, char* argv[])
 {
-    using namespace sf;
+
+    //using namespace sf;
 
     // init Game engine
-    Game game;
+    class Game game;
+    game = Game();
 
     // Game loop
 
-    while (game.getWindowIsOpen())
+    while (game.getField().getFieldIsOpen())
     {
         // Update
-        game.update();
+        game.getField().update();
 
         // Render
-        game.render();
+        game.getField().render();
 
     }
 
