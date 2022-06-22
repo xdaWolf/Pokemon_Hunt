@@ -7,13 +7,13 @@
 void Game::initVariables()
 {
     // init variables
-    this->field.field = nullptr;
+    this->fieldg.field = nullptr;
 
 }
 
 void Game::initField()
 {
-    field = Field();
+    fieldg = Field();
 }
 
 void Game::initEnemies()
@@ -37,17 +37,17 @@ Game::Game()
 Game::~Game()
 {
     // delete all objects
-    //delete this->field;
+    delete this->fieldg.field;
 }
 
 sf::RenderWindow* Game::getGameField()
 {
-    return this->field.field;
+    return this->fieldg.field;
 }
 
 Field Game::getField()
 {
-    return this->field;
+    return this->fieldg;
 }
 
 Enemy Game::getEnemy1()	

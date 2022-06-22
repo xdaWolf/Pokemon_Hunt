@@ -22,7 +22,7 @@ class Game
     private:
     // variables
     class Enemy enemy1, enemy2, enemy3;
-    class Field field;
+    class Field fieldg;
     //Game objects
     
 

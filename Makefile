@@ -8,7 +8,7 @@ compile:
 
 link:
 	g++ field.o -o field enemy.o -o enemy game.o -o game main.o -o main -L src/lib -lsfml-graphics -lsfml-window -lsfml-system -lsfml-network -lsfml-audio
-
+	
 	g++ -o main main.o game.o field.o enemy.o -L src/lib -lsfml-graphics -lsfml-window -lsfml-system -lsfml-network -lsfml-audio
 main:
 	main

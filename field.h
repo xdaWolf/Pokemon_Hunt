@@ -29,13 +29,14 @@ class Field
     //variables
     sf::RenderWindow* field;
     sf::Event event;
-    sf::Sprite sprite;
-    sf::Texture texture;
+    sf::Sprite spritef;
+    sf::Texture texturef;
     //class Game game;
 
     //Constructors / Destructors
-        Field();
-        ~Field();
+    Field();
+    ~Field();
+
     //Functions
     void pollEvents();
     void update(); // update the game data

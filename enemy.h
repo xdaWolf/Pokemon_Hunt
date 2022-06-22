@@ -19,8 +19,8 @@ class Enemy
     private:
     // variables
     sf::RectangleShape shape;
-    sf::Texture texture;
-    sf::Sprite sprite;
+    sf::Texture texturee;
+    sf::Sprite spritee;
 
     //Field field;
 
