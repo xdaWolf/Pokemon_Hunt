@@ -29,8 +29,8 @@ class Enemy
 
     public:
     // Constructor / Destructor
-        Enemy();
-        ~Enemy();
+    Enemy();
+    ~Enemy();
 
     sf::Sprite getSprite();
 

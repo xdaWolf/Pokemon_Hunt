@@ -10,6 +10,7 @@
 #include <string>
 #include <stdlib.h>
 
+
 Field::Field()
 {
 
@@ -70,10 +71,10 @@ void Field::render() //displays the game data / game field
         Renders the game field
     */
     
-    //this->field->clear();
+    this->field->clear();
 
     this->field->draw(spritef);
-    //this->field->draw(Game.getEnemy1().getSprite());
+    this->field->draw(enemy1.getSprite());
     //Draw game objects
     this->field->display();
 }

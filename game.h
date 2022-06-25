@@ -21,15 +21,11 @@ class Game
 {
     private:
     // variables
-    Enemy enemy1, enemy2, enemy3;
     Field Fieldg;
     //Game objects
     
 
     //functions
-    void initVariables();
-    void initField();
-    void initEnemies();
 
     public:
     // Constructor / Destructor
@@ -39,9 +35,9 @@ class Game
     //Variables
     sf::RenderWindow* getGameField();
     Field getField();
-    Enemy getEnemy1();
-    Enemy getEnemy2();
-    Enemy getEnemy3();
+    //Enemy getEnemy1();
+    //Enemy getEnemy2();
+    //Enemy getEnemy3();
     Game getGame();
 };
 

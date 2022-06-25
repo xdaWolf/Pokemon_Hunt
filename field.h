@@ -7,7 +7,7 @@
 #include <SFML/Graphics.hpp>
 
 //#include "game.h"
-
+#include "enemy.h"
 #ifndef FIELD_H_
 #define FIELD_H_
 
@@ -22,7 +22,7 @@ class Field
     private:
 
     // variables
-    
+    Enemy enemy1, enemy2, enemy3;
 
     public:
 
