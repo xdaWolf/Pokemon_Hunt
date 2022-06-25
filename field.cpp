@@ -1,5 +1,14 @@
+#include <stdio.h>
+#include <iostream>
+#include <string>
+#include <stdlib.h>
+
 #include "field.h"
-class Game;
+
+#include <stdio.h>
+#include <iostream>
+#include <string>
+#include <stdlib.h>
 
 Field::Field()
 {
@@ -12,11 +21,14 @@ Field::Field()
     spritef.setTexture(texturef);
     spritef.setOrigin(sf::Vector2f(texturef.getSize().x / 2,texturef.getSize().y / 2));
     spritef.setPosition(sf::Vector2f(field->getSize().x / 2, field->getSize().y / 2));
+    
+    std::cout << "Feld Konstruktor" << std::endl;
 
 }
 
 Field::~Field()
 {
+    std::cout << "Feld Dekonstruktor" << std::endl;
     delete this->field;
 }
 
@@ -58,7 +70,7 @@ void Field::render() //displays the game data / game field
         Renders the game field
     */
     
-    this->field->clear();
+    //this->field->clear();
 
     this->field->draw(spritef);
     //this->field->draw(Game.getEnemy1().getSprite());

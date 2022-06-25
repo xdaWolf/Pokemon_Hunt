@@ -3,29 +3,30 @@
 #include <string>
 #include <stdlib.h>
 
-
 #include "game.h"
 
 //in cmd type: mingw32-make
 
+Game game;
+
 int main(int argc, char* argv[])
 {
+    std::cout << "Start" << std::endl;
 
-    //using namespace sf;
-
-    // init Game engine
-    class Game game;
-    game = Game();
-
-    // Game loop
-
-    while (game.getField().getFieldIsOpen())
+    Field field = game.getField();
+    
+    //std::cout << "getField():" +  game.getField().getFieldIsOpen() << std::endl;
+    
+    while (field.getFieldIsOpen())
     {
+        std::cout << "in While" << std::endl;
         // Update
-        game.getField().update();
+        field.update();
+        std::cout << "Update" << std::endl;
 
         // Render
-        game.getField().render();
+        field.render();
+        std::cout << "Render" << std::endl;
 
     }
 

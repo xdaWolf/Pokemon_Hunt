@@ -21,8 +21,8 @@ class Game
 {
     private:
     // variables
-    class Enemy enemy1, enemy2, enemy3;
-    class Field fieldg;
+    Enemy enemy1, enemy2, enemy3;
+    Field Fieldg;
     //Game objects
     
 

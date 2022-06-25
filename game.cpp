@@ -2,18 +2,43 @@
 #include "enemy.h"
 #include "field.h"
 
+#include <stdio.h>
+#include <iostream>
+#include <string>
+#include <stdlib.h>
+
+//Constructor / Destructor
+
+Game::Game()
+{
+    std::cout << "Game Konstruktor" << std::endl;
+    //this->initField();
+    //this->initVariables();
+    //this->initEnemies();
+
+}
+
+Game::~Game()
+{
+    std::cout << "Game Dekonstruktor" << std::endl;
+    // delete all objects
+    delete this->Fieldg.field;
+}
+
 //private functions
 
 void Game::initVariables()
 {
     // init variables
-    this->fieldg.field = nullptr;
+    this->Fieldg.field = nullptr;
+    std::cout << "InitVar" << std::endl;
 
 }
 
 void Game::initField()
 {
-    fieldg = Field();
+    Fieldg = Field();
+    std::cout << "InitField" << std::endl;
 }
 
 void Game::initEnemies()
@@ -24,30 +49,14 @@ void Game::initEnemies()
 
 }
 
-//Constructor / Destructor
-
-Game::Game()
-{
-    this->initVariables();
-    this->initField();
-    this->initEnemies();
-
-}
-
-Game::~Game()
-{
-    // delete all objects
-    delete this->fieldg.field;
-}
-
 sf::RenderWindow* Game::getGameField()
 {
-    return this->fieldg.field;
+    return this->Fieldg.field;
 }
 
 Field Game::getField()
 {
-    return this->fieldg;
+    return this->Fieldg;
 }
 
 Enemy Game::getEnemy1()	
