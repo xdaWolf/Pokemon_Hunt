@@ -55,8 +55,8 @@ void Field::pollEvents()
                         this->field->close();
                     if(this->event.key.code == sf::Keyboard::W)
                         std::cout << "W wurde gedrückt!" << std::endl;
-                        this->player.getSprite().getPosition().y -= 10;
-                        this->player.getSprite().setPosition(this->player.getSprite().getPosition().x, this->player.getSprite().getPosition().y);
+                        //this->player.getSprite().getPosition().y -= 10;
+                        //this->player.getSprite().setPosition(this->player.getSprite().getPosition().x, this->player.getSprite().getPosition().y);
                     break;
 
             }
