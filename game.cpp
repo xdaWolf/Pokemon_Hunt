@@ -33,22 +33,7 @@ Field Game::getField()
 {
     return this->Fieldg;
 }
-/*/
-Enemy Game::getEnemy1()	
-{
-    return this->enemy1;
-}
 
-Enemy Game::getEnemy2()	
-{
-    return this->enemy2;
-}
-
-Enemy Game::getEnemy3()	
-{
-    return this->enemy3;
-}
-/*/
 Game Game::getGame()
 {
     return *this;

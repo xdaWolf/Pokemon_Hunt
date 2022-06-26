@@ -35,9 +35,6 @@ class Game
     //Variables
     sf::RenderWindow* getGameField();
     Field getField();
-    //Enemy getEnemy1();
-    //Enemy getEnemy2();
-    //Enemy getEnemy3();
     Game getGame();
 };
 

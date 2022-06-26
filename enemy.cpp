@@ -4,17 +4,23 @@
 #include <iostream>
 #include <string>
 #include <stdlib.h>
+#include <experimental/random>
 //Constructor / Destructor
 
 Enemy::Enemy()
 {
     std::cout << "Enemy Konstruktor" << std::endl;
-    std::cout << "Rand:" + std::to_string(rand()% 6 + 1) << std::endl;
-    this->texturee.loadFromFile("resources/enemy_" + std::to_string(rand()% 6 + 1) + ".png");
-    this->shape.setTexture(&texturee);
-    this->shape.setSize(sf::Vector2f(this->texturee.getSize().x, this->texturee.getSize().y));
-    this->spritee.setTexture(texturee);
-    //this->shape.setPosition();
+    std::cout << "Rand:" + std::to_string(std::experimental::randint(1,6)) << std::endl;
+    this->textureE.loadFromFile("resources/enemy_" + std::to_string(std::experimental::randint(1,6)) + ".png");
+    this->textureE.setSmooth(true);
+    this->shapeE.setTexture(&textureE);
+    this->shapeE.setSize(sf::Vector2f(this->textureE.getSize().x, this->textureE.getSize().y));
+    this->spriteE.setTexture(textureE);
+    std::cout << "Rand:" + std::to_string(std::experimental::randint(1000,600)) << std::endl;
+    this->shapeE.setPosition(std::experimental::randint(0,1000),std::experimental::randint(0,600));
+    this->spriteE.setPosition(std::experimental::randint(0,1000),std::experimental::randint(0,600));
+
+
 };
 
 Enemy::~Enemy()
@@ -26,7 +32,7 @@ Enemy::~Enemy()
 
 sf::Sprite Enemy::getSprite()
 {
-    return this->spritee;
+    return this->spriteE;
 }
 
 

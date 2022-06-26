@@ -17,7 +17,7 @@ Field::Field()
     this->field = new sf::RenderWindow(sf::VideoMode::getDesktopMode(), "Pokemon-Hunt");
     //texture = new sf::Texture(); //??????
     //sprite = new sf::Sprite();
-    texturef.loadFromFile("resources/backgroundv1.png");
+    texturef.loadFromFile("resources/backgroundv2.png");
     texturef.setSmooth(true);
     spritef.setTexture(texturef);
     spritef.setOrigin(sf::Vector2f(texturef.getSize().x / 2,texturef.getSize().y / 2));
@@ -40,6 +40,7 @@ const bool Field::getFieldIsOpen() const
 
 void Field::pollEvents()
 {
+
     while (this->field->pollEvent(this->event))
         {
             //Check Events
@@ -52,6 +53,10 @@ void Field::pollEvents()
                 case sf::Event::KeyPressed:
                     if (this->event.key.code == sf::Keyboard::Escape)
                         this->field->close();
+                    if(this->event.key.code == sf::Keyboard::W)
+                        std::cout << "W wurde gedrückt!" << std::endl;
+                        this->player.getSprite().getPosition().y -= 10;
+                        this->player.getSprite().setPosition(this->player.getSprite().getPosition().x, this->player.getSprite().getPosition().y);
                     break;
 
             }
@@ -73,8 +78,12 @@ void Field::render() //displays the game data / game field
     
     this->field->clear();
 
+
     this->field->draw(spritef);
     this->field->draw(enemy1.getSprite());
+    this->field->draw(enemy2.getSprite());
+    this->field->draw(enemy3.getSprite());
+    this->field->draw(player.getSprite());
     //Draw game objects
     this->field->display();
 }

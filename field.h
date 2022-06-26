@@ -8,6 +8,8 @@
 
 //#include "game.h"
 #include "enemy.h"
+#include "player.h"
+
 #ifndef FIELD_H_
 #define FIELD_H_
 
@@ -23,6 +25,7 @@ class Field
 
     // variables
     Enemy enemy1, enemy2, enemy3;
+    Player player;
 
     public:
 

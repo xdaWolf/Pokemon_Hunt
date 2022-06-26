@@ -20,7 +20,6 @@ int main(int argc, char* argv[])
         // Update
         field.update();
 
-
         // Render
         field.render();
 
