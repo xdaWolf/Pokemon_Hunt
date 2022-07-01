@@ -4,45 +4,53 @@
 #include <iostream>
 #include <string>
 #include <stdlib.h>
-#include <experimental/random>
-//Constructor / Destructor
+#include <string.h>
 
 Player::Player()
 {
-    this->speed = 10;
-    this->shapePPos = sf::Vector2f(std::experimental::randint(0,1000),std::experimental::randint(0,600));
+    //SET VARIABLES - PLAYER
+    this->speed = 19;
+    this->hp = 3;
+
+    //VISUALS - PLAYER
+    this->shapePPos = sf::Vector2f(1920 / 2 - 114 / 2, 1080 / 2 - 114 / 2);
     std::cout << "Player Konstruktor" << std::endl;
-    this->textureP.loadFromFile("resources/pikachu_forward_1.png");
+    this->textureP.loadFromFile("resources/pikachu_5.png");
     this->textureP.setSmooth(true);
     this->shapeP.setTexture(&textureP);
     this->shapeP.setSize(sf::Vector2f(this->textureP.getSize().x, this->textureP.getSize().y));
     this->spriteP.setTexture(textureP);
     this->shapeP.setPosition(shapePPos);
     this->spriteP.setPosition(shapePPos);
+    this->spriteP.setOrigin(spriteP.getGlobalBounds().width / 2., spriteP.getGlobalBounds().height / 2.);
     
 
 };
 
 Player::~Player()
 {
-
     //delete this->field;
 };
 
-
-sf::Sprite Player::getSprite()
+void Player::setTexture(const std::string& pTexture)
 {
-    return this->spriteP;
+    this->textureP.loadFromFile(pTexture);
+    this->spriteP.setTexture(textureP);
 }
 
-sf::Vector2f Player::getShapePPos()
+int Player::getHealthPoints()
 {
-    return this->shapePPos;
+    return this->hp;
 }
 
-sf::RectangleShape Player::getShape()
+void Player::setHealthPoints(int pHp)
 {
-    return this->shapeP;
+    this->hp = pHp;
+}
+
+int Player::getSpeed()
+{
+    return this->speed;
 }
 
 

@@ -22,25 +22,8 @@ Game::~Game()
     delete this->Fieldg.field;
 }
 
-//private functions
-
-sf::RenderWindow* Game::getGameField()
-{
-    return this->Fieldg.field;
-}
-
 Field Game::getField()
 {
     return this->Fieldg;
 }
-
-Game Game::getGame()
-{
-    return *this;
-}
-
-
-// public functions
-
-
 

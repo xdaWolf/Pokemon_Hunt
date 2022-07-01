@@ -16,26 +16,23 @@
     Class that manages all the data of the game
 */
 
-
 class Game
 {
     private:
     // variables
     Field Fieldg;
-    //Game objects
-    
-
-    //functions
 
     public:
     // Constructor / Destructor
     Game();
     ~Game();
 
-    //Variables
-    sf::RenderWindow* getGameField();
+    //public functions
+
+    //GET
     Field getField();
     Game getGame();
+
 };
 
 #endif

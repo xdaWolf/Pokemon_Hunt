@@ -5,6 +5,7 @@
 #include <SFML/Audio.hpp>
 #include <SFML/Network.hpp>
 #include <SFML/Graphics.hpp>
+#include <string.h>
 
 
 #ifndef PLAYER_H_
@@ -17,28 +18,28 @@
 class Player
 {
     private:
-    // variables
+    //Variables
     sf::RectangleShape shapeP;
     sf::Texture textureP;
-    sf::Sprite spriteP;
     sf::Vector2f shapePPos;
-
+    int hp;
     int speed;
-
-    //Field field;
-
-    // functions
-
 
     public:
     // Constructor / Destructor
     Player();
     ~Player();
 
-    sf::Sprite getSprite();
-    sf::Vector2f getShapePPos();
-    sf::RectangleShape getShape();
+    //public variables
+    sf::Sprite spriteP;
+    //public functions
+    //GET
+    int getHealthPoints();
+    int getSpeed();
 
+    //SET
+    void setTexture(const std::string& pTexture);
+    void setHealthPoints(int pHP);
 
 };
 
