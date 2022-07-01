@@ -5,6 +5,7 @@
 #include <SFML/Audio.hpp>
 #include <SFML/Network.hpp>
 #include <SFML/Graphics.hpp>
+#include <string.h>
 
 
 #ifndef PLAYER_H_
@@ -37,7 +38,7 @@ class Player
     sf::Sprite getSprite();
     sf::Vector2f getShapePPos();
     sf::RectangleShape getShape();
-    //void setSprite();
+    void setTexture(const std::string& pTexture);
 
 
 };

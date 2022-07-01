@@ -14,9 +14,7 @@
 Field::Field()
 {
 
-    this->field = new sf::RenderWindow(sf::VideoMode::getDesktopMode(), "Pokemon-Hunt");
-    //texture = new sf::Texture(); //??????
-    //sprite = new sf::Sprite();
+    this->field = new sf::RenderWindow(sf::VideoMode::getDesktopMode(), "Pokemon-Hunt", sf::Style::Fullscreen);
     texturef.loadFromFile("resources/backgroundv2.png");
     texturef.setSmooth(true);
     spritef.setTexture(texturef);
@@ -40,12 +38,13 @@ const bool Field::getFieldIsOpen() const
 
 void Field::pollEvents()
 {
-            int playerPosX, playerPosY;
-            playerPosX = player.spriteP.getPosition().x;
-            playerPosY = player.spriteP.getPosition().y;
+        int playerPosX, playerPosY;
+        playerPosX = player.spriteP.getPosition().x;
+        playerPosY = player.spriteP.getPosition().y;
 
     while (this->field->pollEvent(this->event))
         {
+            
             //Check Events
             switch (this->event.type)
             {
@@ -57,20 +56,26 @@ void Field::pollEvents()
                     if (this->event.key.code == sf::Keyboard::Escape)
                         this->field->close();
                     if(this->event.key.code == sf::Keyboard::W)
-                        std::cout << "W wurde gedrückt!" << std::endl;
-                        std::cout << "AltePos: " + std::to_string(playerPosY) << std::endl;
+                    {
+                        player.setTexture("resources/pikachu_back_1.png");
                         playerPosY = playerPosY - 10;
-                        std::cout << "NeuePos: " + std::to_string(playerPosY) << std::endl;  
+                    }
                     if(this->event.key.code == sf::Keyboard::A)
-                        std::cout << "A wurde gedrückt!" << std::endl;
-                        std::cout << "AltePos: " + std::to_string(playerPosX) << std::endl;
+                    {
+                        player.setTexture("resources/pikachu_left_1.png");
                         playerPosX = playerPosX - 10;
+                    }
                     if(this->event.key.code == sf::Keyboard::S)
-                        playerPosY =playerPosY + 10;
+                    {
+                        player.setTexture("resources/pikachu_forward_1.png");
+                        playerPosY = playerPosY + 10;
+                    }
                     if(this->event.key.code == sf::Keyboard::D)
+                    {
+                        player.setTexture("resources/pikachu_right_1.png");
                         playerPosX = playerPosX + 10;
-                    //break;
-
+                    }
+                    
             }
 
             if(playerPosX < 0)

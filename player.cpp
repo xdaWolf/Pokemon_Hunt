@@ -5,6 +5,7 @@
 #include <string>
 #include <stdlib.h>
 #include <experimental/random>
+#include <string.h>
 //Constructor / Destructor
 
 Player::Player()
@@ -49,6 +50,12 @@ sf::Vector2f Player::getShapePPos()
 sf::RectangleShape Player::getShape()
 {
     return this->shapeP;
+}
+
+void Player::setTexture(const std::string& pTexture)
+{
+    this->textureP.loadFromFile(pTexture);
+    this->spriteP.setTexture(textureP);
 }
 
 
