@@ -7,22 +7,21 @@
 
 //in cmd type: mingw32-make
 
+Game game;
+
 int main(int argc, char* argv[])
 {
-    using namespace sf;
 
-    // init Game engine
-    Game game;
-
-    // Game loop
-
-    while (game.getWindowIsOpen())
+    Field field = game.getField();
+    
+    
+    while (field.getFieldIsOpen())
     {
         // Update
-        game.update();
+        field.update();
 
         // Render
-        game.render();
+        field.render();
 
     }
 
