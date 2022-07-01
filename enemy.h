@@ -11,7 +11,7 @@
 #define ENEMY_H_
 
 /*
-    Enemy-Class: Create Enemy-Objects that are visualized on the field
+    Enemy-Class: Create Enemy-Objects that are visualized on the field and once the player hits the enemy, he loses one hp
 */
 
 class Enemy
@@ -22,9 +22,6 @@ class Enemy
     sf::Texture textureE;
     sf::Sprite spriteE;
 
-    //Field field;
-
-    // functions
 
 
     public:
@@ -32,6 +29,8 @@ class Enemy
     Enemy();
     ~Enemy();
 
+    //public functions
+    //GET
     sf::Sprite getSprite();
 
 

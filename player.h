@@ -18,31 +18,28 @@
 class Player
 {
     private:
-    // variables
+    //Variables
     sf::RectangleShape shapeP;
     sf::Texture textureP;
     sf::Vector2f shapePPos;
     int hp;
     int speed;
 
-    //Field field;
-
-    // functions
-
-
     public:
     // Constructor / Destructor
     Player();
     ~Player();
+
+    //public variables
     sf::Sprite spriteP;
-    sf::Sprite getSprite();
-    sf::Vector2f getShapePPos();
-    sf::RectangleShape getShape();
-    void setTexture(const std::string& pTexture);
-    void setHealthPoints(int pHP);
+    //public functions
+    //GET
     int getHealthPoints();
     int getSpeed();
 
+    //SET
+    void setTexture(const std::string& pTexture);
+    void setHealthPoints(int pHP);
 
 };
 

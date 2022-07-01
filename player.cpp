@@ -6,15 +6,14 @@
 #include <stdlib.h>
 #include <experimental/random>
 #include <string.h>
-//Constructor / Destructor
 
 Player::Player()
 {
-    //set data-variables
+    //SET VARIABLES - PLAYER
     this->speed = 19;
     this->hp = 3;
 
-    //set visuals
+    //VISUALS - PLAYER
     this->shapePPos = sf::Vector2f(std::experimental::randint(0,1000),std::experimental::randint(0,600));
     std::cout << "Player Konstruktor" << std::endl;
     this->textureP.loadFromFile("resources/pikachu_5.png");
@@ -31,30 +30,8 @@ Player::Player()
 
 Player::~Player()
 {
-
     //delete this->field;
 };
-
-
-sf::Sprite Player::getSprite()
-{
-    return this->spriteP;
-}
-/*/
-void Player::setSprite(sf::Sprite pSprite)
-{
-    this->spriteP = pSprite;
-}
-/*/
-sf::Vector2f Player::getShapePPos()
-{
-    return this->shapePPos;
-}
-
-sf::RectangleShape Player::getShape()
-{
-    return this->shapeP;
-}
 
 void Player::setTexture(const std::string& pTexture)
 {
