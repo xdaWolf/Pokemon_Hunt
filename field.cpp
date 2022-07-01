@@ -40,6 +40,9 @@ const bool Field::getFieldIsOpen() const
 
 void Field::pollEvents()
 {
+            int playerPosX, playerPosY;
+            playerPosX = player.spriteP.getPosition().x;
+            playerPosY = player.spriteP.getPosition().y;
 
     while (this->field->pollEvent(this->event))
         {
@@ -55,11 +58,41 @@ void Field::pollEvents()
                         this->field->close();
                     if(this->event.key.code == sf::Keyboard::W)
                         std::cout << "W wurde gedrückt!" << std::endl;
-                        //this->player.getSprite().getPosition().y -= 10;
-                        //this->player.getSprite().setPosition(this->player.getSprite().getPosition().x, this->player.getSprite().getPosition().y);
-                    break;
+                        std::cout << "AltePos: " + std::to_string(playerPosY) << std::endl;
+                        playerPosY = playerPosY - 10;
+                        std::cout << "NeuePos: " + std::to_string(playerPosY) << std::endl;  
+                    if(this->event.key.code == sf::Keyboard::A)
+                        std::cout << "A wurde gedrückt!" << std::endl;
+                        std::cout << "AltePos: " + std::to_string(playerPosX) << std::endl;
+                        playerPosX = playerPosX - 10;
+                    if(this->event.key.code == sf::Keyboard::S)
+                        playerPosY =playerPosY + 10;
+                    if(this->event.key.code == sf::Keyboard::D)
+                        playerPosX = playerPosX + 10;
+                    //break;
 
             }
+
+            if(playerPosX < 0)
+            {
+                playerPosX = 0;
+            }
+            if(playerPosX > (int)this->field->getSize().x)
+            {
+                playerPosX = this->field->getSize().x;
+            }
+            if(playerPosY < 0)
+            {
+                playerPosY = 0;
+            }
+            if(playerPosY > (int)this->field->getSize().y)
+            {
+                playerPosY = this->field->getSize().y;
+            }
+
+            player.spriteP.setPosition(playerPosX, playerPosY);
+            //player.setPosition()
+            std::cout << "Position gesetzt" << std::endl;
         }
 
 

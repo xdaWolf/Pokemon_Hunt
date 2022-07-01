@@ -19,6 +19,7 @@ Player::Player()
     this->spriteP.setTexture(textureP);
     this->shapeP.setPosition(shapePPos);
     this->spriteP.setPosition(shapePPos);
+    this->spriteP.setOrigin(spriteP.getGlobalBounds().width / 2., spriteP.getGlobalBounds().height / 2.);
     
 
 };
@@ -34,7 +35,12 @@ sf::Sprite Player::getSprite()
 {
     return this->spriteP;
 }
-
+/*/
+void Player::setSprite(sf::Sprite pSprite)
+{
+    this->spriteP = pSprite;
+}
+/*/
 sf::Vector2f Player::getShapePPos()
 {
     return this->shapePPos;

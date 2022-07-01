@@ -20,7 +20,6 @@ class Player
     // variables
     sf::RectangleShape shapeP;
     sf::Texture textureP;
-    sf::Sprite spriteP;
     sf::Vector2f shapePPos;
 
     int speed;
@@ -34,10 +33,11 @@ class Player
     // Constructor / Destructor
     Player();
     ~Player();
-
+    sf::Sprite spriteP;
     sf::Sprite getSprite();
     sf::Vector2f getShapePPos();
     sf::RectangleShape getShape();
+    //void setSprite();
 
 
 };
