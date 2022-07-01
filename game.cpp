@@ -39,6 +39,15 @@ Game Game::getGame()
     return *this;
 }
 
+int Game::random(int min, int max)
+{
+    srand(time(0));
+    rand();
+    rand();
+    rand();
+    return rand() % max + min;
+}
+
 
 // public functions
 

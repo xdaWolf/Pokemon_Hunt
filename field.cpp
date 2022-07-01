@@ -13,7 +13,7 @@
 
 Field::Field()
 {
-
+    //set visuals
     this->field = new sf::RenderWindow(sf::VideoMode::getDesktopMode(), "Pokemon-Hunt", sf::Style::Fullscreen);
     texturef.loadFromFile("resources/backgroundv2.png");
     texturef.setSmooth(true);
@@ -21,6 +21,12 @@ Field::Field()
     spritef.setOrigin(sf::Vector2f(texturef.getSize().x / 2,texturef.getSize().y / 2));
     spritef.setPosition(sf::Vector2f(field->getSize().x / 2, field->getSize().y / 2));
     
+    textureHP.loadFromFile("resources/health_bar_3.png");
+    textureHP.setSmooth(true);
+    spriteHP.setTexture(textureHP);
+    spriteHP.setOrigin(sf::Vector2f(textureHP.getSize().x / 2,textureHP.getSize().y / 2));
+    spriteHP.setPosition(1600,50);
+
     std::cout << "Feld Konstruktor" << std::endl;
 
 }
@@ -38,9 +44,11 @@ const bool Field::getFieldIsOpen() const
 
 void Field::pollEvents()
 {
-        int playerPosX, playerPosY;
+        int playerPosX, playerPosY, movement, speed;
         playerPosX = player.spriteP.getPosition().x;
         playerPosY = player.spriteP.getPosition().y;
+        movement = playerPosY + playerPosX;
+        speed = player.getSpeed();; //HAS TO BE ODD NUMBER!!!!!
 
     while (this->field->pollEvent(this->event))
         {
@@ -53,51 +61,53 @@ void Field::pollEvents()
                     this->field->close();
                     break;
                 case sf::Event::KeyPressed:
+                    movement++;
                     if (this->event.key.code == sf::Keyboard::Escape)
+                    {
                         this->field->close();
+                    }
                     if(this->event.key.code == sf::Keyboard::W)
                     {
-                        player.setTexture("resources/pikachu_back_1.png");
-                        playerPosY = playerPosY - 10;
+                        player.setTexture("resources/pikachu_" + std::to_string(movement % 2) + ".png");
+                        playerPosY -= speed;
                     }
-                    if(this->event.key.code == sf::Keyboard::A)
+                    else if(this->event.key.code == sf::Keyboard::A)
                     {
-                        player.setTexture("resources/pikachu_left_1.png");
-                        playerPosX = playerPosX - 10;
+                        player.setTexture("resources/pikachu_" + std::to_string(movement % 2 + 2) + ".png");
+                        playerPosX -= speed;
                     }
-                    if(this->event.key.code == sf::Keyboard::S)
+                    else if(this->event.key.code == sf::Keyboard::S)
                     {
-                        player.setTexture("resources/pikachu_forward_1.png");
-                        playerPosY = playerPosY + 10;
+                        player.setTexture("resources/pikachu_" + std::to_string(movement % 2 + 4) + ".png");
+                        playerPosY += speed;
                     }
-                    if(this->event.key.code == sf::Keyboard::D)
+                    else if(this->event.key.code == sf::Keyboard::D)
                     {
-                        player.setTexture("resources/pikachu_right_1.png");
-                        playerPosX = playerPosX + 10;
+                        player.setTexture("resources/pikachu_" + std::to_string(movement % 2 + 6) + ".png");
+                        playerPosX += speed;
                     }
                     
             }
 
-            if(playerPosX < 0)
+            if(playerPosX < (player.spriteP.getTexture()->getSize().x) / 2)
             {
-                playerPosX = 0;
+                playerPosX = (player.spriteP.getTexture()->getSize().x) / 2;
             }
-            if(playerPosX > (int)this->field->getSize().x)
+            if(playerPosX > (int)this->field->getSize().x - (player.spriteP.getTexture()->getSize().x) / 2)
             {
-                playerPosX = this->field->getSize().x;
+                playerPosX = this->field->getSize().x - (player.spriteP.getTexture()->getSize().x) / 2;
             }
-            if(playerPosY < 0)
+            if(playerPosY < (player.spriteP.getTexture()->getSize().y) / 2)
             {
-                playerPosY = 0;
+                playerPosY = (player.spriteP.getTexture()->getSize().y) / 2;
             }
-            if(playerPosY > (int)this->field->getSize().y)
+            if(playerPosY > (int)this->field->getSize().y - (player.spriteP.getTexture()->getSize().y) / 2)
             {
-                playerPosY = this->field->getSize().y;
+                playerPosY = this->field->getSize().y - (player.spriteP.getTexture()->getSize().y) / 2;
             }
 
             player.spriteP.setPosition(playerPosX, playerPosY);
-            //player.setPosition()
-            std::cout << "Position gesetzt" << std::endl;
+            
         }
 
 
@@ -116,8 +126,8 @@ void Field::render() //displays the game data / game field
     
     this->field->clear();
 
-
     this->field->draw(spritef);
+    this->field->draw(spriteHP);
     this->field->draw(enemy1.getSprite());
     this->field->draw(enemy2.getSprite());
     this->field->draw(enemy3.getSprite());

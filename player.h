@@ -22,7 +22,7 @@ class Player
     sf::RectangleShape shapeP;
     sf::Texture textureP;
     sf::Vector2f shapePPos;
-
+    int hp;
     int speed;
 
     //Field field;
@@ -39,6 +39,9 @@ class Player
     sf::Vector2f getShapePPos();
     sf::RectangleShape getShape();
     void setTexture(const std::string& pTexture);
+    void setHealthPoints(int pHP);
+    int getHealthPoints();
+    int getSpeed();
 
 
 };

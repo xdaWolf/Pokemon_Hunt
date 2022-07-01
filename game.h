@@ -36,6 +36,7 @@ class Game
     sf::RenderWindow* getGameField();
     Field getField();
     Game getGame();
+    int random(int min, int max);
 };
 
 #endif

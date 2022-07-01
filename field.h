@@ -26,6 +26,9 @@ class Field
     // variables
     Enemy enemy1, enemy2, enemy3;
     Player player;
+    
+    sf::Sprite spriteHP;
+    sf::Texture textureHP;
 
     public:
 
@@ -34,6 +37,7 @@ class Field
     sf::Event event;
     sf::Sprite spritef;
     sf::Texture texturef;
+
     //class Game game;
 
     //Constructors / Destructors

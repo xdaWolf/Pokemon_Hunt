@@ -16,7 +16,6 @@ Enemy::Enemy()
     this->shapeE.setTexture(&textureE);
     this->shapeE.setSize(sf::Vector2f(this->textureE.getSize().x, this->textureE.getSize().y));
     this->spriteE.setTexture(textureE);
-    std::cout << "Rand:" + std::to_string(std::experimental::randint(1000,600)) << std::endl;
     this->shapeE.setPosition(std::experimental::randint(0,1000),std::experimental::randint(0,600));
     this->spriteE.setPosition(std::experimental::randint(0,1000),std::experimental::randint(0,600));
 

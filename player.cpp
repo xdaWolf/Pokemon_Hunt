@@ -10,10 +10,14 @@
 
 Player::Player()
 {
-    this->speed = 10;
+    //set data-variables
+    this->speed = 19;
+    this->hp = 3;
+
+    //set visuals
     this->shapePPos = sf::Vector2f(std::experimental::randint(0,1000),std::experimental::randint(0,600));
     std::cout << "Player Konstruktor" << std::endl;
-    this->textureP.loadFromFile("resources/pikachu_forward_1.png");
+    this->textureP.loadFromFile("resources/pikachu_5.png");
     this->textureP.setSmooth(true);
     this->shapeP.setTexture(&textureP);
     this->shapeP.setSize(sf::Vector2f(this->textureP.getSize().x, this->textureP.getSize().y));
@@ -56,6 +60,21 @@ void Player::setTexture(const std::string& pTexture)
 {
     this->textureP.loadFromFile(pTexture);
     this->spriteP.setTexture(textureP);
+}
+
+int Player::getHealthPoints()
+{
+    return this->hp;
+}
+
+void Player::setHealthPoints(int pHp)
+{
+    this->hp = pHp;
+}
+
+int Player::getSpeed()
+{
+    return this->speed;
 }
 
 
