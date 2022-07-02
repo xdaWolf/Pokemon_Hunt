@@ -18,7 +18,7 @@ class Collectable
 {
     private:
     //Variables
-    sf::RectangleShape shapeC;
+    //sf::RectangleShape shapeC;
     sf::Texture textureC;
     sf::Sprite spriteC;
 
@@ -28,6 +28,8 @@ class Collectable
     ~Collectable();
     //public functions
     sf::Sprite getSprite();
+
+    sf::RectangleShape shapeC;
 
 };
 

@@ -19,7 +19,7 @@ class Player
 {
     private:
     //Variables
-    sf::RectangleShape shapeP;
+    //sf::RectangleShape shapeP;
     sf::Texture textureP;
     sf::Vector2f shapePPos;
     int hp;
@@ -31,6 +31,7 @@ class Player
     ~Player();
 
     //public variables
+    sf::RectangleShape shapeP;
     sf::Sprite spriteP;
     //public functions
     //GET

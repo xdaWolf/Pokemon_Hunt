@@ -27,13 +27,20 @@ class Field
     Collectable collect1, collect2, collect3;
     Enemy enemy1, enemy2, enemy3;
     Player player;
+
+    sf::Sprite spritePD;
+    sf::Texture texturePD;
     
     sf::Sprite spriteHP;
     sf::Texture textureHP;
-    //sf::RenderWindow* field;
+
     sf::Event event;
     sf::Sprite spritef;
     sf::Texture texturef;
+
+    void checkCollision();
+    void checkCollectable();
+    void updateHealth();
 
     public:
 

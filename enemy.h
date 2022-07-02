@@ -18,7 +18,7 @@ class Enemy
 {
     private:
     // variables
-    sf::RectangleShape shapeE;
+    //sf::RectangleShape shapeE;
     sf::Texture textureE;
     sf::Sprite spriteE;
 
@@ -28,6 +28,8 @@ class Enemy
     // Constructor / Destructor
     Enemy();
     ~Enemy();
+
+    sf::RectangleShape shapeE;
 
     //public functions
     //GET
