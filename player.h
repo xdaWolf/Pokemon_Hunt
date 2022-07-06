@@ -24,6 +24,7 @@ class Player
     sf::Vector2f shapePPos;
     int hp;
     int speed;
+    int collected;
 
     public:
     // Constructor / Destructor

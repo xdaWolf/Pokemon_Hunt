@@ -6,7 +6,6 @@
 #include <SFML/Network.hpp>
 #include <SFML/Graphics.hpp>
 
-//#include "game.h"
 #include "enemy.h"
 #include "player.h"
 #include "collectable.h"
@@ -24,8 +23,8 @@ class Field
     
     private:
     // variables
-    Collectable collect1, collect2, collect3;
-    Enemy enemy1, enemy2, enemy3;
+    Collectable collectables[3];
+    Enemy enemies[6];
     Player player;
 
     sf::Sprite spritePD;
@@ -39,8 +38,8 @@ class Field
     sf::Texture texturef;
 
     void checkCollision();
-    void checkCollectable();
     void updateHealth();
+    void checkPositions();
 
     public:
 

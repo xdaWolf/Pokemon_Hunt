@@ -20,7 +20,7 @@ class Enemy
     // variables
     //sf::RectangleShape shapeE;
     sf::Texture textureE;
-    sf::Sprite spriteE;
+    //sf::Sprite spriteE;
 
 
 
@@ -34,6 +34,8 @@ class Enemy
     //public functions
     //GET
     sf::Sprite getSprite();
+    int giveRandomNumber(int pMin, int pMax);
+    sf::Sprite spriteE;
 
 
 };

@@ -9,15 +9,17 @@
 #include <iostream>
 #include <string>
 #include <stdlib.h>
-#include<windows.h>
+#include <windows.h>
+#include <chrono>
 
 
 
 Field::Field()
 {
+    std::cout << "Field constructor" << std::endl;
     //SET VARIABLES - FIELD
-    //this->field = new sf::RenderWindow(sf::VideoMode::getDesktopMode(), "Pokemon-Hunt", sf::Style::Fullscreen);
-    this->field = new sf::RenderWindow(sf::VideoMode(1920,1080), "Pokemon-Hunt");
+    //field = new sf::RenderWindow(sf::VideoMode::getDesktopMode(), "Pokemon-Hunt", sf::Style::Fullscreen);
+    field = new sf::RenderWindow(sf::VideoMode(1920,1080), "Pokemon-Hunt");
     texturef.loadFromFile("resources/backgroundv2.png");
     texturef.setSmooth(true);
     spritef.setTexture(texturef);
@@ -36,19 +38,21 @@ Field::Field()
     spritePD.setOrigin(sf::Vector2f(texturePD.getSize().x / 2,texturePD.getSize().y / 2));
     spritePD.setPosition(150,950);
 
-    std::cout << "Feld Konstruktor" << std::endl;
+    checkPositions(); 
+    //checkPositions();
+    //checkPositions();
 
 }
 
 Field::~Field()
 {
     std::cout << "Feld Dekonstruktor" << std::endl;
-    delete this->field;
+    delete field;
 }
 
 const bool Field::getFieldIsOpen() const
 {
-    return this->field->isOpen();
+    return field->isOpen();
 }
 
 void Field::pollEvents()
@@ -61,39 +65,39 @@ void Field::pollEvents()
     movement = playerPosY + playerPosX;
     speed = player.getSpeed(); //SPEED HAS TO BE ODD NUMBER!!!!!
 
-    while (this->field->pollEvent(this->event))
+    while (field->pollEvent(event))
     {
         //Check Events
-        switch (this->event.type)
+        switch (event.type)
         {
             //Close the window if wanted
             case sf::Event::Closed:
-                this->field->close();
+                field->close();
                 break;
             //Check if any Key is pressed
             case sf::Event::KeyPressed:
                 movement++; // switch from odd to even or even to odd number (WALKING ANIMATION)
-                if (this->event.key.code == sf::Keyboard::Escape)
+                if (event.key.code == sf::Keyboard::Escape)
                 {
-                    this->field->close();
+                    field->close();
                 }
                 //WASD_MOVEMENT
-                if(this->event.key.code == sf::Keyboard::W)
+                if(event.key.code == sf::Keyboard::W)
                 {
                     player.setTexture("resources/pikachu_" + std::to_string(movement % 2) + ".png");
                     playerPosY -= speed;
                 }
-                else if(this->event.key.code == sf::Keyboard::A)
+                else if(event.key.code == sf::Keyboard::A)
                 {
                     player.setTexture("resources/pikachu_" + std::to_string(movement % 2 + 2) + ".png");
                     playerPosX -= speed;
                 }
-                else if(this->event.key.code == sf::Keyboard::S)
+                else if(event.key.code == sf::Keyboard::S)
                 {
                     player.setTexture("resources/pikachu_" + std::to_string(movement % 2 + 4) + ".png");
                     playerPosY += speed;
                 }
-                else if(this->event.key.code == sf::Keyboard::D)
+                else if(event.key.code == sf::Keyboard::D)
                 {
                     player.setTexture("resources/pikachu_" + std::to_string(movement % 2 + 6) + ".png");
                     playerPosX += speed;
@@ -106,23 +110,22 @@ void Field::pollEvents()
         {
             playerPosX = (player.spriteP.getTexture()->getSize().x) / 2;
         }
-        if(playerPosX > (int)this->field->getSize().x - (player.spriteP.getTexture()->getSize().x) / 2)
+        if(playerPosX > (int)field->getSize().x - (player.spriteP.getTexture()->getSize().x) / 2)
         {
-            playerPosX = this->field->getSize().x - (player.spriteP.getTexture()->getSize().x) / 2;
+            playerPosX = field->getSize().x - (player.spriteP.getTexture()->getSize().x) / 2;
         }
         if(playerPosY < (player.spriteP.getTexture()->getSize().y) / 2)
         {
             playerPosY = (player.spriteP.getTexture()->getSize().y) / 2;
         }
-        if(playerPosY > (int)this->field->getSize().y - (player.spriteP.getTexture()->getSize().y) / 2)
+        if(playerPosY > (int)field->getSize().y - (player.spriteP.getTexture()->getSize().y) / 2)
         {
-            playerPosY = this->field->getSize().y - (player.spriteP.getTexture()->getSize().y) / 2;
+            playerPosY = field->getSize().y - (player.spriteP.getTexture()->getSize().y) / 2;
         }
 
         player.spriteP.setPosition(playerPosX, playerPosY);
         player.shapeP.setPosition(playerPosX, playerPosY);
         checkCollision();
-        checkCollectable();
         
     }
 
@@ -130,96 +133,72 @@ void Field::pollEvents()
 
 void Field::update() //manages all the game data
 {
-    this->pollEvents();
+    pollEvents();
 }
 
 void Field::render() //displays the game data / game field
 {
-    
-    this->field->clear();
+    field->clear();
 
     //DRAW OBJECTS
-    this->field->draw(spritef);
-    this->field->draw(spriteHP);
-    this->field->draw(spritePD);
-    this->field->draw(enemy1.getSprite());
-    this->field->draw(enemy2.getSprite());
-    this->field->draw(enemy3.getSprite());
-    this->field->draw(collect1.getSprite());
-    this->field->draw(collect2.getSprite());
-    this->field->draw(collect3.getSprite());
-    this->field->draw(player.spriteP);
-    //this->field->draw(player.shapeP);
-    //this->field->draw(enemy1.shapeE);
+    field->draw(spritef);
+    field->draw(spriteHP);
+    field->draw(spritePD);
+    
+    for(int i = 0; i <= 5;i++)
+    {
+        field->draw(enemies[i].spriteE);
+    }
+    for(int i = 0; i <= 2;i++)
+    {
+        field->draw(collectables[i].spriteC);
+    }
+
+    field->draw(player.spriteP);
 
     //DISPLAY NEW WINDOW
-    this->field->display();
+    field->display();
 }
 
 void Field::checkCollision() // Nach animation komische Pause?! (vllt weil von hp immer abgezogen wird? vllt wegen sleep?) + Leben gehen zu schnell verloren
 {
-    if(player.spriteP.getGlobalBounds().intersects(enemy1.shapeE.getGlobalBounds()))
+    for(int i = 0; i <= 5; i++)
     {
-        std::cout << "Collision" << std::endl;
-        player.setHealthPoints(player.getHealthPoints() -1);
-        updateHealth();
-        player.spriteP.setPosition(sf::Vector2f(1920 / 2 - 114 / 2, 1080 / 2 - 114 / 2));
-        
-    } else if(player.spriteP.getGlobalBounds().intersects(enemy2.shapeE.getGlobalBounds()))
-    {
-        std::cout << "Collision" << std::endl;
-        player.setHealthPoints(player.getHealthPoints() -1);
-        updateHealth();
-        player.spriteP.setPosition(sf::Vector2f(1920 / 2 - 114 / 2, 1080 / 2 - 114 / 2));
-        
-    } else if(player.spriteP.getGlobalBounds().intersects(enemy3.shapeE.getGlobalBounds()))
-    {
-        std::cout << "Collision" << std::endl;
-        player.setHealthPoints(player.getHealthPoints() -1);
-        updateHealth();
-        player.spriteP.setPosition(sf::Vector2f(1920 / 2 - 114 / 2, 1080 / 2 - 114 / 2));
-        
+        if(player.spriteP.getGlobalBounds().intersects(enemies[i].shapeE.getGlobalBounds()))
+        {
+            player.setHealthPoints(player.getHealthPoints() -1);
+            updateHealth();
+            player.spriteP.setPosition(sf::Vector2f(1920 / 2 - 114 / 2, 1080 / 2 - 114 / 2));
+        }
     }
-}
-
-void Field::checkCollectable()
-{
-    if(player.spriteP.getGlobalBounds().intersects(collect1.shapeC.getGlobalBounds()))
+    
+    for(int i = 0; i <= 2; i++)
     {
-        std::cout << "Collect" << std::endl;
-        // Wenn ein Pokemon eingesammelt wurde -> Im Pokedex erscheint eine 1 (linker bildschirm) und das Pokemon in ganz klein auf dem rechten bildschirm vom pokedex, sobald neues dazugesammelt wird +1 und neues pokemon
-        // Spieler bekommt einen punkt auf die Variable collected (muss noch gemacht werden)
-        //
-
-    } else if(player.spriteP.getGlobalBounds().intersects(collect2.shapeC.getGlobalBounds()))
-    {
-        std::cout << "Collect" << std::endl;
-
-    } else if(player.spriteP.getGlobalBounds().intersects(collect3.shapeC.getGlobalBounds()))
-    {
-        std::cout << "Collect" << std::endl;
-
+        if(player.spriteP.getGlobalBounds().intersects(collectables[i].shapeC.getGlobalBounds()))
+        {
+            std::cout << "Collect" << std::endl;
+        }
     }
+
 }
 
 void Field::updateHealth()
 {
-    
     for (int i = 0; i <= 2; i++)
     {
         if(i % 2 == 0)
         {
             player.shapeP.setFillColor(sf::Color::Red);
-            this->field->draw(player.shapeP);
-            this->field->display();
-            Sleep(200);
+            field->draw(player.shapeP);
+            field->display();
+            //Sleep(200);
 
         } else if(i % 2 != 0)
         {
             player.shapeP.setFillColor(sf::Color::Transparent);
-            this->field->draw(player.shapeP);
-            this->field->display();
-            Sleep(200);
+            field->draw(player.shapeP);
+            field->display();
+            //Sleep(200);
         }
     }
 
@@ -235,6 +214,71 @@ void Field::updateHealth()
     {
         //Spiel verloren;
     }
+
+}
+
+void Field::checkPositions()
+{
+    for(int i = 0; i <= 5; i++)
+    {
+        for(int k = 1; k <= 5; k++)
+        {
+            if(i + k > 5)
+            {
+                return;
+            }
+            if(enemies[i].shapeE.getGlobalBounds().intersects(enemies[i+k].shapeE.getGlobalBounds()) || player.shapeP.getGlobalBounds().intersects(enemies[i].shapeE.getGlobalBounds()))
+            {
+                std::cout << "Enemy ist bei anderem Enemy" << std::endl;
+                int newPosX,newPosY;
+                newPosX = enemies[i].giveRandomNumber(0,1920);
+                newPosY = enemies[i].giveRandomNumber(0,1080);
+                enemies[i].shapeE.setPosition(newPosX,newPosY);
+                enemies[i].spriteE.setPosition(newPosX,newPosY);
+                field->draw(enemies[i].spriteE);
+            }
+        }
+    }
+
+    for(int i = 0; i <= 2; i++)
+    {
+        for(int k = 1; k <= 2; k++)
+        {
+            if(i + k > 2)
+            {
+                return;
+            }
+            if(collectables[i].shapeC.getGlobalBounds().intersects(collectables[i+k].shapeC.getGlobalBounds()) || player.shapeP.getGlobalBounds().intersects(collectables[i].shapeC.getGlobalBounds()))
+            {
+                std::cout << "Collectable ist bei anderem Collectable" << std::endl;
+                int newPosX,newPosY;
+                newPosX = collectables[i].giveRandomNumber(0,1920);
+                newPosY = collectables[i].giveRandomNumber(0,1080);
+                collectables[i].shapeC.setPosition(newPosX,newPosY);
+                collectables[i].spriteC.setPosition(newPosX,newPosY);
+                field->draw(collectables[i].spriteC);
+            }
+        }
+    }
+    
+    for(int i = 0; i <= 5; i++)
+    {
+        for(int k = 0; k <= 2; k++)
+        {
+            if(enemies[i].shapeE.getGlobalBounds().intersects(collectables[k].shapeC.getGlobalBounds()))
+            {
+                std::cout << "Enemy ist bei Collectable" << std::endl;
+                int newPosX,newPosY;
+                newPosX = enemies[i].giveRandomNumber(0,1920);
+                newPosY = enemies[i].giveRandomNumber(0,1080);
+                enemies[i].shapeE .setPosition(newPosX,newPosY);
+                enemies[i].spriteE.setPosition(newPosX,newPosY);
+                field->draw(enemies[i].spriteE);
+            }
+        }
+    }
+
+    field->display();
 
 }
 
