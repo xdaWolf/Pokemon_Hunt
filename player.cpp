@@ -12,6 +12,7 @@ Player::Player()
     speed = 13;
     hp = 3;
     collected = 0;
+    canCollect = 1;
 
     //VISUALS - PLAYER
     shapePPos = sf::Vector2f(1920 / 2 - 114 / 2, 1080 / 2 - 114 / 2);
@@ -25,7 +26,6 @@ Player::Player()
     spriteP.setPosition(shapePPos);
     spriteP.setOrigin(spriteP.getGlobalBounds().width / 2., spriteP.getGlobalBounds().height / 2.);
     shapeP.setOrigin(shapeP.getGlobalBounds().width / 2., shapeP.getGlobalBounds().height / 2.);
-    //shapeP.setFillColor(sf::Color::Red);
     
 
 };
@@ -48,9 +48,29 @@ int Player::getHealthPoints()
     return hp;
 }
 
+int Player::getCollected()
+{
+    return collected;
+}
+
+int Player::getCanCollect()
+{
+    return canCollect;
+}
+
 void Player::setHealthPoints(int pHp)
 {
     hp = pHp;
+}
+
+void Player::setCanCollect(int pCC)
+{
+    canCollect = pCC;
+}
+
+void Player::setCollected(int pC)
+{
+    collected = pC;
 }
 
 int Player::getSpeed()

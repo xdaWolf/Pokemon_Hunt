@@ -9,6 +9,7 @@
 #include "enemy.h"
 #include "player.h"
 #include "collectable.h"
+#include "enemy2.h"
 
 #ifndef FIELD_H_
 #define FIELD_H_
@@ -26,12 +27,16 @@ class Field
     Collectable collectables[3];
     Enemy enemies[6];
     Player player;
+    Enemy2 pokeballs[5];
 
     sf::Sprite spritePD;
     sf::Texture texturePD;
     
     sf::Sprite spriteHP;
     sf::Texture textureHP;
+
+    sf::Sprite spritePC;
+    sf::Texture texturePC;
 
     sf::Event event;
     sf::Sprite spritef;
@@ -40,6 +45,7 @@ class Field
     void checkCollision();
     void updateHealth();
     void checkPositions();
+    void checkForWin();
 
     public:
 

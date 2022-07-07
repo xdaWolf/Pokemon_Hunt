@@ -25,6 +25,7 @@ class Player
     int hp;
     int speed;
     int collected;
+    int canCollect;
 
     public:
     // Constructor / Destructor
@@ -37,11 +38,15 @@ class Player
     //public functions
     //GET
     int getHealthPoints();
+    int getCollected();
     int getSpeed();
+    int getCanCollect();
 
     //SET
     void setTexture(const std::string& pTexture);
     void setHealthPoints(int pHP);
+    void setCollected(int pCollected);
+    void setCanCollect(int pCC);
 
 };
 
