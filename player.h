@@ -35,6 +35,7 @@ class Player
     //public variables
     sf::RectangleShape shapeP;
     sf::Sprite spriteP;
+    int invulnerable;
     //public functions
     //GET
     int getHealthPoints();

@@ -13,6 +13,7 @@ Player::Player()
     hp = 3;
     collected = 0;
     canCollect = 1;
+    invulnerable = 0;
 
     //VISUALS - PLAYER
     shapePPos = sf::Vector2f(1920 / 2 - 114 / 2, 1080 / 2 - 114 / 2);

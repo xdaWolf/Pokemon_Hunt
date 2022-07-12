@@ -46,6 +46,7 @@ class Field
     void updateHealth();
     void checkPositions();
     void checkForWin();
+    void pokeballMovement();
 
     public:
 

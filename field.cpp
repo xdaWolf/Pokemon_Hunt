@@ -12,7 +12,23 @@
 #include <windows.h>
 #include <chrono>
 
+/*----------------------------------------------------------------
+    Letzte Änderungen:
+    -> nur ein mal werden Leben verloren
+    -> in enemy2 random funktion, die eigentlich werte zwischen 0.3 und 2.0 geben soll (als speed-Möglichkeiten für Pokebälle)
+    -> Variable invulnerable (Spieler) soll angeben, ob er unverwundbar ist (0 = Nein, 1 = Ja) und dem Spieler einen kurzzeitigen Schutz geben, wenn er getroffen wurde
+    
+    TO-DO
+    -> Unerreichbare Bereiche (Grenzen neu machen) einfügen (Berg bzw. Bäume unten)
+    -> Spawn-Schutz
+    -> Collectables müssen vom Spielfeld verschwinden (gelöscht werden) nachdem diese eingesammelt wurden (und abgegeben wurden?)
+    -> vielleicht neue random-Funktion?!
+    -> Unten im Pokedex soll angezeigt werden welche Pokemon und wie viele man eingesammelt hat
+    -> den Pokecenter vielleicht überarbeiten (Position (soll random an einer stelle am Rand der map erscheinen, wenn man ein collectable hat?)
+    -> 
 
+
+*/
 
 Field::Field()
 {
@@ -45,7 +61,7 @@ Field::Field()
     spritePC.setPosition(1800,500);
 
     checkPositions(); 
-    //checkPositions();
+    checkPositions();
     //checkPositions();
 
 }
@@ -131,8 +147,6 @@ void Field::pollEvents()
 
         player.spriteP.setPosition(playerPosX, playerPosY);
         player.shapeP.setPosition(playerPosX, playerPosY);
-        checkCollision();
-        
     }
 
 }
@@ -158,7 +172,10 @@ void Field::render() //displays the game data / game field
     }
     for(int i = 0; i <= 2;i++)
     {
-        field->draw(collectables[i].spriteC);
+        if(collectables[i].collected == 0)
+        {
+            field->draw(collectables[i].spriteC);
+        }
     }
     for(int i = 0; i <= 4;i++)
     {
@@ -167,22 +184,95 @@ void Field::render() //displays the game data / game field
 
     field->draw(player.spriteP);
 
+    pokeballMovement();
+    checkCollision();
+
     //DISPLAY NEW WINDOW
     field->display();
 }
 
-void Field::checkCollision() // Nach animation komische Pause?! (vllt weil von hp immer abgezogen wird? vllt wegen sleep?) + Leben gehen zu schnell verloren
+void Field::pokeballMovement()
 {
-    for(int i = 0; i <= 5; i++)
+    
+    pokeballs[0].spriteE2.setPosition(((pokeballs[0].spriteE2.getPosition().x) - pokeballs[0].speed), pokeballs[0].spriteE2.getPosition().y);
+    pokeballs[0].shapeE2.setPosition(((pokeballs[0].spriteE2.getPosition().x) - pokeballs[0].speed), pokeballs[0].spriteE2.getPosition().y);
+    if(pokeballs[0].spriteE2.getPosition().x <= 0)
     {
-        if(player.spriteP.getGlobalBounds().intersects(enemies[i].shapeE.getGlobalBounds()))
-        {
-            player.setHealthPoints(player.getHealthPoints() - 1);
-            updateHealth();
-            player.spriteP.setPosition(sf::Vector2f(1920 / 2 - 114 / 2, 1080 / 2 - 114 / 2));
-        }
+        int newPosY;
+        newPosY = pokeballs[0].giveRandomNumber(0,1080);
+        pokeballs[0].spriteE2.setPosition(1800, newPosY);
+        pokeballs[0].shapeE2.setPosition(1800, newPosY);
+    }
+
+    pokeballs[1].spriteE2.setPosition(((pokeballs[1].spriteE2.getPosition().x) - pokeballs[1].speed), pokeballs[1].spriteE2.getPosition().y);
+    pokeballs[1].shapeE2.setPosition(((pokeballs[1].spriteE2.getPosition().x) - pokeballs[1].speed), pokeballs[1].spriteE2.getPosition().y);
+    if(pokeballs[1].spriteE2.getPosition().x <= 0)
+    {
+        int newPosY;
+        newPosY = pokeballs[1].giveRandomNumber(0,1080);
+        pokeballs[1].spriteE2.setPosition(1800, newPosY);
+        pokeballs[1].shapeE2.setPosition(1800, newPosY);
+    }
+
+    pokeballs[2].spriteE2.setPosition(((pokeballs[2].spriteE2.getPosition().x) - pokeballs[2].speed), pokeballs[2].spriteE2.getPosition().y);
+    pokeballs[2].shapeE2.setPosition(((pokeballs[2].spriteE2.getPosition().x) - pokeballs[2].speed), pokeballs[2].spriteE2.getPosition().y);
+    if(pokeballs[2].spriteE2.getPosition().x <= 0)
+    {
+        int newPosY;
+        newPosY = pokeballs[2].giveRandomNumber(0,1080);
+        pokeballs[2].spriteE2.setPosition(1800, newPosY);
+        pokeballs[2].shapeE2.setPosition(1800, newPosY);
     }
     
+    pokeballs[3].spriteE2.setPosition(((pokeballs[3].spriteE2.getPosition().x) - pokeballs[3].speed), pokeballs[3].spriteE2.getPosition().y);
+    pokeballs[3].shapeE2.setPosition(((pokeballs[3].spriteE2.getPosition().x) - pokeballs[3].speed), pokeballs[3].spriteE2.getPosition().y);
+    if(pokeballs[3].spriteE2.getPosition().x <= 0)
+    {
+        int newPosY;
+        newPosY = pokeballs[3].giveRandomNumber(0,1080);
+        pokeballs[3].spriteE2.setPosition(1800, newPosY);
+        pokeballs[3].shapeE2.setPosition(1800, newPosY);
+    }
+    
+    pokeballs[4].spriteE2.setPosition(((pokeballs[4].spriteE2.getPosition().x) - pokeballs[4].speed), pokeballs[4].spriteE2.getPosition().y);
+    pokeballs[4].shapeE2.setPosition(((pokeballs[4].spriteE2.getPosition().x) - pokeballs[4].speed), pokeballs[4].spriteE2.getPosition().y);
+    
+    if(pokeballs[4].spriteE2.getPosition().x <= 0)
+    {
+        int newPosY;
+        newPosY = pokeballs[4].giveRandomNumber(0,1080);
+        pokeballs[4].spriteE2.setPosition(1800, newPosY);
+        pokeballs[4].shapeE2.setPosition(1800, newPosY);
+    }
+}
+
+void Field::checkCollision() // Nach animation komische Pause?! (vllt weil von hp immer abgezogen wird? vllt wegen sleep?) + Leben gehen zu schnell verloren
+{
+    if(player.invulnerable == 0)
+    {
+        for(int i = 0; i <= 5; i++)
+        {
+            if(player.spriteP.getGlobalBounds().intersects(enemies[i].shapeE.getGlobalBounds()))
+            {
+                player.setHealthPoints(player.getHealthPoints() - 1);
+                updateHealth();
+                player.spriteP.setPosition(sf::Vector2f(1920 / 2 - 114 / 2, 1080 / 2 - 114 / 2));
+            }
+        }
+
+        for(int i = 0; i <= 4; i++)
+        {
+            if(player.spriteP.getGlobalBounds().intersects(pokeballs[i].shapeE2.getGlobalBounds()))
+            {
+                std::cout << "Spieler hittet Pokeball" << std::endl;
+                player.setHealthPoints(player.getHealthPoints() -1);
+                updateHealth();
+                player.spriteP.setPosition(sf::Vector2f(1920 / 2 - 114 / 2, 1080 / 2 - 114 / 2));
+
+            }
+        }
+        
+    }
     for(int i = 0; i <= 2; i++)
     {
         if(player.spriteP.getGlobalBounds().intersects(collectables[i].shapeC.getGlobalBounds()))
@@ -192,17 +282,8 @@ void Field::checkCollision() // Nach animation komische Pause?! (vllt weil von h
             {
                 player.setCanCollect(0);                
             }
-            collectables[i].spriteC.setColor(sf::Color::Transparent); // Variable für jedes Collectable, wenn true -> draw, wenn nicht -> nicht drawen
-        }
-    }
-
-    for(int i = 0; i <= 4; i++)
-    {
-        if(player.spriteP.getGlobalBounds().intersects(pokeballs[i].shapeE2.getGlobalBounds()))
-        {
-            player.setHealthPoints(player.getHealthPoints() -1);
-            updateHealth();
-            player.spriteP.setPosition(sf::Vector2f(1920 / 2 - 114 / 2, 1080 / 2 - 114 / 2));
+            collectables[i].spriteC.setPosition(-100,-100);
+            collectables[i].collected = 1; // Variable für jedes Collectable, wenn true -> draw, wenn nicht -> nicht drawen
         }
     }
 
@@ -214,7 +295,7 @@ void Field::checkCollision() // Nach animation komische Pause?! (vllt weil von h
             player.setCanCollect(1);
         }
     }
-
+    player.invulnerable = 0; // vielleicht mit zeit versuchen?
     checkForWin();
 
 }
@@ -229,6 +310,7 @@ void Field::checkForWin()
 
 void Field::updateHealth()
 {
+    player.invulnerable = 1;
     for (int i = 0; i <= 2; i++)
     {
         if(i % 2 == 0)
@@ -236,14 +318,14 @@ void Field::updateHealth()
             player.shapeP.setFillColor(sf::Color::Red);
             field->draw(player.shapeP);
             field->display();
-            //Sleep(200);
+            Sleep(50);
 
         } else if(i % 2 != 0)
         {
             player.shapeP.setFillColor(sf::Color::Transparent);
             field->draw(player.shapeP);
             field->display();
-            //Sleep(200);
+            Sleep(50);
         }
     }
 
@@ -259,7 +341,6 @@ void Field::updateHealth()
     {
         //Spiel verloren;
     }
-
 }
 
 void Field::checkPositions()

@@ -35,7 +35,10 @@ class Enemy2
     //GET
     sf::Sprite getSprite();
     int giveRandomNumber(int pMin, int pMax);
+    double giveRandomSpeed(double pMin, double pMax);
+    double dmod(double x, double y);
     sf::Sprite spriteE2;
+    double speed;
 
 
 };
