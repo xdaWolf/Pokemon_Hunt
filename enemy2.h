@@ -18,9 +18,8 @@ class Enemy2
 {
     private:
     // variables
-    //sf::RectangleShape shapeE;
     sf::Texture textureE2;
-    //sf::Sprite spriteE;
+
 
 
 
@@ -35,8 +34,7 @@ class Enemy2
     //GET
     sf::Sprite getSprite();
     int giveRandomNumber(int pMin, int pMax);
-    double giveRandomSpeed(double pMin, double pMax);
-    double dmod(double x, double y);
+    double fRand(double fMin, double fMax);
     sf::Sprite spriteE2;
     double speed;
 

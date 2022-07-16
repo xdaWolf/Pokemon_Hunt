@@ -9,14 +9,14 @@
 Player::Player()
 {
     //SET VARIABLES - PLAYER
-    speed = 13;
+    speed = 3;
     hp = 3;
     collected = 0;
     canCollect = 1;
     invulnerable = 0;
 
     //VISUALS - PLAYER
-    shapePPos = sf::Vector2f(1920 / 2 - 114 / 2, 1080 / 2 - 114 / 2);
+    shapePPos = sf::Vector2f(550,200);
     std::cout << "Player Konstruktor" << std::endl;
     textureP.loadFromFile("resources/pikachu_5.png");
     textureP.setSmooth(true);

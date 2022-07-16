@@ -38,9 +38,12 @@ class Field
     sf::Sprite spritePC;
     sf::Texture texturePC;
 
-    sf::Event event;
     sf::Sprite spritef;
     sf::Texture texturef;
+
+    sf::Sprite spriteTree[4];
+    sf::Texture textureTree[4];
+
 
     void checkCollision();
     void updateHealth();
@@ -58,7 +61,6 @@ class Field
     ~Field();
 
     //public Functions
-    void pollEvents();
     void update(); // update the game data
     void render();
     //GET

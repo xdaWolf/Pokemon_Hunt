@@ -32,7 +32,7 @@ Collectable::~Collectable()
 int Collectable::giveRandomNumber(int pMin, int pMax)
 {
     auto start = std::chrono::steady_clock::now();
-    int dfe = 300;  //distance from edges (in pixels, maybe implement automatic number here using size of respective sprite)
+    int dfe = 100;  //distance from edges (in pixels, maybe implement automatic number here using size of respective sprite)
     int phss = 20;  //possible horizontal spawn spots (should be below lowest elapsed time and below average difference in elapsed times)          //hier müsste man noch ein zweiten phss erstellen, wenn shapeE und spriteE verschiedene Positionen haben sollen
     int pvss = 5;   //possible vertical spawn spots   (                                       ~                                         )          //hier müsste man noch ein zweiten pvss erstellen, wenn shapeE und spriteE verschiedene Positionen haben sollen
     Sleep(10);

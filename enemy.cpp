@@ -39,7 +39,7 @@ sf::Sprite Enemy::getSprite()
 int Enemy::giveRandomNumber(int pMin, int pMax)
 {
     auto start = std::chrono::steady_clock::now();
-    int dfe = 300;  //distance from edges (in pixels, maybe implement automatic number here using size of respective sprite)
+    int dfe = 100;  //distance from edges (in pixels, maybe implement automatic number here using size of respective sprite)
     int phss = 20;  //possible horizontal spawn spots (should be below lowest elapsed time and below average difference in elapsed times)          //hier müsste man noch ein zweiten phss erstellen, wenn shapeE und spriteE verschiedene Positionen haben sollen
     int pvss = 5;   //possible vertical spawn spots   (                                       ~                                         )          //hier müsste man noch ein zweiten pvss erstellen, wenn shapeE und spriteE verschiedene Positionen haben sollen
     Sleep(10);
@@ -65,12 +65,3 @@ int Enemy::giveRandomNumber(int pMin, int pMax)
     //the map than many spots all close to each other
     //if(abs(enemy1.shapeE.x - enemy2.shapeE.x) < shapeE.width) enemy2.shapeE.x += shapeE.width or -= if close to right edge idk or y coordinates or spriteE x/y idk xd (solution in case enemy spawns overlap (only 100 spawn spots available))
 }
-
-
-
-
-
-//Grundsätzliche Idee für Pokeballmovement:
-//position -= ~10
-//if position.x < -100, position.x += 2120, position.y = (position.y + playerpos.x) % 1080 (random spot on y-axis based on player's x position)
-//Phase 2: when collectable eingesammelt, neues Pokeballobjekt erzeugen, evtl. nich random machen, sondern Phase 1 ein normaler, Phase 2 zwei Superbälle, dann drei Meisterbälle/vier Ultrabälle oder wie die heißen xD
