@@ -18,9 +18,9 @@ class Enemy
 {
     private:
     // variables
-    sf::RectangleShape shapeE;
+    //sf::RectangleShape shapeE;
     sf::Texture textureE;
-    sf::Sprite spriteE;
+    //sf::Sprite spriteE;
 
 
 
@@ -29,9 +29,13 @@ class Enemy
     Enemy();
     ~Enemy();
 
+    sf::RectangleShape shapeE;
+
     //public functions
     //GET
     sf::Sprite getSprite();
+    int giveRandomNumber(int pMin, int pMax);
+    sf::Sprite spriteE;
 
 
 };

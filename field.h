@@ -6,10 +6,10 @@
 #include <SFML/Network.hpp>
 #include <SFML/Graphics.hpp>
 
-//#include "game.h"
 #include "enemy.h"
 #include "player.h"
 #include "collectable.h"
+#include "enemy2.h"
 
 #ifndef FIELD_H_
 #define FIELD_H_
@@ -24,16 +24,40 @@ class Field
     
     private:
     // variables
-    Collectable collect1, collect2, collect3;
-    Enemy enemy1, enemy2, enemy3, enemy4, enemy5, enemy6;
+    int moves;
+
+    Collectable collectables[3];
+    Enemy enemies[6];
     Player player;
+    Enemy2 pokeballs[5];
+
+    sf::Sprite spritePD;
+    sf::Texture texturePD;
     
     sf::Sprite spriteHP;
     sf::Texture textureHP;
-    //sf::RenderWindow* field;
-    sf::Event event;
+
+    sf::Sprite spritePC;
+    sf::Texture texturePC;
+
     sf::Sprite spritef;
     sf::Texture texturef;
+
+    sf::Sprite spriteDS;
+    sf::Texture textureDS;
+
+    sf::Sprite spriteDM;
+    sf::Texture textureDM;
+
+    sf::Sprite spriteTree[4];
+    sf::Texture textureTree[4];
+
+
+    void checkCollision();
+    void updateHealth();
+    void checkPositions();
+    void checkForWin();
+    void pokeballMovement();
 
     public:
 
@@ -45,7 +69,6 @@ class Field
     ~Field();
 
     //public Functions
-    void pollEvents();
     void update(); // update the game data
     void render();
     //GET

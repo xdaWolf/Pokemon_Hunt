@@ -18,9 +18,9 @@ class Collectable
 {
     private:
     //Variables
-    sf::RectangleShape shapeC;
+    //sf::RectangleShape shapeC;
     sf::Texture textureC;
-    sf::Sprite spriteC;
+    //sf::Sprite spriteC;
 
     public:
     //Constructor / Destructor
@@ -28,6 +28,10 @@ class Collectable
     ~Collectable();
     //public functions
     sf::Sprite getSprite();
+    int giveRandomNumber(int pMin, int pMax);
+    sf::RectangleShape shapeC;
+    sf::Sprite spriteC;
+    int collected;
 
 };
 

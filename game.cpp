@@ -19,11 +19,11 @@ Game::~Game()
 {
     std::cout << "Game Dekonstruktor" << std::endl;
     // delete all objects
-    delete this->Fieldg.field;
+    delete Fieldg.field;
 }
 
 Field Game::getField()
 {
-    return this->Fieldg;
+    return Fieldg;
 }
 
