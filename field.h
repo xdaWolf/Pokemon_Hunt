@@ -25,6 +25,10 @@ class Field
     private:
     // variables
     int moves;
+    int score;
+    int positionCX[3];
+    int positionCY[3];
+    int playerPosX, playerPosY;
 
     Collectable collectables[3];
     Enemy enemies[6];
@@ -49,12 +53,22 @@ class Field
     sf::Sprite spriteDM;
     sf::Texture textureDM;
 
+    sf::Sprite spriteSS;
+    sf::Texture textureSS;
+
+    sf::Sprite spriteSM;
+    sf::Texture textureSM;
+
     sf::Sprite spriteTree[4];
     sf::Texture textureTree[4];
+
+    sf::Font pokemonhollow;
+    sf::Text scoretext;
 
 
     void checkCollision();
     void updateHealth();
+    void resetGame();
     void checkPositions();
     void checkForWin();
     void pokeballMovement();

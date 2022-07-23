@@ -5,24 +5,23 @@
 #include <stdio.h>
 #include <iostream>
 #include <string>
-#include <stdlib.h>
+#include <stdlib.h>     //include all necessary external files
 
-//Constructor / Destructor
 
-Game::Game()
+
+Game::Game()            //constructor
 {
     std::cout << "Game Konstruktor" << std::endl;
-
 }
 
-Game::~Game()
+Game::~Game()           //destructor
 {
     std::cout << "Game Dekonstruktor" << std::endl;
     // delete all objects
     delete Fieldg.field;
 }
 
-Field Game::getField()
+Field Game::getField()  //?
 {
     return Fieldg;
 }

@@ -5,7 +5,7 @@
 #include <string>
 #include <stdlib.h>
 #include <windows.h>
-#include <chrono>
+#include <chrono>           //include all necessary external files
 
 /*----------------------------------------------------------------
     Letzte Änderungen:
@@ -28,8 +28,8 @@ Field::Field()
 {
     std::cout << "Field constructor" << std::endl;
     //SET VARIABLES - FIELD
-    //field = new sf::RenderWindow(sf::VideoMode::getDesktopMode(), "Pokemon-Hunt", sf::Style::Fullscreen);
-    field = new sf::RenderWindow(sf::VideoMode(1920,1080), "Pokemon-Hunt");
+    field = new sf::RenderWindow(sf::VideoMode::getDesktopMode(), "Pokemon-Hunt", sf::Style::Fullscreen);
+    //field = new sf::RenderWindow(sf::VideoMode(1920,1080), "Pokemon-Hunt");
     texturef.loadFromFile("resources/backgroundv3.png");
     texturef.setSmooth(true);
     spritef.setTexture(texturef);
@@ -42,11 +42,11 @@ Field::Field()
     spriteHP.setOrigin(sf::Vector2f(textureHP.getSize().x / 2,textureHP.getSize().y / 2));
     spriteHP.setPosition(1600,50);
     //SET VARIABLES - POKEDEX
-    texturePD.loadFromFile("resources/pokedex.png");
+    texturePD.loadFromFile("resources/collected_pokemon.png");
     texturePD.setSmooth(true);
     spritePD.setTexture(texturePD);
     spritePD.setOrigin(sf::Vector2f(texturePD.getSize().x / 2,texturePD.getSize().y / 2));
-    spritePD.setPosition(150,950);
+    spritePD.setPosition(250,950);
     //SET VARIABLES - POKE CENTER
     texturePC.loadFromFile("resources/pokecenter.png");
     texturePC.setSmooth(true);
@@ -68,7 +68,7 @@ Field::Field()
 
 }
 
-Field::~Field()
+Field::~Field()         //destructor
 {
     std::cout << "Feld Dekonstruktor" << std::endl;
     delete field;
@@ -76,23 +76,22 @@ Field::~Field()
 
 const bool Field::getFieldIsOpen() const
 {
-    return field->isOpen();
+    return field->isOpen();                             //?
 }
 
 
-void Field::update() //manages all the game data
+void Field::update()                                    //manages all the game data
 {
-    int playerPosX, playerPosY, movement, speed;
+    int movement, speed;                                //variable used for walking animation
     playerPosX = player.spriteP.getPosition().x;
     playerPosY = player.spriteP.getPosition().y;
     
     //WALKING ANIMATION
-    movement = playerPosY + playerPosX;
-    speed = player.getSpeed(); //SPEED HAS TO BE ODD NUMBER!!!!!
+    movement = playerPosY + playerPosX;                 //walking animation
+    speed = player.getSpeed();
 
     
     //Close the window if wanted
-    
     if(sf::Event::Closed)
     {
         field->close();
@@ -107,6 +106,10 @@ void Field::update() //manages all the game data
     {
         std::cout << moves << std::endl;
         field->close();
+    }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::R))
+    {
+        resetGame();
     }
     //WASD_MOVEMENT
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::W))
@@ -175,14 +178,21 @@ void Field::render() //displays the game data / game field
     {
         field->draw(enemies[i].spriteE);
     }
+
     for(int i = 0; i <= 2;i++)
     {
-        if(collectables[i].collected == 0)
-        {
+        //if(collectables[i].collected == 0)
+        //{
             field->draw(collectables[i].spriteC);
+        //}
+        if(!(collectables[i].spriteC.getGlobalBounds().intersects(spritePD.getGlobalBounds())))
+        {
+            positionCX[i] = collectables[i].spriteC.getPosition().x;
+            positionCY[i] = collectables[i].spriteC.getPosition().y;
         }
+
     }
-    
+
     for(int i = 0; i <= 4;i++)
     {
         field->draw(pokeballs[i].spriteE2);
@@ -314,36 +324,92 @@ void Field::checkCollision()
         if(player.spriteP.getGlobalBounds().intersects(collectables[i].shapeC.getGlobalBounds()))
         {
             std::cout << "Collect" << std::endl;
+            std::cout << player.getCollected() << std::endl;
             if(player.getCanCollect() == 1)
             {
                 player.setCanCollect(0);                
             }
-            collectables[i].spriteC.setPosition(2000,2000);
-            collectables[i].shapeC.setPosition(2000,2000);
-            collectables[i].collected = 1; // Variable für jedes Collectable, wenn true -> draw, wenn nicht -> nicht drawen
+            player.setCollected(player.getCollected() + 1);
+            collectables[i].spriteC.setScale(0.5, 0.5);
+            collectables[i].spriteC.setPosition(player.getCollected() * 110, 950);
+            collectables[i].shapeC.setPosition(player.getCollected() * 110, 950);
+            //collectables[i].collected = 1; // Variable für jedes Collectable, wenn true -> draw, wenn nicht -> nicht drawen
         }
     }
 
     if(player.spriteP.getGlobalBounds().intersects(spritePC.getGlobalBounds()))
     {
-        if(player.getCanCollect() == 0)
+        /*if(player.getCanCollect() == 0)
         {
-            player.setCollected(player.getCollected() + 1);
+            player.setCollected(player.getCollected() + 1);             //auskommentiert
             player.setCanCollect(1);
         }
     }
     player.invulnerable = 0; // vielleicht mit zeit versuchen?
-    checkForWin();
+    checkForWin();*/
+
+        if (player.getCollected() >= 3) {
+            std::cout << "Gewonnen" << std::endl;
+
+            field->clear();
+
+            field->draw(spritef);
+            field->draw(spritePC);
+            for(int i = 0; i <= 3;i++)
+            {
+                field->draw(spriteTree[i]);
+            }
+
+            textureSS.loadFromFile("resources/success_sprite.png");
+            textureSS.setSmooth(true);
+            spriteSS.setTexture(textureSS);
+            spriteSS.setOrigin(sf::Vector2f(textureSS.getSize().x / 2, textureSS.getSize().y / 2));
+            spriteSS.setPosition(sf::Vector2f(field->getSize().x / 2, field->getSize().y / 3));
+            field->draw(spriteSS);
+
+            textureSM.loadFromFile("resources/success_message.png");
+            textureSM.setSmooth(true);
+            spriteSM.setTexture(textureSM);
+            spriteSM.setOrigin(sf::Vector2f(textureSM.getSize().x / 2, textureSM.getSize().y / 2));
+            spriteSM.setPosition(sf::Vector2f(field->getSize().x / 2, field->getSize().y / 4 * 3));
+            field->draw(spriteSM);
+
+            score = (5000 - moves) / (4 - player.getHealthPoints());                //highest possible score: ~500 moves needed --> 4500
+            if(score < 100) {
+                score = 100;
+            }
+            pokemonhollow.loadFromFile("resources/pokemon_hollow.ttf");
+            scoretext.setFont(pokemonhollow);
+            scoretext.setString("Score: " + std::to_string(score));
+            scoretext.setCharacterSize(96);
+            scoretext.setFillColor(sf::Color::Black);
+            scoretext.setPosition(sf::Vector2f(100, field->getSize().y / 2));
+            field->draw(scoretext);
+
+            field->display();
+
+            while(!(sf::Keyboard::isKeyPressed(sf::Keyboard::R) || sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)))
+            {   
+                std::cout << "waiting" << std::endl;
+            }
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
+            {
+                field->close();
+            }
+            
+            resetGame();
+        }
+    }
 
 }
 
-void Field::checkForWin()
+/*void Field::checkForWin()
 {
     if(player.getCollected() == 3)
     {
-        std::cout << "Gewonnen" << std::endl;
+        std::cout << "Gewonnen" << std::endl;               //auskommentiert
     }
-}
+}*/
 
 void Field::updateHealth()
 {
@@ -379,7 +445,6 @@ void Field::updateHealth()
         field->clear();
 
         field->draw(spritef);
-        field->draw(spritePD);
         field->draw(spritePC);
         for(int i = 0; i <= 3;i++)
         {
@@ -413,19 +478,40 @@ void Field::updateHealth()
 
         field->display();
 
-        while(!(sf::Keyboard::isKeyPressed(sf::Keyboard::R)))
+        while(!(sf::Keyboard::isKeyPressed(sf::Keyboard::R) || sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)))
         {   
             std::cout << "waiting" << std::endl;
         }
-
-        player.setHealthPoints(player.getHealthPoints() +3);
-        player.setCollected(0);
-        moves = 0;
-        textureHP.loadFromFile("resources/health_bar_3.png");
-        spriteHP.setTexture(textureHP);
-        field->draw(spriteHP);
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
+        {
+            field->close();
+        }
+        
+        resetGame();
     }
     player.invulnerable = 0;
+}
+
+void Field::resetGame()
+{
+    player.setHealthPoints(3);
+    player.setCollected(0);
+    moves = 0;
+    textureHP.loadFromFile("resources/health_bar_3.png");
+    spriteHP.setTexture(textureHP);
+    field->draw(spriteHP);
+    playerPosX = 550;
+    playerPosY = 200;
+    field->draw(player.spriteP);
+    for(int i = 0; i <= 2; i++)
+    {
+        if(collectables[i].spriteC.getGlobalBounds().intersects(spritePD.getGlobalBounds()))
+        {
+            collectables[i].spriteC.setScale(1, 1);
+        }
+        collectables[i].spriteC.setPosition(positionCX[i], positionCY[i]);
+        collectables[i].shapeC.setPosition(positionCX[i], positionCY[i]);
+    }
 }
 
 void Field::checkPositions()

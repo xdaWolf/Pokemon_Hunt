@@ -5,35 +5,34 @@
 #include <string>
 #include <stdlib.h>
 #include <chrono>
-#include <windows.h>
+#include <windows.h>        //include all necessary external files
 
-//Constructor / Destructor
 
-Enemy::Enemy()
+
+Enemy::Enemy()              //constructor
 {
     std::cout << "Enemy Konstruktor" << std::endl;
-    textureE.loadFromFile("resources/enemy_" + std::to_string(giveRandomNumber(1,6)) + ".png");
+    textureE.loadFromFile("resources/enemy_" + std::to_string(giveRandomNumber(1,6)) + ".png");     //select random Trainer image
     textureE.setSmooth(true);
-    shapeE.setTexture(&textureE);
-    shapeE.setSize(sf::Vector2f(textureE.getSize().x, textureE.getSize().y));
-    spriteE.setTexture(textureE);
+    shapeE.setSize(sf::Vector2f(textureE.getSize().x, textureE.getSize().y));   //set size of "shape" to size of Trainer image
+    shapeE.setTexture(&textureE);                   //set texture of "shape"  to Trainer image     
+    spriteE.setTexture(textureE);                   //set texture of "sprite" to Trainer image
     int positionX,positionY;
-    positionX = giveRandomNumber(0,1920);
-    positionY = giveRandomNumber(0,1080);
-    shapeE .setPosition(positionX,positionY); 
-    spriteE.setPosition(positionX,positionY); 
+    positionX = giveRandomNumber(0,1920);           //select random horizontal spawn point
+    positionY = giveRandomNumber(0,1080);           //select random vertical spawn point
+    shapeE .setPosition(positionX,positionY);       //set "shape"  at spawn point
+    spriteE.setPosition(positionX,positionY);       //set "sprite" at spawn point
 };
 
-Enemy::~Enemy()
+Enemy::~Enemy()             //destructor
 {
-
     //delete field;
 };
 
 
 sf::Sprite Enemy::getSprite()
 {
-    return spriteE;
+    return spriteE;                                     //?
 }
 
 int Enemy::giveRandomNumber(int pMin, int pMax)
