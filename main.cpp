@@ -9,7 +9,9 @@ How to play:
 - to start the game, open your cmd and type "mingw32-make".
 - move your character (Pikachu) through keys WASD.
 - collect all other Pokemon on the field while avoiding Pokeballs and Trainers. After you've collected all three Pokemon, head towards the Pokecenter to win.
-- getting hit three times results in Game Over. Pressing R restarts the game.
+- the less moves you make and the more HP you have left, the better your score.
+- getting hit three times results in Game Over.
+- pressing R at any point restarts the game. To get a new Pokemon/Trainer/Tree layout, restart the program.
 - to end the game, press Escape.
 */
 

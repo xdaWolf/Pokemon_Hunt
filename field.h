@@ -30,10 +30,16 @@ class Field
     int positionCY[3];
     int playerPosX, playerPosY;
 
-    Collectable collectables[3];
-    Enemy enemies[6];
+    //amount of each object (Trainers, Pokeballs, Pokemon, Trees), reduce any to lower difficulty and vice versa
+    const int amountE1 = 4;
+    const int amountE2 = 5;
+    const int amountC = 3;
+    const int amountT = 4;
+
     Player player;
+    Enemy enemies[4];
     Enemy2 pokeballs[5];
+    Collectable collectables[3];
 
     sf::Sprite spritePD;
     sf::Texture texturePD;

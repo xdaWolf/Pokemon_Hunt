@@ -11,7 +11,7 @@
 Player::Player()                    //constructor
 {
     //SET VARIABLES - PLAYER
-    speed = 3;                      //speed of player, HAS TO BE ODD NUMBER IN ORDER FOR ANIMATIONS TO WORK PROPERLY
+    speed = 9;                      //speed of player, HAS TO BE ODD NUMBER IN ORDER FOR ANIMATIONS TO WORK PROPERLY
     hp = 3;                         //health points of player
     collected = 0;                  //amount of collected Pokemon
     canCollect = 1;                 //whether Pokemon has already been collected (implemented as bool)

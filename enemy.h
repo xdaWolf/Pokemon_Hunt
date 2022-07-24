@@ -29,7 +29,7 @@ class Enemy
     Enemy();
     ~Enemy();
 
-    sf::RectangleShape shapeE;
+    //sf::RectangleShape shapeE;
 
     //public functions
     //GET

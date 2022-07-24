@@ -29,7 +29,7 @@ class Collectable
     //public functions
     sf::Sprite getSprite();
     int giveRandomNumber(int pMin, int pMax);
-    sf::RectangleShape shapeC;
+    //sf::RectangleShape shapeC;
     sf::Sprite spriteC;
     int collected;
 
