@@ -24,10 +24,23 @@ class Field
     
     private:
     // variables
-    Collectable collectables[3];
-    Enemy enemies[6];
+    int moves;
+    int score;
+    int direction;
+    int blocked[4];
+    int blockedCheck;
+    int positionCX[3];
+    int positionCY[3];
+    int playerPosX, playerPosY;
+
+    sf::Sound collected, failure, win;
+    sf::SoundBuffer bufferC,bufferF,bufferW;
+
+    //amount of each object (Trainers, Pokeballs, Pokemon, Trees), reduce any to lower difficulty and vice versa
     Player player;
+    Enemy enemies[4];
     Enemy2 pokeballs[5];
+    Collectable collectables[3];
 
     sf::Sprite spritePD;
     sf::Texture texturePD;
@@ -41,12 +54,28 @@ class Field
     sf::Sprite spritef;
     sf::Texture texturef;
 
+    sf::Sprite spriteDS;
+    sf::Texture textureDS;
+
+    sf::Sprite spriteDM;
+    sf::Texture textureDM;
+
+    sf::Sprite spriteSS;
+    sf::Texture textureSS;
+
+    sf::Sprite spriteSM;
+    sf::Texture textureSM;
+
     sf::Sprite spriteTree[4];
     sf::Texture textureTree[4];
+
+    sf::Font pokemonhollow;
+    sf::Text scoretext;
 
 
     void checkCollision();
     void updateHealth();
+    void resetGame();
     void checkPositions();
     void checkForWin();
     void pokeballMovement();
@@ -65,6 +94,7 @@ class Field
     void render();
     //GET
     const bool getFieldIsOpen() const;
+    
 
 };
 

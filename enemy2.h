@@ -28,7 +28,7 @@ class Enemy2
     Enemy2();
     ~Enemy2();
 
-    sf::RectangleShape shapeE2;
+    //sf::RectangleShape shapeE2;
 
     //public functions
     //GET

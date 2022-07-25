@@ -5,63 +5,50 @@
 #include <string>
 #include <stdlib.h>
 #include <chrono>
-#include <windows.h>
+#include <windows.h>        //include all necessary external files
 
-Collectable::Collectable()
+
+
+Collectable::Collectable()  //constructor
 {
     std::cout << "Collectable Konstruktor" << std::endl;
-    //SET VARIABLES - COLLECTABLE
-    collected = 0;
-    textureC.loadFromFile("resources/collectable_" + std::to_string(giveRandomNumber(1,6)) + ".png");
+    collected = 0;                                  //Pokemon isn't collected yet
+    textureC.loadFromFile("resources/collectable_" + std::to_string(giveRandomNumber(1,6)) + ".png");   //select random Pokemon image
     textureC.setSmooth(true);
-    shapeC.setTexture(&textureC);
-    shapeC.setSize(sf::Vector2f(textureC.getSize().x, textureC.getSize().y));
-    spriteC.setTexture(textureC);
+    //shapeC.setSize(sf::Vector2f(textureC.getSize().x, textureC.getSize().y));    //set size of "shape" to size of Pokemon image
+    //shapeC.setTexture(&textureC);                   //set texture of "shape"  to Pokemon image
+    spriteC.setTexture(textureC);                   //set texture of "sprite" to Pokemon image
     int positionX,positionY;
-    positionX = giveRandomNumber(0,1920);
-    positionY = giveRandomNumber(0,1080);
-    shapeC .setPosition(positionX,positionY);    
-    spriteC.setPosition(positionX,positionY);
+    positionX = giveRandomNumber(0,1920);           //select random horizontal spawn point
+    positionY = giveRandomNumber(0,900);           //select random vertical spawn point
+    //shapeC .setPosition(positionX,positionY);       //set "shape"  at spawn point
+    spriteC.setPosition(positionX,positionY);       //set "sprite" at spawn point
 };
 
-Collectable::~Collectable()
+Collectable::~Collectable() //destructor
 {
-
+    //delete field;
 };
+
+sf::Sprite Collectable::getSprite()
+{
+    return spriteC;                                     //?
+}
 
 int Collectable::giveRandomNumber(int pMin, int pMax)
 {
     auto start = std::chrono::steady_clock::now();
-    int dfe = 100;  //distance from edges (in pixels, maybe implement automatic number here using size of respective sprite)
-    int phss = 20;  //possible horizontal spawn spots (should be below lowest elapsed time and below average difference in elapsed times)          //hier müsste man noch ein zweiten phss erstellen, wenn shapeE und spriteE verschiedene Positionen haben sollen
-    int pvss = 5;   //possible vertical spawn spots   (                                       ~                                         )          //hier müsste man noch ein zweiten pvss erstellen, wenn shapeE und spriteE verschiedene Positionen haben sollen
+    int dfe = 100;                                      //distance from edges (in pixels, implementation idea: automatic number using size of respective sprite)
     Sleep(10);
     auto end = std::chrono::steady_clock::now();
 
-    int microseconds = std::chrono::duration_cast<std::chrono::microseconds>(end-start).count();
+    int microseconds = std::chrono::duration_cast<std::chrono::microseconds>(end-start).count();    //get a pseudo-random number by counting the microseconds it took the program to process the lines above
 
-    if(pMax == 6)
+    if(pMax < 100)                                      //allows up to 99 different sprites for enemies, requirement: window size is 100x100px or larger
     {
-        //return microseconds % 6 + 1;
-        return microseconds % 6 + 1;
-    } else if (pMax == 1080)
+        return microseconds % pMax + pMin;              //select random sprite
+    } else
     {
-        //return microseconds % pvss * (int((1080 - 2*dfe) / (pvss-1))) + dfe; 
-        return microseconds % (1080 - 2*dfe) + dfe;
-    } else if(pMax == 1920)
-    {
-        //return microseconds % pvss * (int((1920 - 2*dfe) / (pvss-1))) + dfe;
-        return microseconds % (1920 - 2*dfe) + dfe;
+        return microseconds % (pMax - 2*dfe) + dfe;     //select random position for enemy to spawn (considering the set distance from edges)
     }
-
-    //prefer fewer equally distributed spots across       //maybe implement automatic window size detection here
-
-    //the map than many spots all close to each other
-    //if(abs(enemy1.shapeE.x - enemy2.shapeE.x) < shapeE.width) enemy2.shapeE.x += shapeE.width or -= if close to right edge idk or y coordinates or spriteE x/y idk xd (solution in case enemy spawns overlap (only 100 spawn spots available))
-}
-
-sf::Sprite Collectable::getSprite()
-{
-    return spriteC;
-
 }

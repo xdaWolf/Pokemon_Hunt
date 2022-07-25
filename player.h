@@ -20,12 +20,11 @@ class Player
     private:
     //Variables
     //sf::RectangleShape shapeP;
-    sf::Texture textureP;
+    //sf::Texture textureP;
     sf::Vector2f shapePPos;
     int hp;
     int speed;
     int collected;
-    int canCollect;
 
     public:
     // Constructor / Destructor
@@ -33,21 +32,23 @@ class Player
     ~Player();
 
     //public variables
+    sf::Texture textureP; //this do be public now cuz field yea
     sf::RectangleShape shapeP;
     sf::Sprite spriteP;
-    int invulnerable;
+    int spawnPX, spawnPY;
+    //int spawnzoneWidth;
+    //int spawnzoneHeight;
     //public functions
     //GET
     int getHealthPoints();
     int getCollected();
     int getSpeed();
-    int getCanCollect();
+    int getSpawnzone();
 
     //SET
     void setTexture(const std::string& pTexture);
     void setHealthPoints(int pHP);
     void setCollected(int pCollected);
-    void setCanCollect(int pCC);
 
 };
 
