@@ -26,16 +26,14 @@ class Field
     // variables
     int moves;
     int score;
+    int direction;
+    int blocked[4];
+    int blockedCheck;
     int positionCX[3];
     int positionCY[3];
     int playerPosX, playerPosY;
 
     //amount of each object (Trainers, Pokeballs, Pokemon, Trees), reduce any to lower difficulty and vice versa
-    const int amountE1 = 4;
-    const int amountE2 = 5;
-    const int amountC = 3;
-    const int amountT = 4;
-
     Player player;
     Enemy enemies[4];
     Enemy2 pokeballs[5];

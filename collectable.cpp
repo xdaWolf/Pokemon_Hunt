@@ -20,7 +20,7 @@ Collectable::Collectable()  //constructor
     spriteC.setTexture(textureC);                   //set texture of "sprite" to Pokemon image
     int positionX,positionY;
     positionX = giveRandomNumber(0,1920);           //select random horizontal spawn point
-    positionY = giveRandomNumber(0,1080);           //select random vertical spawn point
+    positionY = giveRandomNumber(0,900);           //select random vertical spawn point
     //shapeC .setPosition(positionX,positionY);       //set "shape"  at spawn point
     spriteC.setPosition(positionX,positionY);       //set "sprite" at spawn point
 };

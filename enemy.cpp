@@ -19,7 +19,7 @@ Enemy::Enemy()              //constructor
     spriteE.setTexture(textureE);                   //set texture of "sprite" to Trainer image
     int positionX,positionY;
     positionX = giveRandomNumber(0,1920);           //select random horizontal spawn point
-    positionY = giveRandomNumber(0,1080);           //select random vertical spawn point
+    positionY = giveRandomNumber(0,900);           //select random vertical spawn point
     //shapeE .setPosition(positionX,positionY);       //set "shape"  at spawn point
     spriteE.setPosition(positionX,positionY);       //set "sprite" at spawn point
 };

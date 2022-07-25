@@ -21,7 +21,7 @@ Enemy2::Enemy2()            //constructor
     spriteE2.setTexture(textureE2);                     //set texture of "sprite" to Pokeball image
     int positionX,positionY;
     positionX = 1920;                                   //set horizontal starting position to the right of the screen
-    positionY = giveRandomNumber(0,1080);               //select random vertical starting position
+    positionY = giveRandomNumber(0,900);               //select random vertical starting position
     //shapeE2.setPosition(positionX,positionY);           //set "shape"  at starting position
     spriteE2.setPosition(positionX,positionY);          //set "sprite" at starting position
 };
