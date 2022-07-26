@@ -8,6 +8,7 @@
 #include <chrono>           //include all necessary external files
 
 /*----------------------------------------------------------------
+
     Letzte Änderungen:
     -> Tree Collision
     -> Sound
@@ -16,7 +17,6 @@
     TO-DO/BUGS
     -> Berg oben rechts als Grenze 
     -> Tree-Bug (Infos: an sich klappt die Kollision, wenn man dann aber zur Seite wechselt, schwebt man durch den Baum, wenn man von links oder unten gegenläuft: man bleibt stehen, wen von rechts oder oben: man wird verschoben)
-    -> Keine Rückmeldung Bug (isKeyPressed wartet die ganze Zeit auf Eingabe, kann durch while(field->pollEvent(event)) behoben werden, nachteil: drecks movement)
 
     CODE-TECHNISCH:
     -> Field ist überladen, auslagern!
@@ -38,8 +38,8 @@ Field::Field()
 {
     std::cout << "Field constructor" << std::endl;
     //SET VARIABLES - FIELD
-    //field = new sf::RenderWindow(sf::VideoMode::getDesktopMode(), "Pokemon-Hunt", sf::Style::Fullscreen);
-    field = new sf::RenderWindow(sf::VideoMode(1920,1080), "Pokemon-Hunt");
+    field = new sf::RenderWindow(sf::VideoMode::getDesktopMode(), "Pokemon-Hunt", sf::Style::Fullscreen);
+    //field = new sf::RenderWindow(sf::VideoMode(1920,1080), "Pokemon-Hunt");
     field->setFramerateLimit(60);
     texturef.loadFromFile("resources/backgroundv3.png");
     texturef.setSmooth(true);
@@ -53,6 +53,8 @@ Field::Field()
     win.setBuffer(bufferW);
     bufferF.loadFromFile("resources/failure.wav");
     failure.setBuffer(bufferF);
+    bufferD.loadFromFile("resources/damage.wav");
+    damage.setBuffer(bufferD);
     //SET VARIABLES - HEALTH-BAR
     textureHP.loadFromFile("resources/health_bar_3.png");
     textureHP.setSmooth(true);
@@ -72,14 +74,27 @@ Field::Field()
     spritePC.setOrigin(sf::Vector2f(texturePC.getSize().x / 2,texturePC.getSize().y / 2));
     spritePC.setPosition(1800,500);
     //SET VARIABLES - TREES
+    amountOfTrees = 4;
     for(int i = 0; i < (sizeof(spriteTree)/sizeof(spriteTree[0])); i++)
     {
-        textureTree[i].loadFromFile("resources/tree.png");
-        textureTree[i].setSmooth(true);
-        spriteTree[i].setTexture(textureTree[i]);
-        spriteTree[i].setOrigin(sf::Vector2f(textureTree[i].getSize().x / 2, textureTree[i].getSize().y / 2));
-        spriteTree[i].setPosition(enemies[0].giveRandomNumber(0,1920), enemies[0].giveRandomNumber(0,900));
-    }    
+        if(i < amountOfTrees) {
+            textureTree[i].loadFromFile("resources/tree.png");
+            textureTree[i].setSmooth(true);
+            spriteTree[i].setTexture(textureTree[i]);
+            spriteTree[i].setOrigin(sf::Vector2f(textureTree[i].getSize().x / 2, textureTree[i].getSize().y / 2));
+            spriteTree[i].setPosition(enemies[0].giveRandomNumber(0,1920), enemies[0].giveRandomNumber(0,900));
+        } else if(i == (amountOfTrees-1) + 1) {
+            textureTree[i].loadFromFile("resources/mountainTopRight.png");
+            textureTree[i].setSmooth(true);
+            spriteTree[i].setTexture(textureTree[i]);
+            spriteTree[i].setPosition(texturef.getSize().x - textureTree[i].getSize().x, 0);
+        } else if(i == (amountOfTrees-1) + 2) {
+            textureTree[i].loadFromFile("resources/mountainTopLeft.png");
+            textureTree[i].setSmooth(true);
+            spriteTree[i].setTexture(textureTree[i]);
+            spriteTree[i].setPosition(0, 0);
+        }
+    }   
     moves = 0;
     checkPositions();
 }
@@ -111,88 +126,95 @@ void Field::update()                                    //manages all the game d
         field->close();
 
     }
-    //sf::Event event;
-    //while(field->pollEvent(event))
-    //{
-    //movement++; // switch from odd to even or even to odd number (WALKING ANIMATION)
+    sf::Event event;
     //Check if any Key is pressed
-
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
-    {
-        std::cout << moves << std::endl;
-        field->close();
-    }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::R))
-    {
-        resetGame();
-    }
-    //WASD_MOVEMENT
-    if(sf::Keyboard::isKeyPressed(sf::Keyboard::W))
-    {
-        direction = 0;
-        player.setTexture("resources/pikachu_" + std::to_string(movement % 2) + ".png");
-        //movement++;
-        if(!blocked[0]) {           //wenn die Richtung nich geblockt is
-            playerPosY -= speed;
-            moves++;
-        }
-        //direction = 0;              //setz momentane Richtung auf 0 / oben
-    }
-    else if(sf::Keyboard::isKeyPressed(sf::Keyboard::A))
-    {
-        direction = 1;
-        player.setTexture("resources/pikachu_" + std::to_string(movement % 2 + 2) + ".png");
-        //movement++;
-        if(!blocked[1]) {
-            playerPosX -= speed;
-            moves++;
-        }
-        //direction = 1;
-    }
-    else if(sf::Keyboard::isKeyPressed(sf::Keyboard::S))
-    {
-        direction = 2;
-        player.setTexture("resources/pikachu_" + std::to_string(movement % 2 + 4) + ".png");
-        //movement++;
-        if(!blocked[2]) {
-            playerPosY += speed;
-            moves++;
-        }
-        //direction = 2;
-    }
-    else if(sf::Keyboard::isKeyPressed(sf::Keyboard::D))
-    {
-        direction = 3;
-        player.setTexture("resources/pikachu_" + std::to_string(movement % 2 + 6) + ".png");
-        //movement++;
-        if(!blocked[3]) {
-            playerPosX += speed;
-            moves++;
-        }
-        //direction = 3;
-    }
-
     
-    //WINDOW_BORDERS
-    if(playerPosX < (player.spriteP.getTexture()->getSize().x) / 2)
+    while(field->pollEvent(event));
     {
-        playerPosX = (player.spriteP.getTexture()->getSize().x) / 2;
-    }
-    if(playerPosX > (int)field->getSize().x - (player.spriteP.getTexture()->getSize().x) / 2)
-    {
-        playerPosX = field->getSize().x - (player.spriteP.getTexture()->getSize().x) / 2;
-    }
-    if(playerPosY < (player.spriteP.getTexture()->getSize().y) / 2)
-    {
-        playerPosY = (player.spriteP.getTexture()->getSize().y) / 2;
-    }
-    if(playerPosY > 920 - (player.spriteP.getTexture()->getSize().y) / 2)
-    {
-        playerPosY = 920 - (player.spriteP.getTexture()->getSize().y) / 2;
-    }
 
-    player.spriteP.setPosition(playerPosX, playerPosY);
-    player.shapeP.setPosition(playerPosX, playerPosY);
+        if(InputDelayTimer.getElapsedTime() > InputDelay)
+        {
+            if((InputDelayTimer.getElapsedTime() > InputDelay) && ((sf::Keyboard::isKeyPressed(sf::Keyboard::W)) || (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) || (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) || (sf::Keyboard::isKeyPressed(sf::Keyboard::D) || (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) || (sf::Keyboard::isKeyPressed(sf::Keyboard::R)))))
+            {
+    
+
+                if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
+                {
+                    std::cout << moves << std::endl;
+                    field->close();
+                }
+                if (sf::Keyboard::isKeyPressed(sf::Keyboard::R))
+                {
+                    resetGame();
+                }
+                //WASD_MOVEMENT
+                if(sf::Keyboard::isKeyPressed(sf::Keyboard::W))
+                {
+                    direction = 0;
+                    player.setTexture("resources/pikachu_" + std::to_string(movement % 2) + ".png");
+                    //movement++;       //wenn die Richtung nich geblockt is
+                    playerPosY -= speed;
+                    moves++;
+                    
+                    //direction = 0;              //setz momentane Richtung auf 0 / oben
+                }
+                else if(sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+                {
+                    direction = 1;
+                    player.setTexture("resources/pikachu_" + std::to_string(movement % 2 + 2) + ".png");
+                    //movement++;
+                    playerPosX -= speed;
+                    moves++;
+                    
+                    //direction = 1;
+                }
+                else if(sf::Keyboard::isKeyPressed(sf::Keyboard::S))
+                {
+                    direction = 2;
+                    player.setTexture("resources/pikachu_" + std::to_string(movement % 2 + 4) + ".png");
+                    //movement++;
+                    playerPosY += speed;
+                    moves++;
+                    
+                }
+                else if(sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+                {
+                    direction = 3;
+                    player.setTexture("resources/pikachu_" + std::to_string(movement % 2 + 6) + ".png");
+                    //movement++;
+                    playerPosX += speed;
+                    moves++;
+                }
+
+                InputDelayTimer.restart();
+
+            }
+        }
+
+                
+        //WINDOW_BORDERS
+        if(playerPosX < (player.spriteP.getTexture()->getSize().x) / 2)
+        {
+            playerPosX = (player.spriteP.getTexture()->getSize().x) / 2;
+        }
+        if(playerPosX > (int)field->getSize().x - (player.spriteP.getTexture()->getSize().x) / 2)
+        {
+            playerPosX = field->getSize().x - (player.spriteP.getTexture()->getSize().x) / 2;
+        }
+        if(playerPosY < (player.spriteP.getTexture()->getSize().y) / 2)
+        {
+            playerPosY = (player.spriteP.getTexture()->getSize().y) / 2;
+        }
+        if(playerPosY > 920 - (player.spriteP.getTexture()->getSize().y) / 2)
+        {
+            playerPosY = 920 - (player.spriteP.getTexture()->getSize().y) / 2;
+        }
+
+        player.spriteP.setPosition(playerPosX, playerPosY);
+        player.shapeP.setPosition(playerPosX, playerPosY);
+        //std::cout << "X: " + std::to_string(player.spriteP.getPosition().x) << std::endl;
+        //std::cout << "Y: " + std::to_string(player.spriteP.getPosition().y) << std::endl;
+    }
 }
 
 void Field::render() //displays the game data / game field
@@ -212,10 +234,8 @@ void Field::render() //displays the game data / game field
 
     for(int i = 0; i < (sizeof(collectables)/sizeof(collectables[0])); i++)
     {
-        //if(collectables[i].collected == 0)
-        //{
-            field->draw(collectables[i].spriteC);
-        //}
+        field->draw(collectables[i].spriteC);
+        
         if(!(collectables[i].spriteC.getGlobalBounds().intersects(spritePD.getGlobalBounds())))
         {
             positionCX[i] = collectables[i].spriteC.getPosition().x;
@@ -247,7 +267,6 @@ void Field::pokeballMovement()
 {
     for(int i = 0; i < (sizeof(pokeballs)/sizeof(pokeballs[0])); i++) {
         pokeballs[i].spriteE2.setPosition(((pokeballs[i].spriteE2.getPosition().x) - pokeballs[i].speed), pokeballs[i].spriteE2.getPosition().y);
-        //pokeballs[i].shapeE2.setPosition(((pokeballs[i].spriteE2.getPosition().x) - pokeballs[i].speed), pokeballs[i].spriteE2.getPosition().y);
         
         if(pokeballs[i].spriteE2.getPosition().x <= -100)
         {
@@ -255,7 +274,6 @@ void Field::pokeballMovement()
             newPosY = pokeballs[i].giveRandomNumber(0,900);
             pokeballs[i].speed = pokeballs[i].fRand(7.5,9.5);
             pokeballs[i].spriteE2.setPosition(1970, newPosY);
-            //pokeballs[i].shapeE2.setPosition(1970, newPosY);
         }
     }
 }
@@ -304,31 +322,26 @@ void Field::checkCollision()
         }
     }
 
-    blockedCheck = 0;
     for(int i = 0; i < (sizeof(spriteTree)/sizeof(spriteTree[0])); i++)
     {
-        if(player.spriteP.getGlobalBounds().intersects(spriteTree[i].getGlobalBounds()))        //wenn Spieler an Baum
+        while(player.spriteP.getGlobalBounds().intersects(spriteTree[i].getGlobalBounds()))
         {
             std::cout << "Tree " << std::to_string(direction) << std::endl;
             switch(direction){
-                case 0: blocked[0] = 1;                 //wenn Richtung = ..., setz Richtung als blocked und schmeiß Spieler in die Richtung, aus der er kam, ein move zurück
-                playerPosY += player.getSpeed();
-                case 1: blocked[1] = 1;
-                playerPosX += player.getSpeed();
-                case 2: blocked[2] = 1;
-                playerPosY -= player.getSpeed();
-                case 3: blocked[3] = 1;
-                playerPosX -= player.getSpeed();
+                case 0:
+                playerPosY++;
+                break;
+                case 1:
+                playerPosX++;
+                break;
+                case 2:
+                playerPosY--;
+                break;
+                case 3:
+                playerPosX--;
+                break;
             }
-            player.spriteP.setPosition(playerPosX, playerPosY);     //setz neue Positionen
-            //player.shapeP.setPosition(playerPosX, playerPosY);
-        } else {
-            blockedCheck += 1;      //wenn Spieler nich an Baum
-        }
-    }
-    if(blockedCheck == sizeof(spriteTree)/sizeof(spriteTree[0])) {      //wenn Spieler an allen x Bäumen nich war
-        for(int i = 0; i < 4; i++) {    //setz alle Richtungen frei/entferne block
-            blocked[i] = 0;
+            player.spriteP.setPosition(playerPosX, playerPosY);
         }
     }
 
@@ -372,7 +385,7 @@ void Field::checkCollision()
             scoretext.setString("Score: " + std::to_string(score));
             scoretext.setCharacterSize(96);
             scoretext.setFillColor(sf::Color::Black);
-            scoretext.setPosition(sf::Vector2f(100, field->getSize().y / 2));
+            scoretext.setPosition(sf::Vector2f(100, field->getSize().y / 4));
             field->draw(scoretext);
 
             field->display();
@@ -392,6 +405,7 @@ void Field::checkCollision()
 
 void Field::updateHealth()
 {
+    damage.play();
     for (int i = 0; i < 3; i++)
     {
         if(i % 2 == 0)
@@ -479,7 +493,6 @@ void Field::resetGame()
             collectables[i].spriteC.setScale(1, 1);
         }
         collectables[i].spriteC.setPosition(positionCX[i], positionCY[i]);
-        //collectables[i].shapeC.setPosition(positionCX[i], positionCY[i]);
     }
 }
 
@@ -495,7 +508,6 @@ void Field::checkPositions()
             int newPosX,newPosY;
             newPosX = collectables[i].giveRandomNumber(0,1920);
             newPosY = collectables[i].giveRandomNumber(0,900);
-            //collectables[i].shapeC.setPosition(newPosX,newPosY);
             collectables[i].spriteC.setPosition(newPosX,newPosY);
             field->draw(collectables[i].spriteC);
             done += 1;
@@ -510,7 +522,6 @@ void Field::checkPositions()
             int newPosX,newPosY;
             newPosX = enemies[i].giveRandomNumber(0,1920);
             newPosY = enemies[i].giveRandomNumber(0,900);
-            //enemies[i].shapeE.setPosition(newPosX,newPosY);
             enemies[i].spriteE.setPosition(newPosX,newPosY);
             field->draw(enemies[i].spriteE);
             done += 1;
@@ -548,7 +559,6 @@ void Field::checkPositions()
                 int newPosX,newPosY;
                 newPosX = collectables[i].giveRandomNumber(0,1920);
                 newPosY = collectables[i].giveRandomNumber(0,900);
-                //collectables[i].shapeC.setPosition(newPosX,newPosY);
                 collectables[i].spriteC.setPosition(newPosX,newPosY);
                 field->draw(collectables[i].spriteC);
                 done += 1;
@@ -566,7 +576,6 @@ void Field::checkPositions()
                 int newPosX,newPosY;
                 newPosX = enemies[i].giveRandomNumber(0,1920);
                 newPosY = enemies[i].giveRandomNumber(0,900);
-                //enemies[i].shapeE.setPosition(newPosX,newPosY);
                 enemies[i].spriteE.setPosition(newPosX,newPosY);
                 field->draw(enemies[i].spriteE);
                 done += 1;
@@ -584,7 +593,6 @@ void Field::checkPositions()
                 int newPosX,newPosY;
                 newPosX = collectables[k].giveRandomNumber(0,1920);
                 newPosY = collectables[k].giveRandomNumber(0,900);
-                //collectables[k].shapeC.setPosition(newPosX,newPosY);
                 collectables[k].spriteC.setPosition(newPosX,newPosY);
                 field->draw(collectables[k].spriteC);
                 done += 1;
@@ -600,7 +608,6 @@ void Field::checkPositions()
             int newPosX,newPosY;
             newPosX = collectables[i].giveRandomNumber(0,1920);
             newPosY = collectables[i].giveRandomNumber(0,900);
-            //collectables[i].shapeC.setPosition(newPosX,newPosY);
             collectables[i].spriteC.setPosition(newPosX,newPosY);
             field->draw(collectables[i].spriteC);
             done += 1;
@@ -679,7 +686,6 @@ void Field::checkPositions()
                 int newPosX,newPosY;
                 newPosX = enemies[i].giveRandomNumber(0,1920);
                 newPosY = enemies[i].giveRandomNumber(0,900);
-                //enemies[i].shapeE.setPosition(newPosX,newPosY);
                 enemies[i].spriteE.setPosition(newPosX,newPosY);
                 field->draw(enemies[i].spriteE);
                 done += 1;
