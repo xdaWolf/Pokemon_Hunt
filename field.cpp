@@ -9,22 +9,9 @@
 
 /*----------------------------------------------------------------
 
-    Letzte Änderungen:
-    -> Tree Collision
-    -> Sound
-    -> Neue Pokeball Größe (in enemy2 nochmal schauen, ob da dann etwas geändert werden muss, soweit hat alles gepasst mit 58 und 263)
-    
-    TO-DO/BUGS
-    -> Berg oben rechts als Grenze 
-    -> Tree-Bug (Infos: an sich klappt die Kollision, wenn man dann aber zur Seite wechselt, schwebt man durch den Baum, wenn man von links oder unten gegenläuft: man bleibt stehen, wen von rechts oder oben: man wird verschoben)
 
     CODE-TECHNISCH:
-    -> Field ist überladen, auslagern!
-    -> Überprüfen, welche Funktionen wir wirklich benötigen
-    -> main & game -> game useless?
-    -> field.cpp: checkPositions verbessern
     -> KOMMENTARE! (gute Arbeit bis jetzt c: )
-    -> checkCollison sehr überladen
     -> Gewinner/Verloren Screen sehr ähnlich vom Ablauf-> eigene funktion?
 
     PRÄSENTATION:
@@ -37,162 +24,157 @@
 Field::Field()
 {
     std::cout << "Field constructor" << std::endl;
-    //SET VARIABLES - FIELD
-    field = new sf::RenderWindow(sf::VideoMode::getDesktopMode(), "Pokemon-Hunt", sf::Style::Fullscreen);
-    //field = new sf::RenderWindow(sf::VideoMode(1920,1080), "Pokemon-Hunt");
-    field->setFramerateLimit(60);
-    texturef.loadFromFile("resources/backgroundv3.png");
+    //---------------------------------------------------------------VISUALS------------------------------------------------------------------------
+    //SET VISUALS - FIELD
+    //field = new sf::RenderWindow(sf::VideoMode::getDesktopMode(), "Pokemon-Hunt", sf::Style::Fullscreen);   //open a full-screen window called "Pokemon-Hunt"
+    field = new sf::RenderWindow(sf::VideoMode(1920,1080), "Pokemon-Hunt");                               //open a 1920x1080 window called "Pokemon-Hunt", only use this if upper method doesn't work properly on your device (for example if secondary monitor is used)
+    field->setFramerateLimit(60);   	                        //don't exceed a framerate of 60fps
+    texturef.loadFromFile("resources/backgroundv3.png");        //load background image
     texturef.setSmooth(true);
-    spritef.setTexture(texturef);
-    spritef.setOrigin(sf::Vector2f(texturef.getSize().x / 2,texturef.getSize().y / 2));
-    spritef.setPosition(sf::Vector2f(field->getSize().x / 2, field->getSize().y / 2));
+    spritef.setTexture(texturef);                               //set field sprite to background image
+    spritef.setOrigin(sf::Vector2f(texturef.getSize().x / 2, texturef.getSize().y / 2));    //move origin of sprite (default: top left) to center of sprite 
+    spritef.setPosition(sf::Vector2f(field->getSize().x / 2, field->getSize().y / 2));      //place background sprite in the middle of the screen
+    
     //SET VARIABLES - SOUND
-    bufferC.loadFromFile("resources/collected.wav");
-    collected.setBuffer(bufferC);
+    bufferC.loadFromFile("resources/collected.wav");            //load sound effects
     bufferW.loadFromFile("resources/win.wav");
-    win.setBuffer(bufferW);
     bufferF.loadFromFile("resources/failure.wav");
-    failure.setBuffer(bufferF);
     bufferD.loadFromFile("resources/damage.wav");
+    collected.setBuffer(bufferC);                               //set buffer for each sound effect
+    win.setBuffer(bufferW);
+    failure.setBuffer(bufferF);
     damage.setBuffer(bufferD);
-    //SET VARIABLES - HEALTH-BAR
-    textureHP.loadFromFile("resources/health_bar_3.png");
+    
+    //SET VISUALS - HEALTH-BAR
+    textureHP.loadFromFile("resources/health_bar_3.png");       //load full health bar
     textureHP.setSmooth(true);
-    spriteHP.setTexture(textureHP);
-    spriteHP.setOrigin(sf::Vector2f(textureHP.getSize().x / 2,textureHP.getSize().y / 2));
-    spriteHP.setPosition(1600,50);
-    //SET VARIABLES - POKEDEX
-    texturePD.loadFromFile("resources/collected_pokemon.png");
-    texturePD.setSmooth(true);
-    spritePD.setTexture(texturePD);
-    spritePD.setOrigin(sf::Vector2f(texturePD.getSize().x / 2,texturePD.getSize().y / 2));
-    spritePD.setPosition(250,1000);
-    //SET VARIABLES - POKE CENTER
-    texturePC.loadFromFile("resources/pokecenter.png");
+    spriteHP.setTexture(textureHP);                             //set health bar sprite to health bar image
+    spriteHP.setOrigin(sf::Vector2f(textureHP.getSize().x / 2,textureHP.getSize().y / 2));      //move origin of sprite (default: top left) to center of sprite 
+    spriteHP.setPosition(1600,50);                              //place health bar sprite in the top right of the screen
+    
+    //SET VISUALS - COLLECTED POKEMON BOX
+    textureCPB.loadFromFile("resources/collected_pokemon.png"); //load collected Pokemon box
+    textureCPB.setSmooth(true);
+    spriteCPB.setTexture(textureCPB);                           //set collected Pokemon sprite to collected Pokemon box
+    spriteCPB.setOrigin(sf::Vector2f(textureCPB.getSize().x / 2, textureCPB.getSize().y / 2));  //move origin of sprite (default: top left) to center of sprite 
+    spriteCPB.setPosition(250,1000);                            //place collected Pokemon sprite in the bottom left of the screen
+    
+    //SET VISUALS - POKE CENTER
+    texturePC.loadFromFile("resources/pokecenter.png");         //load Pokecenter image
     texturePC.setSmooth(true);
-    spritePC.setTexture(texturePC);
-    spritePC.setOrigin(sf::Vector2f(texturePC.getSize().x / 2,texturePC.getSize().y / 2));
-    spritePC.setPosition(1800,500);
-    //SET VARIABLES - TREES
-    amountOfTrees = 4;
-    for(int i = 0; i < (sizeof(spriteTree)/sizeof(spriteTree[0])); i++)
+    spritePC.setTexture(texturePC);                             //set Pokecenter sprite to Pokecenter image
+    spritePC.setOrigin(sf::Vector2f(texturePC.getSize().x / 2,texturePC.getSize().y / 2));      //move origin of sprite (default: top left) to center of sprite
+    spritePC.setPosition(1800,500);                             //place Pokecenter sprite on the right of the screen
+    
+    //SET VISUALS - TREES
+    for(int i = 0; i < (sizeof(spriteTree)/sizeof(spriteTree[0])); i++)     //for all trees and invisible rectangles
     {
-        if(i < amountOfTrees) {
-            textureTree[i].loadFromFile("resources/tree.png");
+        if(i < amountOfTrees) 
+        {
+            textureTree[i].loadFromFile("resources/tree_" + std::to_string(enemies[0].giveRandomNumber(1,1)) + ".png");  //load random tree image
             textureTree[i].setSmooth(true);
-            spriteTree[i].setTexture(textureTree[i]);
-            spriteTree[i].setOrigin(sf::Vector2f(textureTree[i].getSize().x / 2, textureTree[i].getSize().y / 2));
-            spriteTree[i].setPosition(enemies[0].giveRandomNumber(0,1920), enemies[0].giveRandomNumber(0,900));
-        } else if(i == (amountOfTrees-1) + 1) {
-            textureTree[i].loadFromFile("resources/mountainTopRight.png");
+            spriteTree[i].setTexture(textureTree[i]);                       //set current tree sprite to selected tree image
+            spriteTree[i].setOrigin(sf::Vector2f(textureTree[i].getSize().x / 2, textureTree[i].getSize().y / 2));  //move origin of sprite (default: top left) to center of sprite
+            spriteTree[i].setPosition(enemies[0].giveRandomNumber(0,1920), enemies[0].giveRandomNumber(0,900));     //set tree sprite at random spot on the map
+        } else if(i == (amountOfTrees-1) + 1) 
+        {
+            textureTree[i].loadFromFile("resources/mountainTopRight.png");  //load transparent image in size of the invisible rectangle needed
             textureTree[i].setSmooth(true);
-            spriteTree[i].setTexture(textureTree[i]);
-            spriteTree[i].setPosition(texturef.getSize().x - textureTree[i].getSize().x, 0);
-        } else if(i == (amountOfTrees-1) + 2) {
-            textureTree[i].loadFromFile("resources/mountainTopLeft.png");
+            spriteTree[i].setTexture(textureTree[i]);                       //set current "tree" sprite to transparent image. This was done due to the fact that these rectangles act in the same way as trees do.
+            spriteTree[i].setPosition(texturef.getSize().x - textureTree[i].getSize().x, -3);    //set "tree" sprite in the top right of the screen
+        } else if(i == (amountOfTrees-1) + 2) 
+        {
+            textureTree[i].loadFromFile("resources/mountainTopLeft.png");   //load transparent image in size of the invisible rectangle needed
             textureTree[i].setSmooth(true);
-            spriteTree[i].setTexture(textureTree[i]);
-            spriteTree[i].setPosition(0, 0);
+            spriteTree[i].setTexture(textureTree[i]);                       //set current "tree" sprite to transparent image. This was done due to the fact that these rectangles act in the same way as trees do.
+            spriteTree[i].setPosition(0, 0);                                //set "tree" sprite in the top left of the screen
         }
-    }   
-    moves = 0;
-    checkPositions();
+    }  
+    //---------------------------------------------------------------DATA------------------------------------------------------------------------     
+    moves = 0;          //initialize the moves variable which is used for the score calculation
+    checkPositions();   //check whether entities tried to spawn on one another when they weren't supposed to
 }
 
 Field::~Field()         //destructor
 {
     std::cout << "Feld Dekonstruktor" << std::endl;
-    delete field;
+    delete field;       //delete the field
 }
 
-const bool Field::getFieldIsOpen() const
+const bool Field::getFieldIsOpen() const            //returns whether field is open
 {
     return field->isOpen();                             
 }
 
-void Field::update()                                    //manages all the game data
+void Field::update()                                //manages all the game data
 {
-    int movement, speed;                              //variable used for walking animation
-    playerPosX = player.spriteP.getPosition().x;
-    playerPosY = player.spriteP.getPosition().y;
+    playerPosX = player.spriteP.getPosition().x;    //save current player x position
+    playerPosY = player.spriteP.getPosition().y;    //save current player y position
 
-    movement = playerPosY + playerPosX;                 //walking animation
-    speed = player.getSpeed();
+    int movement, speed;
+    movement = playerPosY + playerPosX;             //walking animation, as long as speed is odd
+    speed = player.getSpeed();                      //receives player speed as initialized in player.cpp
 
-    
-    //Close the window if wanted
-    if(sf::Event::Closed)
+    if(sf::Event::Closed)                           //if window gets closed by user
     {
-        field->close();
-
+        field->close();                             //close everything
     }
-    sf::Event event;
-    //Check if any Key is pressed
-    
-    while(field->pollEvent(event));
-    {
 
-        if(InputDelayTimer.getElapsedTime() > InputDelay)
+    sf::Event event;
+    
+    while(field->pollEvent(event));                         //as long as any input is being made
+    {
+        if(InputDelayTimer.getElapsedTime() > InputDelay)   //if a certain input delay has passed
         {
             if((InputDelayTimer.getElapsedTime() > InputDelay) && ((sf::Keyboard::isKeyPressed(sf::Keyboard::W)) || (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) || (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) || (sf::Keyboard::isKeyPressed(sf::Keyboard::D) || (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) || (sf::Keyboard::isKeyPressed(sf::Keyboard::R)))))
-            {
-    
-
-                if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
+            {                                               //and if any of the 6 used keys is pressed
+                if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))   //if "Esc" is pressed
                 {
                     std::cout << moves << std::endl;
-                    field->close();
+                    field->close();                                     //close everything
                 }
-                if (sf::Keyboard::isKeyPressed(sf::Keyboard::R))
+                if (sf::Keyboard::isKeyPressed(sf::Keyboard::R))        //if "R" is pressed
                 {
-                    resetGame();
-                }
-                //WASD_MOVEMENT
-                if(sf::Keyboard::isKeyPressed(sf::Keyboard::W))
-                {
-                    direction = 0;
-                    player.setTexture("resources/pikachu_" + std::to_string(movement % 2) + ".png");
-                    //movement++;       //wenn die Richtung nich geblockt is
-                    playerPosY -= speed;
-                    moves++;
-                    
-                    //direction = 0;              //setz momentane Richtung auf 0 / oben
-                }
-                else if(sf::Keyboard::isKeyPressed(sf::Keyboard::A))
-                {
-                    direction = 1;
-                    player.setTexture("resources/pikachu_" + std::to_string(movement % 2 + 2) + ".png");
-                    //movement++;
-                    playerPosX -= speed;
-                    moves++;
-                    
-                    //direction = 1;
-                }
-                else if(sf::Keyboard::isKeyPressed(sf::Keyboard::S))
-                {
-                    direction = 2;
-                    player.setTexture("resources/pikachu_" + std::to_string(movement % 2 + 4) + ".png");
-                    //movement++;
-                    playerPosY += speed;
-                    moves++;
-                    
-                }
-                else if(sf::Keyboard::isKeyPressed(sf::Keyboard::D))
-                {
-                    direction = 3;
-                    player.setTexture("resources/pikachu_" + std::to_string(movement % 2 + 6) + ".png");
-                    //movement++;
-                    playerPosX += speed;
-                    moves++;
+                    resetGame();                                        //reset the game
                 }
 
-                InputDelayTimer.restart();
+                //WASD_MOVEMENT
+                if(sf::Keyboard::isKeyPressed(sf::Keyboard::W))         //if "W" is pressed
+                {
+                    direction = 0;                                      //current direction: up
+                    player.setTexture("resources/pikachu_" + std::to_string(movement % 2) + ".png");        //alternate between the two animation frames
+                    playerPosY -= speed;                                //move player up
+                    moves++;                                            //player has done a move
+                }
+                else if(sf::Keyboard::isKeyPressed(sf::Keyboard::A))    //if "W" is pressed
+                {
+                    direction = 1;                                      //current direction: left
+                    player.setTexture("resources/pikachu_" + std::to_string(movement % 2 + 2) + ".png");    //alternate between the two animation frames
+                    playerPosX -= speed;                                //move player to the right
+                    moves++;                                            //player has done a move
+                }
+                else if(sf::Keyboard::isKeyPressed(sf::Keyboard::S))    //if "S" is pressed
+                {
+                    direction = 2;                                      //current direction: down
+                    player.setTexture("resources/pikachu_" + std::to_string(movement % 2 + 4) + ".png");    //alternate between the two animation frames
+                    playerPosY += speed;                                //move player down
+                    moves++;                                            //player has done a move
+                }
+                else if(sf::Keyboard::isKeyPressed(sf::Keyboard::D))    //if "D" is pressed
+                {
+                    direction = 3;                                      //current direction: right
+                    player.setTexture("resources/pikachu_" + std::to_string(movement % 2 + 6) + ".png");    //alternate between the two animation frames
+                    playerPosX += speed;                                //move player right
+                    moves++;                                            //player has done a move
+                }
+
+                InputDelayTimer.restart();                              //restart input delay timer
 
             }
         }
 
                 
-        //WINDOW_BORDERS
+        //Window borders - keeping the player half its size away from any edges of the field
         if(playerPosX < (player.spriteP.getTexture()->getSize().x) / 2)
         {
             playerPosX = (player.spriteP.getTexture()->getSize().x) / 2;
@@ -205,62 +187,59 @@ void Field::update()                                    //manages all the game d
         {
             playerPosY = (player.spriteP.getTexture()->getSize().y) / 2;
         }
-        if(playerPosY > 920 - (player.spriteP.getTexture()->getSize().y) / 2)
+        if(playerPosY > 920 - (player.spriteP.getTexture()->getSize().y) / 2)   //920 in order to prevent player from walking across the trees of the background image
         {
             playerPosY = 920 - (player.spriteP.getTexture()->getSize().y) / 2;
         }
 
-        player.spriteP.setPosition(playerPosX, playerPosY);
-        player.shapeP.setPosition(playerPosX, playerPosY);
-        //std::cout << "X: " + std::to_string(player.spriteP.getPosition().x) << std::endl;
-        //std::cout << "Y: " + std::to_string(player.spriteP.getPosition().y) << std::endl;
+        player.spriteP.setPosition(playerPosX, playerPosY);     //set player sprite to updated position
+        player.shapeP.setPosition(playerPosX, playerPosY);      //set player shape  to updated position
     }
 }
 
-void Field::render() //displays the game data / game field
+void Field::render()                    //displays the game field
 {
-    field->clear();
+    field->clear();                     //clear last frame
 
-    //DRAW OBJECTS
+    //DRAW ALL ENTITIES
     field->draw(spritef);
     field->draw(spriteHP);
-    field->draw(spritePD);
+    field->draw(spriteCPB);
     field->draw(spritePC);
     
-    for(int i = 0; i < (sizeof(enemies)/sizeof(enemies[0])); i++)
+    for(int i = 0; i < (sizeof(enemies)/sizeof(enemies[0])); i++)               //for all enemies
     {
         field->draw(enemies[i].spriteE);
     }
 
-    for(int i = 0; i < (sizeof(collectables)/sizeof(collectables[0])); i++)
+    for(int i = 0; i < (sizeof(collectables)/sizeof(collectables[0])); i++)     //for all collectables
     {
         field->draw(collectables[i].spriteC);
         
-        if(!(collectables[i].spriteC.getGlobalBounds().intersects(spritePD.getGlobalBounds())))
+        if(!(collectables[i].spriteC.getGlobalBounds().intersects(spriteCPB.getGlobalBounds())))        //if collectable is not intersecting with the collected Pokemon box
         {
-            positionCX[i] = collectables[i].spriteC.getPosition().x;
-            positionCY[i] = collectables[i].spriteC.getPosition().y;
+            positionCX[i] = collectables[i].spriteC.getPosition().x;                                    //save its X position in a variable (used for resetting game)
+            positionCY[i] = collectables[i].spriteC.getPosition().y;                                    //save its Y position in a variable (used for resetting game)
         }
 
     }
 
-    for(int i = 0; i < (sizeof(pokeballs)/sizeof(pokeballs[0])); i++)
+    for(int i = 0; i < (sizeof(pokeballs)/sizeof(pokeballs[0])); i++)           //for all Pokeballs
     {
         field->draw(pokeballs[i].spriteE2);
     }
 
-    for(int i = 0; i < (sizeof(spriteTree)/sizeof(spriteTree[0])); i++)
+    for(int i = 0; i < (sizeof(spriteTree)/sizeof(spriteTree[0])); i++)         //for all trees
     {
         field->draw(spriteTree[i]);
     }
 
-    pokeballMovement();
-    checkCollision();
+    pokeballMovement();             //moving Pokeballs
+    checkCollision();               //checking for any sort of player - entity collision
 
     field->draw(player.spriteP);
 
-    //DISPLAY NEW WINDOW
-    field->display();
+    field->display();               //display updated frame
 }
 
 void Field::pokeballMovement()
@@ -313,12 +292,9 @@ void Field::checkCollision()
             player.setCollected(player.getCollected() + 1);
             collectables[i].spriteC.setScale(0.5, 0.5);
             collected.play();
-            //collected.setPlayingOffset(sf::seconds(200));
-            //92 = spritePD.getPosition().x - spritePD.getTexture().x / 2 + 25
-            //271 = spritePD.getPosition().x + spritePD.getTexture().x / 2 - 25 - collectable[0].getTexture().x - (spritePD.getPosition().x - spritePD.getTexture().x / 2 + 25)
+            //92 = spriteCPB.getPosition().x - spriteCPB.getTexture().x / 2 + 25
+            //271 = spriteCPB.getPosition().x + spriteCPB.getTexture().x / 2 - 25 - collectable[0].getTexture().x - (spriteCPB.getPosition().x - spriteCPB.getTexture().x / 2 + 25)
             collectables[i].spriteC.setPosition(92 + (271/((sizeof(collectables)/sizeof(collectables[0]))-1) * (player.getCollected()-1)), 1000);
-            //collectables[i].shapeC.setPosition(player.getCollected() * 110, 1000);
-            //collectables[i].collected = 1; // Variable für jedes Collectable, wenn true -> draw, wenn nicht -> nicht drawen
         }
     }
 
@@ -347,12 +323,13 @@ void Field::checkCollision()
 
     if(player.spriteP.getGlobalBounds().intersects(spritePC.getGlobalBounds()))
     {
-
-        if (player.getCollected() >= 3) 
+        if (player.getCollected() >= sizeof(collectables)/sizeof(collectables[0])) 
         {
             std::cout << "Gewonnen" << std::endl;
-
+            
             field->clear();
+
+            win.play();
 
             field->draw(spritef);
             field->draw(spritePC);
@@ -381,16 +358,14 @@ void Field::checkCollision()
                 score = 100;
             }
             pokemonhollow.loadFromFile("resources/pokemon_hollow.ttf");
-            scoretext.setFont(pokemonhollow);
-            scoretext.setString("Score: " + std::to_string(score));
-            scoretext.setCharacterSize(96);
-            scoretext.setFillColor(sf::Color::Black);
-            scoretext.setPosition(sf::Vector2f(100, field->getSize().y / 4));
-            field->draw(scoretext);
+            textscore.setFont(pokemonhollow);
+            textscore.setString("Score: " + std::to_string(score));
+            textscore.setCharacterSize(96);
+            textscore.setFillColor(sf::Color::Black);
+            textscore.setPosition(sf::Vector2f(100, field->getSize().y / 4));
+            field->draw(textscore);
 
             field->display();
-            
-            win.play();
 
             while(!(sf::Keyboard::isKeyPressed(sf::Keyboard::R) || sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)))
             {   
@@ -435,7 +410,7 @@ void Field::updateHealth()
     } else if(player.getHealthPoints() == 0)
     {
         field->clear();
-
+        failure.play();
         field->draw(spritef);
         field->draw(spritePC);
         for(int i = 0; i < (sizeof(spriteTree)/sizeof(spriteTree[0])); i++)
@@ -464,8 +439,6 @@ void Field::updateHealth()
 
         field->display();
 
-        failure.play();
-
         while(!(sf::Keyboard::isKeyPressed(sf::Keyboard::R) || sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)))
         {   
             //std::cout << "waiting" << std::endl;
@@ -488,7 +461,7 @@ void Field::resetGame()
     field->draw(player.spriteP);
     for(int i = 0; i < (sizeof(collectables)/sizeof(collectables[0])); i++)
     {
-        if(collectables[i].spriteC.getGlobalBounds().intersects(spritePD.getGlobalBounds()))
+        if(collectables[i].spriteC.getGlobalBounds().intersects(spriteCPB.getGlobalBounds()))
         {
             collectables[i].spriteC.setScale(1, 1);
         }
@@ -549,7 +522,7 @@ void Field::checkPositions()
     {
         for(int k = 1; k < (sizeof(collectables)/sizeof(collectables[0])); k++)
         {
-            if(i + k > 2)
+            if(i + k > sizeof(collectables)/sizeof(collectables[0]))
             {
                 break;
             }
@@ -570,7 +543,7 @@ void Field::checkPositions()
     {
         for(int k = 0; k < (sizeof(collectables)/sizeof(collectables[0])); k++)
         {
-            if(enemies[i].spriteE.getGlobalBounds().intersects(collectables[i+k].spriteC.getGlobalBounds()))
+            if(enemies[i].spriteE.getGlobalBounds().intersects(collectables[k].spriteC.getGlobalBounds()))
             {
                 std::cout << "Collectable bei Enemy" << std::endl;
                 int newPosX,newPosY;
@@ -602,9 +575,9 @@ void Field::checkPositions()
 
     for(int i = 0; i < (sizeof(collectables)/sizeof(collectables[0])); i++)
     {
-        if(collectables[i].spriteC.getGlobalBounds().intersects(spritePD.getGlobalBounds()) || collectables[i].spriteC.getGlobalBounds().intersects(spritePC.getGlobalBounds()))
+        if(collectables[i].spriteC.getGlobalBounds().intersects(spriteCPB.getGlobalBounds()) || collectables[i].spriteC.getGlobalBounds().intersects(spritePC.getGlobalBounds()))
         {
-            std::cout << "Collectable bei PC oder PD" << std::endl;
+            std::cout << "Collectable bei PC oder CPB" << std::endl;
             int newPosX,newPosY;
             newPosX = collectables[i].giveRandomNumber(0,1920);
             newPosY = collectables[i].giveRandomNumber(0,900);
@@ -620,11 +593,11 @@ void Field::checkPositions()
     {
         for(int k = 1; k < (sizeof(spriteTree)/sizeof(spriteTree[0])); k++)
         {
-            if(i + k > 3)
+            if(i + k > (sizeof(spriteTree)/sizeof(spriteTree[0])))
             {
                 break;
             }
-            if(spriteTree[i].getGlobalBounds().intersects(spriteTree[i + k].getGlobalBounds()))
+            if(spriteTree[i].getGlobalBounds().intersects(spriteTree[i+k].getGlobalBounds()))
             {
                 std::cout << "Baum ist bei anderem Baum" << std::endl;
                 int newPosX,newPosY;
@@ -657,9 +630,9 @@ void Field::checkPositions()
 
     for(int i = 0; i < (sizeof(spriteTree)/sizeof(spriteTree[0])); i++)
     {
-        if(spriteTree[i].getGlobalBounds().intersects(spritePD.getGlobalBounds()) || spriteTree[i].getGlobalBounds().intersects(spritePC.getGlobalBounds()))
+        if(spriteTree[i].getGlobalBounds().intersects(spriteCPB.getGlobalBounds()) || spriteTree[i].getGlobalBounds().intersects(spritePC.getGlobalBounds()))
         {
-            std::cout << "Tree bei PC oder PD" << std::endl;
+            std::cout << "Tree bei PC oder CPB" << std::endl;
             int newPosX,newPosY;
             newPosX = enemies[i].giveRandomNumber(0,1920);
             newPosY = enemies[i].giveRandomNumber(0,900);
@@ -676,7 +649,7 @@ void Field::checkPositions()
     {
         for(int k = 1; k < (sizeof(enemies)/sizeof(enemies[0])); k++)
         {
-            if(i + k > 5)
+            if(i + k > (sizeof(enemies)/sizeof(enemies[0])))
             {
                 break;
             }
@@ -695,9 +668,9 @@ void Field::checkPositions()
 
     for(int i = 0; i < (sizeof(enemies)/sizeof(enemies[0])); i++)
     {
-        if(enemies[i].spriteE.getGlobalBounds().intersects(spritePD.getGlobalBounds()) || enemies[i].spriteE.getGlobalBounds().intersects(spritePC.getGlobalBounds()))
+        if(enemies[i].spriteE.getGlobalBounds().intersects(spriteCPB.getGlobalBounds()) || enemies[i].spriteE.getGlobalBounds().intersects(spritePC.getGlobalBounds()))
         {
-            std::cout << "Enemy und PC oder PD" << std::endl;
+            std::cout << "Enemy und PC oder CPB" << std::endl;
             int newPosX,newPosY;
             newPosX = enemies[i].giveRandomNumber(0,1920);
             newPosY = enemies[i].giveRandomNumber(0,900);
@@ -712,12 +685,6 @@ void Field::checkPositions()
     {
         printf("NeuerAufruf");
         checkPositions();
-    }    
-    
-    // Player mit allem kontrollieren Pokecenter mit allem kontrollieren Pokedex mit allem kontrollieren 
-    //vielleicht mit structs?!
-
-    field->display();
-
+    }
 }
 

@@ -17,21 +17,19 @@
 class Enemy
 {
     private:
-    // variables
+    //VARIABLES
     sf::Texture textureE;
 
-
-
     public:
-    // Constructor / Destructor
-    Enemy();
-    ~Enemy();
-    //public functions
-    //GET
-    sf::Sprite getSprite();
-    int giveRandomNumber(int pMin, int pMax);
+
+    Enemy();        //constructor
+    ~Enemy();       //destructor
+
+    //VISUALS
     sf::Sprite spriteE;
 
+    //GET
+    int giveRandomNumber(int pMin, int pMax);
 
 };
 

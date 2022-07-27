@@ -16,13 +16,10 @@ Enemy2::Enemy2()            //constructor
     std::cout << "Enemy2 Speed:" + std::to_string(speed) << std::endl;
     textureE2.loadFromFile("resources/pokeball_" + std::to_string(giveRandomNumber(1,5)) + ".png");     //select random Pokeball image
     textureE2.setSmooth(true);
-    //shapeE2.setSize(sf::Vector2f(textureE2.getSize().x, textureE2.getSize().y));    //set size of "shape" to size of Pokeball image
-    //shapeE2.setTexture(&textureE2);                     //set texture of "shape"  to Pokeball image
     spriteE2.setTexture(textureE2);                     //set texture of "sprite" to Pokeball image
     int positionX,positionY;
-    positionX = 1920;                                   //set horizontal starting position to the right of the screen
+    positionX = 1970;                                   //set horizontal starting position to the right of the screen
     positionY = giveRandomNumber(0,900);               //select random vertical starting position
-    //shapeE2.setPosition(positionX,positionY);           //set "shape"  at starting position
     spriteE2.setPosition(positionX,positionY);          //set "sprite" at starting position
 };
 
@@ -30,11 +27,6 @@ Enemy2::~Enemy2()           //destructor
 {
     //delete field;
 };
-
-sf::Sprite Enemy2::getSprite()
-{
-    return spriteE2;                                //?
-}
 
 int Enemy2::giveRandomNumber(int pMin, int pMax)
 {

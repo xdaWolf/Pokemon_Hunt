@@ -17,26 +17,23 @@
 class Enemy2
 {
     private:
-    // variables
+    //VARIABLES
     sf::Texture textureE2;
 
-
-
-
     public:
-    // Constructor / Destructor
-    Enemy2();
-    ~Enemy2();
 
-    //public functions
-    //GET
-    sf::Sprite getSprite();
-    int giveRandomNumber(int pMin, int pMax);
-    double fRand(double fMin, double fMax);
-    sf::Sprite spriteE2;
+    Enemy2();           //constructor
+    ~Enemy2();          //destructor
+    
+    //VARIABLES
     double speed;
+    
+    //VISUALS
+    sf::Sprite spriteE2;
 
-
+    //METHODS
+    double fRand(double fMin, double fMax);
+    int giveRandomNumber(int pMin, int pMax);
 };
 
 #endif

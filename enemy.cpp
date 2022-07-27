@@ -8,7 +8,6 @@
 #include <windows.h>        //include all necessary external files
 
 
-
 Enemy::Enemy()              //constructor
 {
     std::cout << "Enemy Konstruktor" << std::endl;
@@ -28,12 +27,6 @@ Enemy::~Enemy()             //destructor
 {
     //delete field;
 };
-
-
-sf::Sprite Enemy::getSprite()
-{
-    return spriteE;                                     //?
-}
 
 int Enemy::giveRandomNumber(int pMin, int pMax)
 {

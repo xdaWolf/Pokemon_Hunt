@@ -7,7 +7,6 @@
 #include <SFML/Graphics.hpp>
 #include <string.h>
 
-
 #ifndef PLAYER_H_
 #define PLAYER_H_
 
@@ -18,38 +17,34 @@
 class Player
 {
     private:
-    //Variables
-    //sf::RectangleShape shapeP;
-    //sf::Texture textureP;
-    sf::Vector2f shapePPos;
-    int hp;
-    int speed;
-    int collected;
+    //VARIABLES
+    int hp = 3;             //player has 3 health-points
+    int speed = 9;          //speed of player, HAS TO BE ODD NUMBER IN ORDER FOR ANIMATIONS TO WORK PROPERLY
+    int collected = 0;          //counts how many collectables were collected
+    int spawnPX = 550;                  //horizontal spawn point of player
+    int spawnPY = 200;                  //vertical spawn point of player
+
+    //VISUALS
+    sf::Texture textureP;           //texture of player
 
     public:
-    // Constructor / Destructor
-    Player();
-    ~Player();
 
-    //public variables
-    sf::Texture textureP; //this do be public now cuz field yea
-    sf::RectangleShape shapeP;
-    sf::Sprite spriteP;
-    int spawnPX, spawnPY;
-    //int spawnzoneWidth;
-    //int spawnzoneHeight;
-    //public functions
-    //GET
-    int getHealthPoints();
-    int getCollected();
-    int getSpeed();
-    int getSpawnzone();
+    Player();           //Constructor
+    ~Player();          //Destructor
 
-    //SET
-    void setTexture(const std::string& pTexture);
-    void setHealthPoints(int pHP);
-    void setCollected(int pCollected);
-
+    //VISUALS
+    sf::Sprite spriteP;         //sprite of Player, is used a lot in field
+    sf::RectangleShape shapeP;      //used in field to show that damage was taken
+    
+    //METHODS
+    //Get-Methods
+    int getHealthPoints();          //returns health-points
+    int getCollected();             //returns amount of currently collected collectables
+    int getSpeed();                 //returns speed of player
+    //Set-Methods
+    void setTexture(const std::string& pTexture);       //used to change texture of player(shows, which direction player is moving)
+    void setHealthPoints(int pHP);          //updates health-points
+    void setCollected(int pCollected);      //updates collected collectables
 };
 
 #endif
