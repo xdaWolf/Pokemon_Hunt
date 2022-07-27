@@ -14,8 +14,6 @@ Player::Player()                    //constructor
     speed = 9;                      //speed of player, HAS TO BE ODD NUMBER IN ORDER FOR ANIMATIONS TO WORK PROPERLY
     hp = 3;                         //health points of player
     collected = 0;                  //amount of collected Pokemon
-    canCollect = 1;                 //whether Pokemon has already been collected (implemented as bool)
-    invulnerable = 0;
     spawnPX = 550;                  //horizontal spawn point of player
     spawnPY = 200;                  //vertical spawn point of player
 
@@ -54,8 +52,6 @@ void Player::setHealthPoints(int pHp) { hp = pHp; }         //set health points
 int Player::getCollected() { return collected; }            //get amount of collected Pokemon
 void Player::setCollected(int pC) { collected = pC; }       //set amount of collected Pokemon
 
-int Player::getCanCollect() { return canCollect; }          //get whether Pokemon has already been collected
-void Player::setCanCollect(int pCC) { canCollect = pCC; }   //set whether Pokemon has already been collected
 
 int Player::getSpeed()
 {

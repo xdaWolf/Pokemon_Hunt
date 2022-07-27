@@ -16,12 +16,12 @@ Collectable::Collectable()  //constructor
     textureC.loadFromFile("resources/collectable_" + std::to_string(giveRandomNumber(1,6)) + ".png");   //select random Pokemon image
     textureC.setSmooth(true);
     //shapeC.setSize(sf::Vector2f(textureC.getSize().x, textureC.getSize().y));    //set size of "shape" to size of Pokemon image
-    //shapeC.setTexture(&textureC);                   //set texture of "shape"  to Pokemon image
+    //shapeC.setTexture(&textureC);                 //set texture of "shape"  to Pokemon image
     spriteC.setTexture(textureC);                   //set texture of "sprite" to Pokemon image
     int positionX,positionY;
     positionX = giveRandomNumber(0,1920);           //select random horizontal spawn point
-    positionY = giveRandomNumber(0,900);           //select random vertical spawn point
-    //shapeC .setPosition(positionX,positionY);       //set "shape"  at spawn point
+    positionY = giveRandomNumber(0,900);            //select random vertical spawn point
+    //shapeC .setPosition(positionX,positionY);     //set "shape"  at spawn point
     spriteC.setPosition(positionX,positionY);       //set "sprite" at spawn point
 };
 

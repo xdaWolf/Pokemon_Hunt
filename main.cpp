@@ -13,6 +13,11 @@ How to play:
 - getting hit three times results in Game Over.
 - pressing R at any point restarts the game. To get a new Pokemon/Trainer/Tree layout, restart the program.
 - to end the game, press Escape.
+
+When editing the code, make sure to look out for comments starting with "IMPORTANT"!
+"Collectable" and "Pokemon" are used synonymously.
+"Enemy(1)" and "Trainer" are used synonymously.
+"Enemy(2)" and "Pokeballs" are used synonymously.
 */
 
 
@@ -32,6 +37,11 @@ int main(int argc, char* argv[])
 {
     Field field = game.getField();      //create a field to play on
     
+    sf::Music backgroundmusic;
+    backgroundmusic.openFromFile("resources/backgroundmusic.wav");
+    backgroundmusic.setVolume(30);
+    backgroundmusic.play();
+
     while (field.getFieldIsOpen())      //as long as field wasn't closed
     {
         field.update();                 //update the current field

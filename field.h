@@ -27,20 +27,27 @@ class Field
     int moves;
     int score;
     int direction;
-    int blocked[4];
-    int blockedCheck;
-    int positionCX[3];
-    int positionCY[3];
     int playerPosX, playerPosY;
+    int amountOfTrees;
+
+    sf::Time InputDelay = sf::seconds(0.0001f);
+    sf::Clock InputDelayTimer;
+
+    sf::Sound collected, failure, win, damage;
+    sf::SoundBuffer bufferC,bufferF,bufferW, bufferD;
 
     //amount of each object (Trainers, Pokeballs, Pokemon, Trees), reduce any to lower difficulty and vice versa
     Player player;
     Enemy enemies[4];
     Enemy2 pokeballs[5];
-    Collectable collectables[3];
+    Collectable collectables[3];    //IMPORTANT: same number as in two lines below
+    int positionCX[3];              //IMPORTANT: same number as in line below/line above
+    int positionCY[3];              //IMPORTANT: same number as in two lines above
+    sf::Sprite spriteTree[6];       //IMPORTANT: this number is the sum of amount of trees and amount of transparent rectangles. Maybe implement vector here.
+    sf::Texture textureTree[6];     //IMPORTANT: this number is the sum of amount of trees and amount of transparent rectangles. Maybe implement vector here.
 
-    sf::Sprite spritePD;
-    sf::Texture texturePD;
+    sf::Sprite spriteCPB;
+    sf::Texture textureCPB;
     
     sf::Sprite spriteHP;
     sf::Texture textureHP;
@@ -62,9 +69,6 @@ class Field
 
     sf::Sprite spriteSM;
     sf::Texture textureSM;
-
-    sf::Sprite spriteTree[4];
-    sf::Texture textureTree[4];
 
     sf::Font pokemonhollow;
     sf::Text scoretext;
@@ -91,6 +95,7 @@ class Field
     void render();
     //GET
     const bool getFieldIsOpen() const;
+    
 
 };
 
