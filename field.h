@@ -1,101 +1,99 @@
 #pragma once
 
-#include <SFML/System.hpp>
-#include <SFML/Window.hpp>
-#include <SFML/Audio.hpp>
-#include <SFML/Network.hpp>
-#include <SFML/Graphics.hpp>
-
 #include "enemy.h"
 #include "player.h"
 #include "collectable.h"
 #include "enemy2.h"
 
+#include <SFML/System.hpp>
+#include <SFML/Window.hpp>
+#include <SFML/Audio.hpp>
+#include <SFML/Network.hpp>
+#include <SFML/Graphics.hpp>    //include all necessary external files
+
+
 #ifndef FIELD_H_
 #define FIELD_H_
 
-
 /*
-    Class that is used to create the gamefield
+    Class that is used to create, update and display the gamefield
 */
 
 class Field
 {
-    
     private:
-    // variables
-    int moves;
-    int score;
-    int direction;
-    int playerPosX, playerPosY;
-    int amountOfTrees;
+    //PRIVATE VARIABLES
+    int moves;                      //counts amount of moves player did before finishing
+    int score;                      //used to calculate score, moves is used
+    int direction;                  //saves in which direction the player is moving
+    int playerPosX, playerPosY;     //saves position of player (X & Y)
+    int amountOfTrees = 4;          //IMPORTANT: this number + the amount of invisible rectangles (default: 2) has to be equal to spriteTree/textureTree array size as declared below
+    int positionCX[3];              //IMPORTANT: same number as collectables array size and positionCY
+    int positionCY[3];              //IMPORTANT: same number as collectables array size and positionCX
 
-    sf::Time InputDelay = sf::seconds(0.0001f);
-    sf::Clock InputDelayTimer;
+    sf::Time InputDelay = sf::seconds(0.0001f);         //input delay, added for smooth movement
+    sf::Clock InputDelayTimer;                          //timer, added for smooth movement
 
-    sf::Sound collected, failure, win, damage;
-    sf::SoundBuffer bufferC,bufferF,bufferW, bufferD;
+    //SOUND
+    sf::Sound collected, win, failure, damage;
+    sf::SoundBuffer bufferC, bufferW, bufferF, bufferD;
 
-    //amount of each object (Trainers, Pokeballs, Pokemon, Trees), reduce any to lower difficulty and vice versa
+    //OBJECTS
+    //amount of each object (trainers, Pokeballs, Pokemon, trees), reduce any to lower difficulty (and vice versa)
     Player player;
     Enemy enemies[4];
     Enemy2 pokeballs[5];
-    Collectable collectables[3];    //IMPORTANT: same number as in two lines below
-    int positionCX[3];              //IMPORTANT: same number as in line below/line above
-    int positionCY[3];              //IMPORTANT: same number as in two lines above
-    sf::Sprite spriteTree[6];       //IMPORTANT: this number is the sum of amount of trees and amount of transparent rectangles. Maybe implement vector here.
-    sf::Texture textureTree[6];     //IMPORTANT: this number is the sum of amount of trees and amount of transparent rectangles. Maybe implement vector here.
-
-    sf::Sprite spriteCPB;
-    sf::Texture textureCPB;
+    Collectable collectables[3];    //IMPORTANT: same number as positionCX and positionCY
+    sf::Sprite spriteTree[6];       //IMPORTANT: this number is the sum of amountOfTrees and amount of transparent rectangles. Check "amountOfTrees" variable. Maybe implement vector here.
+    sf::Texture textureTree[6];     //IMPORTANT: this number is the sum of amountOfTrees and amount of transparent rectangles. Check "amountOfTrees" variable. Maybe implement vector here.
     
-    sf::Sprite spriteHP;
-    sf::Texture textureHP;
+    //PRIVATE VISUALS
+    sf::RenderWindow* field;        //field is realised as renderwindow
 
-    sf::Sprite spritePC;
-    sf::Texture texturePC;
-
-    sf::Sprite spritef;
+    sf::Sprite spritef;             //visuals for field
     sf::Texture texturef;
 
-    sf::Sprite spriteDS;
-    sf::Texture textureDS;
+    sf::Sprite spriteHB;            //visuals for health bar
+    sf::Texture textureHB;
 
-    sf::Sprite spriteDM;
-    sf::Texture textureDM;
+    sf::Sprite spriteCPB;           //visuals for collected Pokemon box
+    sf::Texture textureCPB;
 
-    sf::Sprite spriteSS;
+    sf::Sprite spritePC;            //visuals for PokeCenter
+    sf::Texture texturePC;
+
+    sf::Sprite spriteSS;            //visuals for success-screen
     sf::Texture textureSS;
 
-    sf::Sprite spriteSM;
+    sf::Sprite spriteSM;            //visuals for success-message
     sf::Texture textureSM;
 
-    sf::Font pokemonhollow;
-    sf::Text scoretext;
+    sf::Sprite spriteDS;            //visuals for death-screen
+    sf::Texture textureDS;
 
+    sf::Sprite spriteDM;            //visuals for death-message
+    sf::Texture textureDM;
 
-    void checkCollision();
-    void updateHealth();
-    void resetGame();
-    void checkPositions();
-    void checkForWin();
-    void pokeballMovement();
+    sf::Font pokemonhollow;         //visuals for score
+    sf::Text textscore;
+
+    //PRIVATE METHODS
+    void pokeballMovement();        //moves Pokeballs
+    void checkCollision();          //checks for any collision between sprites on the field
+    void updateHealth();            //is called to update health of playerPosY
+    void resetGame();               //resets the game
+    void checkPositions();          //checks whether any objects spawned on top of each other
+    
 
     public:
+    Field();            //constructor
+    ~Field();           //destructor
 
-    //variables
-    sf::RenderWindow* field;
-
-    //Constructors / Destructors
-    Field();
-    ~Field();
-
-    //public Functions
-    void update(); // update the game data
-    void render();
-    //GET
-    const bool getFieldIsOpen() const;
-    
+    //PUBLIC METHODS
+    void update();      //update the game data
+    void render();      //draw updated field and display it
+    //Get-Methods
+    const bool getFieldIsOpen() const;  //get whether the field is still opened
 
 };
 

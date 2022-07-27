@@ -8,32 +8,19 @@
 #include <windows.h>        //include all necessary external files
 
 
-
 Enemy::Enemy()              //constructor
 {
-    std::cout << "Enemy Konstruktor" << std::endl;
+    std::cout << "Enemy constructor" << std::endl;
     textureE.loadFromFile("resources/enemy_" + std::to_string(giveRandomNumber(1,6)) + ".png");     //select random Trainer image
-    textureE.setSmooth(true);
-    //shapeE.setSize(sf::Vector2f(textureE.getSize().x, textureE.getSize().y));   //set size of "shape" to size of Trainer image
-    //shapeE.setTexture(&textureE);                   //set texture of "shape"  to Trainer image     
+    textureE.setSmooth(true); 
     spriteE.setTexture(textureE);                   //set texture of "sprite" to Trainer image
     int positionX,positionY;
     positionX = giveRandomNumber(0,1920);           //select random horizontal spawn point
-    positionY = giveRandomNumber(0,900);           //select random vertical spawn point
-    //shapeE .setPosition(positionX,positionY);       //set "shape"  at spawn point
-    spriteE.setPosition(positionX,positionY);       //set "sprite" at spawn point
+    positionY = giveRandomNumber(0,900);            //select random vertical spawn point
+    spriteE.setPosition(positionX,positionY);       //set sprite at spawn point
 };
 
-Enemy::~Enemy()             //destructor
-{
-    //delete field;
-};
-
-
-sf::Sprite Enemy::getSprite()
-{
-    return spriteE;                                     //?
-}
+Enemy::~Enemy(){};          //destructor
 
 int Enemy::giveRandomNumber(int pMin, int pMax)
 {

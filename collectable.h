@@ -4,33 +4,32 @@
 #include <SFML/Window.hpp>
 #include <SFML/Audio.hpp>
 #include <SFML/Network.hpp>
-#include <SFML/Graphics.hpp>
+#include <SFML/Graphics.hpp>    //include all necessary external files
 
 
 #ifndef COLLECTABLE_H_
 #define COLLECTABLE_H_
 
 /*
-    Collectable-Class: Used to create 3 Collectables, which are collected by the player to win the game
+    Collectable class: create collectable objects that are visualized on the field. Once collected by the player, the collectables (Pokemon) appear on the "collected Pokemon" textbox.
 */
 
 class Collectable
 {
     private:
-    //Variables
-    //sf::RectangleShape shapeC;
-    sf::Texture textureC;
-    //sf::Sprite spriteC;
+    //VARIABLES
+    sf::Texture textureC;   //texture of Pokemon
 
     public:
-    //Constructor / Destructor
-    Collectable();
-    ~Collectable();
-    //public functions
-    sf::Sprite getSprite();
-    int giveRandomNumber(int pMin, int pMax);
-    sf::Sprite spriteC;
-    int collected;
+
+    Collectable();          //constructor
+    ~Collectable();         //destructor
+    
+    //VISUALS
+    sf::Sprite spriteC;     //sprite of Pokemon
+
+    //METHODS
+    int giveRandomNumber(int pMin, int pMax);   //randomization of Pokemon spawn location
 
 };
 

@@ -5,35 +5,23 @@
 #include <string>
 #include <stdlib.h>
 #include <chrono>
-#include <windows.h>        //include all necessary external files
+#include <windows.h>            //include all necessary external files
 
 
 
-Collectable::Collectable()  //constructor
+Collectable::Collectable()      //constructor
 {
-    std::cout << "Collectable Konstruktor" << std::endl;
-    collected = 0;                                  //Pokemon isn't collected yet
+    std::cout << "Collectable constructor" << std::endl;
     textureC.loadFromFile("resources/collectable_" + std::to_string(giveRandomNumber(1,6)) + ".png");   //select random Pokemon image
     textureC.setSmooth(true);
-    //shapeC.setSize(sf::Vector2f(textureC.getSize().x, textureC.getSize().y));    //set size of "shape" to size of Pokemon image
-    //shapeC.setTexture(&textureC);                 //set texture of "shape"  to Pokemon image
-    spriteC.setTexture(textureC);                   //set texture of "sprite" to Pokemon image
+    spriteC.setTexture(textureC);                       //set texture of "sprite" to Pokemon image
     int positionX,positionY;
-    positionX = giveRandomNumber(0,1920);           //select random horizontal spawn point
-    positionY = giveRandomNumber(0,900);            //select random vertical spawn point
-    //shapeC .setPosition(positionX,positionY);     //set "shape"  at spawn point
-    spriteC.setPosition(positionX,positionY);       //set "sprite" at spawn point
+    positionX = giveRandomNumber(0,1920);               //select random horizontal spawn point
+    positionY = giveRandomNumber(0,900);                //select random vertical spawn point
+    spriteC.setPosition(positionX,positionY);           //set "sprite" at spawn point
 };
 
-Collectable::~Collectable() //destructor
-{
-    //delete field;
-};
-
-sf::Sprite Collectable::getSprite()
-{
-    return spriteC;                                     //?
-}
+Collectable::~Collectable(){};  //destructor
 
 int Collectable::giveRandomNumber(int pMin, int pMax)
 {

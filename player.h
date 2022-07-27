@@ -5,51 +5,49 @@
 #include <SFML/Audio.hpp>
 #include <SFML/Network.hpp>
 #include <SFML/Graphics.hpp>
-#include <string.h>
+#include <string.h>             //include all necessary external files
 
 
 #ifndef PLAYER_H_
 #define PLAYER_H_
 
 /*
-    Player-Class: Create Player-Objects that are visualized on the field
+    Player class: create player objects that are visualized on the field
 */
 
 class Player
 {
     private:
-    //Variables
-    //sf::RectangleShape shapeP;
-    //sf::Texture textureP;
-    sf::Vector2f shapePPos;
-    int hp;
-    int speed;
-    int collected;
+    //PRIAVTE VARIABLES
+    int hp = 3;                 //player has 3 health-points
+    int speed = 9;              //speed of player, IMPORTANT: this has to be an odd number in order for the player animation to work properly
+    int collected = 0;          //counts how many collectables were collected
+
+    //PRIVATE VISUALS
+    sf::Texture textureP;       //texture of player
+
 
     public:
-    // Constructor / Destructor
-    Player();
-    ~Player();
+    Player();                   //Constructor
+    ~Player();                  //Destructor
 
-    //public variables
-    sf::Texture textureP; //this do be public now cuz field yea
-    sf::RectangleShape shapeP;
-    sf::Sprite spriteP;
-    int spawnPX, spawnPY;
-    //int spawnzoneWidth;
-    //int spawnzoneHeight;
-    //public functions
-    //GET
-    int getHealthPoints();
-    int getCollected();
-    int getSpeed();
-    int getSpawnzone();
+    //PUBLIC VARIABLES
+    int spawnPX = 550;          //horizontal spawn point of player
+    int spawnPY = 200;          //vertical spawn point of player
+    
+    //PUBLIC VISUALS
+    sf::Sprite spriteP;         //sprite of player
+    sf::RectangleShape shapeP;  //shape  of player, used in to show damage animation
 
-    //SET
-    void setTexture(const std::string& pTexture);
-    void setHealthPoints(int pHP);
-    void setCollected(int pCollected);
-
+    //PUBLIC METHODS
+    //Get-Methods
+    int getHealthPoints();          //returns health-points
+    int getCollected();             //returns amount of currently collected collectables
+    int getSpeed();                 //returns speed of player
+    //Set-Methods
+    void setTexture(const std::string& pTexture);   //change texture of player (used for walking animation / which direction the player is moving)
+    void setHealthPoints(int pHP);                  //updates health-points
+    void setCollected(int pCollected);              //updates collected collectables
 };
 
 #endif
