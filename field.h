@@ -80,7 +80,7 @@ class Field
     //PRIVATE METHODS
     void pokeballMovement();        //moves Pokeballs
     void checkCollision();          //checks for any collision between sprites on the field
-    void updateHealth();            //is called to update health of playerPosY
+    void updateHealth();            //update health of player
     void resetGame();               //resets the game
     void checkPositions();          //checks whether any objects spawned on top of each other
     

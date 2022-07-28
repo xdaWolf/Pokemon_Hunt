@@ -2,8 +2,8 @@
 Pokemon-Hunt
 Authors:        Sarah Holzmann, Niklas Meier
 Created:        20.05.2022
-Last updated:   27.07.2022
-Version:        0.25.2
+Last updated:   28.07.2022
+Version:        1.0
 
 How to play:
 - to start the game, open your cmd and type "mingw32-make".
