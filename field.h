@@ -11,13 +11,6 @@
 #include <SFML/Network.hpp>
 #include <SFML/Graphics.hpp>    //include all necessary external files
 
-<<<<<<< Updated upstream
-//#include "game.h"
-#include "enemy.h"
-#include "player.h"
-#include "collectable.h"
-=======
->>>>>>> Stashed changes
 
 #ifndef FIELD_H_
 #define FIELD_H_
@@ -29,21 +22,6 @@
 class Field
 {
     private:
-<<<<<<< Updated upstream
-    // variables
-    Collectable collect1, collect2, collect3;
-    Enemy enemy1, enemy2, enemy3, enemy4, enemy5, enemy6;
-    Player player;
-    
-    sf::Sprite spriteHP;
-    sf::Texture textureHP;
-    //sf::RenderWindow* field;
-    sf::Event event;
-    sf::Sprite spritef;
-    sf::Texture texturef;
-
-    public:
-=======
     //PRIVATE VARIABLES
     int moves;                      //counts amount of moves player did before finishing
     int score;                      //used to calculate score, moves is used
@@ -90,7 +68,6 @@ class Field
 
     sf::Sprite spriteEOGM;          //visuals for endOfGame success/death message
     sf::Texture textureEOGM;
->>>>>>> Stashed changes
 
     sf::Font pokemonhollow;         //visuals for score
     sf::Text textscore;
@@ -108,20 +85,11 @@ class Field
     Field();            //constructor
     ~Field();           //destructor
 
-<<<<<<< Updated upstream
-    //public Functions
-    void pollEvents();
-    void update(); // update the game data
-    void render();
-    //GET
-    const bool getFieldIsOpen() const;
-=======
     //PUBLIC METHODS
     void update();      //update the game data
     void render();      //draw updated field and display it
     //Get-Methods
     const bool getFieldIsOpen() const;  //get whether the field is still opened
->>>>>>> Stashed changes
 
 };
 

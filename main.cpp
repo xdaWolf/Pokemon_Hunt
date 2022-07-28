@@ -4,6 +4,7 @@ Authors:        Sarah Holzmann, Niklas Meier
 Created:        20.05.2022
 Last updated:   28.07.2022
 Version:        1.0
+
 How to play:
 - to start the game, open your cmd and type "mingw32-make".
 - move your character (Pikachu) through keys WASD.
@@ -12,7 +13,9 @@ How to play:
 - getting hit three times results in Game Over.
 - pressing R at any point restarts the game. To get a new Pokemon/Trainer/Tree layout, restart the program.
 - to end the game, press Escape or close the window.
+
 When editing the code, make sure to look out for comments starting with "IMPORTANT"!
+
 Note:
 - "Collectable" and "Pokemon" are used synonymously.
 - "Enemy" and "Trainer" are used synonymously.
@@ -40,14 +43,11 @@ int main(int argc, char* argv[])
     backgroundmusic.setVolume(30);      //set volume of background music
     backgroundmusic.play();             //start the background music
 
-<<<<<<< Updated upstream
-=======
     while (field.getFieldIsOpen())      //as long as field wasn't closed
     {
         field.update();                 //update the current field
 
         field.render();                 //render the updated field
->>>>>>> Stashed changes
     }
 
     return 0;                           //return 0 if game was closed successfully

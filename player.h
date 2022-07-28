@@ -18,30 +18,6 @@
 class Player
 {
     private:
-<<<<<<< Updated upstream
-    //Variables
-    sf::RectangleShape shapeP;
-    sf::Texture textureP;
-    sf::Vector2f shapePPos;
-    int hp;
-    int speed;
-
-    public:
-    // Constructor / Destructor
-    Player();
-    ~Player();
-
-    //public variables
-    sf::Sprite spriteP;
-    //public functions
-    //GET
-    int getHealthPoints();
-    int getSpeed();
-
-    //SET
-    void setTexture(const std::string& pTexture);
-    void setHealthPoints(int pHP);
-=======
     //PRIAVTE VARIABLES
     int hp = 3;                 //player has 3 health-points
     int speed = 9;              //speed of player, IMPORTANT: this has to be an odd number in order for the player animation to work properly
@@ -50,7 +26,6 @@ class Player
     //PRIVATE VISUALS
     sf::Texture textureP;       //texture of player
 
->>>>>>> Stashed changes
 
     public:
     Player();                   //Constructor

@@ -17,34 +17,19 @@
 class Enemy
 {
     private:
-<<<<<<< Updated upstream
-    // variables
-    sf::RectangleShape shapeE;
-    sf::Texture textureE;
-    sf::Sprite spriteE;
-
-=======
     //VARIABLES
     sf::Texture textureE;   //texture of trainer
->>>>>>> Stashed changes
 
 
     public:
     Enemy();                //constructor
     ~Enemy();               //destructor
 
-<<<<<<< Updated upstream
-    //public functions
-    //GET
-    sf::Sprite getSprite();
-
-=======
     //VISUALS
     sf::Sprite spriteE;     //sprite of trainer
 
     //GET
     int giveRandomNumber(int pMin, int pMax);   //randomization of Trainer spawn location
->>>>>>> Stashed changes
 
 };
 

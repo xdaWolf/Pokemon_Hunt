@@ -17,19 +17,6 @@
 class Collectable
 {
     private:
-<<<<<<< Updated upstream
-    //Variables
-    sf::RectangleShape shapeC;
-    sf::Texture textureC;
-    sf::Sprite spriteC;
-
-    public:
-    //Constructor / Destructor
-    Collectable();
-    ~Collectable();
-    //public functions
-    sf::Sprite getSprite();
-=======
     //VARIABLES
     sf::Texture textureC;   //texture of Pokemon
 
@@ -43,7 +30,6 @@ class Collectable
 
     //METHODS
     int giveRandomNumber(int pMin, int pMax);   //randomization of Pokemon spawn location
->>>>>>> Stashed changes
 
 };
 

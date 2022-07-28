@@ -4,29 +4,6 @@
 #include <iostream>
 #include <string>
 #include <stdlib.h>
-<<<<<<< Updated upstream
-
-
-Field::Field()
-{
-    //SET VARIABLES - FIELD
-    //this->field = new sf::RenderWindow(sf::VideoMode::getDesktopMode(), "Pokemon-Hunt", sf::Style::Fullscreen);
-    this->field = new sf::RenderWindow(sf::VideoMode(1920,1080), "Pokemon-Hunt");
-    texturef.loadFromFile("resources/backgroundv2.png");
-    texturef.setSmooth(true);
-    spritef.setTexture(texturef);
-    spritef.setOrigin(sf::Vector2f(texturef.getSize().x / 2,texturef.getSize().y / 2));
-    spritef.setPosition(sf::Vector2f(field->getSize().x / 2, field->getSize().y / 2));
-    //SET VARIABLES - PLAYER
-    textureHP.loadFromFile("resources/health_bar_3.png");
-    textureHP.setSmooth(true);
-    spriteHP.setTexture(textureHP);
-    spriteHP.setOrigin(sf::Vector2f(textureHP.getSize().x / 2,textureHP.getSize().y / 2));
-    spriteHP.setPosition(1600,50);
-
-    std::cout << "Feld Konstruktor" << std::endl;
-
-=======
 #include <windows.h>
 #include <chrono>           //include all necessary external files
 
@@ -108,100 +85,24 @@ Field::Field()
         
     moves = 0;          //initialize the moves variable which is used for the score calculation
     checkPositions();   //check whether entities tried to spawn on one another when they weren't supposed to
->>>>>>> Stashed changes
 }
 
 Field::~Field()         //destructor
 {
-<<<<<<< Updated upstream
-    std::cout << "Feld Dekonstruktor" << std::endl;
-    delete this->field;
-=======
     std::cout << "Field destructor" << std::endl;
     delete field;       //delete the field
->>>>>>> Stashed changes
 }
 
 const bool Field::getFieldIsOpen() const            //returns whether field is open
 {
-<<<<<<< Updated upstream
-    return this->field->isOpen();
-}
-
-void Field::pollEvents()
-=======
     return field->isOpen();                             
 }
 
 void Field::update()                                //manages all the game data
->>>>>>> Stashed changes
 {
     playerPosX = player.spriteP.getPosition().x;    //save current player x position
     playerPosY = player.spriteP.getPosition().y;    //save current player y position
 
-<<<<<<< Updated upstream
-    while (this->field->pollEvent(this->event))
-    {
-        //Check Events
-        switch (this->event.type)
-        {
-            //Close the window if wanted
-            case sf::Event::Closed:
-                this->field->close();
-                break;
-            //Check if any Key is pressed
-            case sf::Event::KeyPressed:
-                movement++; // switch from odd to even or even to odd number (WALKING ANIMATION)
-                if (this->event.key.code == sf::Keyboard::Escape)
-                {
-                    this->field->close();
-                }
-                //WASD_MOVEMENT
-                if(this->event.key.code == sf::Keyboard::W)
-                {
-                    player.setTexture("resources/pikachu_" + std::to_string(movement % 2) + ".png");
-                    playerPosY -= speed;
-                }
-                else if(this->event.key.code == sf::Keyboard::A)
-                {
-                    player.setTexture("resources/pikachu_" + std::to_string(movement % 2 + 2) + ".png");
-                    playerPosX -= speed;
-                }
-                else if(this->event.key.code == sf::Keyboard::S)
-                {
-                    player.setTexture("resources/pikachu_" + std::to_string(movement % 2 + 4) + ".png");
-                    playerPosY += speed;
-                }
-                else if(this->event.key.code == sf::Keyboard::D)
-                {
-                    player.setTexture("resources/pikachu_" + std::to_string(movement % 2 + 6) + ".png");
-                    playerPosX += speed;
-                }
-                
-        }
-
-        //WINDOW_BORDERS
-        if(playerPosX < (player.spriteP.getTexture()->getSize().x) / 2)
-        {
-            playerPosX = (player.spriteP.getTexture()->getSize().x) / 2;
-        }
-        if(playerPosX > (int)this->field->getSize().x - (player.spriteP.getTexture()->getSize().x) / 2)
-        {
-            playerPosX = this->field->getSize().x - (player.spriteP.getTexture()->getSize().x) / 2;
-        }
-        if(playerPosY < (player.spriteP.getTexture()->getSize().y) / 2)
-        {
-            playerPosY = (player.spriteP.getTexture()->getSize().y) / 2;
-        }
-        if(playerPosY > (int)this->field->getSize().y - (player.spriteP.getTexture()->getSize().y) / 2)
-        {
-            playerPosY = this->field->getSize().y - (player.spriteP.getTexture()->getSize().y) / 2;
-        }
-
-        player.spriteP.setPosition(playerPosX, playerPosY);
-        
-    }
-=======
     int movement, speed;
     movement = playerPosY + playerPosX;             //walking animation, as long as speed is odd
     speed = player.getSpeed();                      //receives player speed as initialized in player.cpp
@@ -209,12 +110,11 @@ void Field::update()                                //manages all the game data
     sf::Event event;
     
     while(field->pollEvent(event));                         //as long as any input is being made
-    {
-        if(event.type == sf::Event::Closed)                           //if window gets closed by user
+    { 
+        if(event.type == sf::Event::Closed)             //if window gets closed by user
         {
             field->close();                             //close everything
         }
-        
         if(InputDelayTimer.getElapsedTime() > InputDelay)   //if a certain input delay has passed
         {
             if((InputDelayTimer.getElapsedTime() > InputDelay) && ((sf::Keyboard::isKeyPressed(sf::Keyboard::W)) || (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) || (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) || (sf::Keyboard::isKeyPressed(sf::Keyboard::D) || (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) || (sf::Keyboard::isKeyPressed(sf::Keyboard::R)))))
@@ -460,7 +360,6 @@ void Field::updateHealth()
         field->display();                                       //display updated frame
         Sleep(100);                                             //wait 0.1s
     }
->>>>>>> Stashed changes
 
     if(player.getHealthPoints()== 2)                            //if remaining HP = 2
     {
@@ -483,36 +382,6 @@ void Field::updateHealth()
     }
 }
 
-<<<<<<< Updated upstream
-void Field::update() //manages all the game data
-{
-    this->pollEvents();
-}
-
-void Field::render() //displays the game data / game field
-{
-    
-    this->field->clear();
-
-    //DRAW OBJECTS
-    this->field->draw(spritef);
-    this->field->draw(spriteHP);
-    this->field->draw(enemy1.getSprite());
-    this->field->draw(enemy2.getSprite());
-    this->field->draw(enemy3.getSprite());
-    this->field->draw(enemy4.getSprite());
-    this->field->draw(enemy5.getSprite());
-    this->field->draw(enemy6.getSprite());
-    this->field->draw(collect1.getSprite());
-    this->field->draw(collect2.getSprite());
-    this->field->draw(collect3.getSprite());
-    this->field->draw(player.spriteP);
-
-    //DISPLAY NEW WINDOW
-    this->field->display();
-}
-
-=======
 void Field::endOfGame(int success)
 {
     field->clear();                                                         //clear last frame
@@ -792,4 +661,3 @@ void Field::checkPositions()    //note: superiority: PokeCenter/player > trees >
         std::cout << "Successfully loaded spawn layout" << std::endl;
     }
 }
->>>>>>> Stashed changes
