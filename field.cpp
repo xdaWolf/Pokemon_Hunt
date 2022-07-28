@@ -7,8 +7,6 @@
 #include <windows.h>
 #include <chrono>           //include all necessary external files
 
-
-
 Field::Field()
 {
     std::cout << "Field constructor" << std::endl;
@@ -163,7 +161,6 @@ void Field::update()                                //manages all the game data
 
             }
         }
-
                 
         //Window borders - keeping the player half its size away from any edges of the field
         if(playerPosX < (player.spriteP.getTexture()->getSize().x) / 2)
@@ -286,9 +283,15 @@ void Field::checkCollision()
             collectables[i].spriteC.setScale(0.5, 0.5);                                             //shrink collected Pokemon
             collected.play();                                                                       //play sound effect for collecting Pokemon
 
-            collectables[i].spriteC.setPosition(92 + (271/((sizeof(collectables)/sizeof(collectables[0]))-1) * (player.getCollected()-1)), 1000);   //move collected Pokemon to the CPB. The rather complex calculation makes any amount of collectables possible.
-            //92  = spriteCPB.getPosition().x - spriteCPB.getTexture().x / 2 + 25                                                                   //explains the origin of the "92"  above in case a different sized CPB is needed
-            //271 = spriteCPB.getPosition().x + spriteCPB.getTexture().x / 2 - 25 - collectable[0].getTexture().x - (92)                            //explains the origin of the "271" above in case a different sized CPB is needed
+            if((sizeof(collectables)/sizeof(collectables[0])) > 1)      //if there are 2 or more Pokemon
+            {
+                collectables[i].spriteC.setPosition(92 + (271/((sizeof(collectables)/sizeof(collectables[0]))-1) * (player.getCollected()-1)), 1000);   //move collected Pokemon to the CPB. The rather complex calculation makes any amount of collectables possible.
+                //92  = spriteCPB.getPosition().x - textureCPB.getSize().x / 2 + 25                                                                     //explains the origin of the "92"  above in case a different sized CPB is needed
+                //271 = spriteCPB.getPosition().x + textureCPB.getSize().x / 2 - 25 - collectables[i].getTexture().x - (92)                             //explains the origin of the "271" above in case a different sized CPB is needed
+            } else                                                      //if there's only 1 Pokemon
+            {
+                collectables[i].spriteC.setPosition(spriteCPB.getPosition().x - collectables[i].spriteC.getTexture()->getSize().x / 2, 1000);           //place it in the center of the CPB
+            }
         }
     }
 
@@ -500,10 +503,6 @@ void Field::checkPositions()    //note: superiority: PokeCenter/player > trees >
     {
         for(int k = i + 1; k < (sizeof(collectables)/sizeof(collectables[0])); k++)     //for all other Pokemon
         {
-            //if(i + k > sizeof(collectables)/sizeof(collectables[0]))
-            //{
-            //    break;
-            //}
             if(collectables[i].spriteC.getGlobalBounds().intersects(collectables[k].spriteC.getGlobalBounds())) //if Pokemon spawned on another Pokemon
             {
                 std::cout << "C x C, ";

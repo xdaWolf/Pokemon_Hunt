@@ -7,8 +7,6 @@
 #include <chrono>
 #include <windows.h>        //include all necessary external files
 
-
-
 Enemy2::Enemy2()            //constructor
 {
     std::cout << "Enemy2 constructor" << std::endl;

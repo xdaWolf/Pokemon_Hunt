@@ -6,7 +6,7 @@ Last updated:   28.07.2022
 Version:        1.0
 
 How to play:
-- to start the game, open your cmd and type "mingw32-make".
+- to start the game, open your cmd and type "mingw32-make" (make sure your in the path of this project).
 - move your character (Pikachu) through keys WASD.
 - collect all other Pokemon on the field while avoiding Pokeballs and Trainers. After you've collected all three Pokemon, head towards the Pokecenter to win.
 - the less moves you make and the more HP you have left, the better your score.
@@ -15,6 +15,8 @@ How to play:
 - to end the game, press Escape or close the window.
 
 When editing the code, make sure to look out for comments starting with "IMPORTANT"!
+When adding new sprites, format the file names like this: "<nameOfSprite>_<nextNumber>"
+
 
 Note:
 - "Collectable" and "Pokemon" are used synonymously.
@@ -23,8 +25,6 @@ Note:
 - "CPB" is short for "collected Pokemon box"
 */
 
-
-
 #include "field.h"
 
 #include <stdio.h>
@@ -32,7 +32,6 @@ Note:
 #include <string>
 #include <stdlib.h>
 #include <windows.h>                    //include all necessary external files
-
 
 int main(int argc, char* argv[])
 {   

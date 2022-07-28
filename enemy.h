@@ -20,7 +20,6 @@ class Enemy
     //VARIABLES
     sf::Texture textureE;   //texture of trainer
 
-
     public:
     Enemy();                //constructor
     ~Enemy();               //destructor

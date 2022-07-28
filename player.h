@@ -26,7 +26,6 @@ class Player
     //PRIVATE VISUALS
     sf::Texture textureP;       //texture of player
 
-
     public:
     Player();                   //Constructor
     ~Player();                  //Destructor

@@ -7,8 +7,6 @@
 #include <chrono>
 #include <windows.h>            //include all necessary external files
 
-
-
 Collectable::Collectable()      //constructor
 {
     std::cout << "Collectable constructor" << std::endl;

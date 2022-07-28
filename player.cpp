@@ -6,7 +6,6 @@
 #include <stdlib.h>
 #include <string.h>     //include all necessary external files
 
-
 Player::Player()        //constructor
 {
     std::cout << "Player constructor" << std::endl;

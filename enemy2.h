@@ -20,7 +20,6 @@ class Enemy2
     //PRIVATE VISUALS
     sf::Texture textureE2;  //texture of enemy2
 
-
     public:
     Enemy2();               //constructor
     ~Enemy2();              //destructor

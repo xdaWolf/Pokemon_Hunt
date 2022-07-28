@@ -11,7 +11,6 @@
 #include <SFML/Network.hpp>
 #include <SFML/Graphics.hpp>    //include all necessary external files
 
-
 #ifndef FIELD_H_
 #define FIELD_H_
 
@@ -27,7 +26,7 @@ class Field
     int score;                      //used to calculate score, moves is used
     int direction;                  //saves in which direction the player is moving
     int playerPosX, playerPosY;     //saves position of player (X & Y)
-    int amountOfTrees = 4;          //IMPORTANT: this number + the amount of invisible rectangles (default: 2) has to be equal to spriteTree/textureTree array size as declared below
+    int amountOfTrees = 1;          //IMPORTANT: this number + the amount of invisible rectangles (default: 2) has to be equal to spriteTree/textureTree array size as declared below
     int positionCX[3];              //IMPORTANT: same number as collectables array size and positionCY
     int positionCY[3];              //IMPORTANT: same number as collectables array size and positionCX
     int success;                    //acts as bool, saves whether player has won
@@ -44,7 +43,7 @@ class Field
     Player player;
     Enemy enemies[4];
     Enemy2 pokeballs[5];
-    Collectable collectables[3];    //IMPORTANT: same number as positionCX and positionCY
+    Collectable collectables[1];    //IMPORTANT: same number as positionCX and positionCY
     sf::Sprite spriteTree[6];       //IMPORTANT: this number is the sum of amountOfTrees and amount of transparent rectangles. Check "amountOfTrees" variable. Maybe implement vector here.
     sf::Texture textureTree[6];     //IMPORTANT: this number is the sum of amountOfTrees and amount of transparent rectangles. Check "amountOfTrees" variable. Maybe implement vector here.
     

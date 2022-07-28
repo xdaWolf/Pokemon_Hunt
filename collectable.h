@@ -6,7 +6,6 @@
 #include <SFML/Network.hpp>
 #include <SFML/Graphics.hpp>    //include all necessary external files
 
-
 #ifndef COLLECTABLE_H_
 #define COLLECTABLE_H_
 
