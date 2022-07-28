@@ -4,35 +4,47 @@
 #include <SFML/Window.hpp>
 #include <SFML/Audio.hpp>
 #include <SFML/Network.hpp>
-#include <SFML/Graphics.hpp>
+#include <SFML/Graphics.hpp>    //include all necessary external files
 
 
 #ifndef ENEMY_H_
 #define ENEMY_H_
 
 /*
-    Enemy-Class: Create Enemy-Objects that are visualized on the field and once the player hits the enemy, he loses one hp
+    Enemy class: Create enemy objects that are visualized on the field. Once hit by the enemy (Trainer), the player loses 1 HP.
 */
 
 class Enemy
 {
     private:
+<<<<<<< Updated upstream
     // variables
     sf::RectangleShape shapeE;
     sf::Texture textureE;
     sf::Sprite spriteE;
 
+=======
+    //VARIABLES
+    sf::Texture textureE;   //texture of trainer
+>>>>>>> Stashed changes
 
 
     public:
-    // Constructor / Destructor
-    Enemy();
-    ~Enemy();
+    Enemy();                //constructor
+    ~Enemy();               //destructor
 
+<<<<<<< Updated upstream
     //public functions
     //GET
     sf::Sprite getSprite();
 
+=======
+    //VISUALS
+    sf::Sprite spriteE;     //sprite of trainer
+
+    //GET
+    int giveRandomNumber(int pMin, int pMax);   //randomization of Trainer spawn location
+>>>>>>> Stashed changes
 
 };
 
