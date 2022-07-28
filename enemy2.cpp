@@ -27,7 +27,7 @@ Enemy2::~Enemy2(){};        //destructor
 int Enemy2::giveRandomNumber(int pMin, int pMax)
 {
     auto start = std::chrono::steady_clock::now();
-    int dfe = 100;                                  //distance from edges (in pixels, maybe implement automatic number here using size of respective sprite)
+    int dfe = 100;                                  //distance from edges (in pixels, implementation idea: automatic number using size of respective sprite)
     Sleep(10);
     auto end = std::chrono::steady_clock::now();
     int microseconds = std::chrono::duration_cast<std::chrono::microseconds>(end-start).count();    //get a pseudo-random number by counting the microseconds it took the program to process the lines above

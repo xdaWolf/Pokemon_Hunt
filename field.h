@@ -30,6 +30,7 @@ class Field
     int amountOfTrees = 4;          //IMPORTANT: this number + the amount of invisible rectangles (default: 2) has to be equal to spriteTree/textureTree array size as declared below
     int positionCX[3];              //IMPORTANT: same number as collectables array size and positionCY
     int positionCY[3];              //IMPORTANT: same number as collectables array size and positionCX
+    int success;                    //acts as bool, saves whether player has won
 
     sf::Time InputDelay = sf::seconds(0.0001f);         //input delay, added for smooth movement
     sf::Clock InputDelayTimer;                          //timer, added for smooth movement
@@ -62,17 +63,11 @@ class Field
     sf::Sprite spritePC;            //visuals for PokeCenter
     sf::Texture texturePC;
 
-    sf::Sprite spriteSS;            //visuals for success-screen
-    sf::Texture textureSS;
+    sf::Sprite spriteEOGS;          //visuals for endOfGame success/death sprite
+    sf::Texture textureEOGS;
 
-    sf::Sprite spriteSM;            //visuals for success-message
-    sf::Texture textureSM;
-
-    sf::Sprite spriteDS;            //visuals for death-screen
-    sf::Texture textureDS;
-
-    sf::Sprite spriteDM;            //visuals for death-message
-    sf::Texture textureDM;
+    sf::Sprite spriteEOGM;          //visuals for endOfGame success/death message
+    sf::Texture textureEOGM;
 
     sf::Font pokemonhollow;         //visuals for score
     sf::Text textscore;
@@ -81,6 +76,7 @@ class Field
     void pokeballMovement();        //moves Pokeballs
     void checkCollision();          //checks for any collision between sprites on the field
     void updateHealth();            //update health of player
+    void endOfGame(int success);    //success/death screen
     void resetGame();               //resets the game
     void checkPositions();          //checks whether any objects spawned on top of each other
     

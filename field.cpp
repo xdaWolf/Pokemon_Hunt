@@ -7,27 +7,15 @@
 #include <windows.h>
 #include <chrono>           //include all necessary external files
 
-/*----------------------------------------------------------------
 
-
-    CODE-TECHNISCH:
-    -> KOMMENTARE! (gute Arbeit bis jetzt c: )
-    -> Gewinner/Verloren Screen sehr ähnlich vom Ablauf-> eigene funktion?
-
-    PRÄSENTATION:
-    -> Klassendiagramm (wenn alles fertig ist)
-    -> probleme und wie mans gelöst hat (zufallsmethode, usw.)
-    ->
-
-*/
 
 Field::Field()
 {
     std::cout << "Field constructor" << std::endl;
     
     //SET VISUALS - FIELD
-    field = new sf::RenderWindow(sf::VideoMode::getDesktopMode(), "Pokemon-Hunt", sf::Style::Fullscreen);   //open a full-screen window called "Pokemon-Hunt"
-    //field = new sf::RenderWindow(sf::VideoMode(1920,1080), "Pokemon-Hunt");                               //open a 1920x1080 window called "Pokemon-Hunt", only use this if upper method doesn't work properly on your device (for example if secondary monitor is used)
+    //field = new sf::RenderWindow(sf::VideoMode::getDesktopMode(), "Pokemon-Hunt", sf::Style::Fullscreen);   //open a full-screen window called "Pokemon-Hunt"
+    field = new sf::RenderWindow(sf::VideoMode(1920,1080), "Pokemon-Hunt");                                 //open a 1920x1080 window called "Pokemon-Hunt", IMPORTANT: only use this if upper method doesn't work properly on your device (for example if secondary monitor is used)
     field->setFramerateLimit(60);   	                        //don't exceed a framerate of 60fps
     texturef.loadFromFile("resources/backgroundv3.png");        //load background image
     texturef.setSmooth(true);
@@ -319,7 +307,7 @@ void Field::checkCollision()
                 case 2:             //if direction is down
                 playerPosY--;       //move player up
                 break;
-                case 3:             //if directin is right
+                case 3:             //if direction is right
                 playerPosX--;       //move player to the left
                 break;
             }
@@ -332,32 +320,7 @@ void Field::checkCollision()
         if (player.getCollected() >= sizeof(collectables)/sizeof(collectables[0]))                  //if player has collected all Pokemon
         {
             std::cout << "Player wins" << std::endl;
-            
             win.play();                                                                             //play sound effect for winning the game
-
-            field->clear();                                                                         //clear last frame
-
-            //DRAW ALL ENTITIES OF SUCCESS SCREEN
-            field->draw(spritef);
-            field->draw(spritePC);
-            for(int i = 0; i < (sizeof(spriteTree)/sizeof(spriteTree[0])); i++)                     //for all trees
-            {
-                field->draw(spriteTree[i]);
-            }
-
-            textureSS.loadFromFile("resources/success_sprite.png");                                 //load success image
-            textureSS.setSmooth(true);
-            spriteSS.setTexture(textureSS);                                                         //set texture to success image
-            spriteSS.setOrigin(sf::Vector2f(textureSS.getSize().x / 2, textureSS.getSize().y / 2)); //move origin of sprite (default: top left) to center of sprite
-            spriteSS.setPosition(sf::Vector2f(field->getSize().x / 2, field->getSize().y / 3));     //set position of success sprite
-            field->draw(spriteSS);
-
-            textureSM.loadFromFile("resources/success_message.png");                                //load success message image
-            textureSM.setSmooth(true);
-            spriteSM.setTexture(textureSM);                                                         //set texture to success message image
-            spriteSM.setOrigin(sf::Vector2f(textureSM.getSize().x / 2, textureSM.getSize().y / 2)); //move origin of sprite (default: top left) to center of sprite
-            spriteSM.setPosition(sf::Vector2f(field->getSize().x / 2, field->getSize().y / 4 * 3)); //set position of success message sprite
-            field->draw(spriteSM);
 
             score = (1150 - moves) / (4 - player.getHealthPoints());            //calculate score based on moves made & HP left
             //note: you need around 150 moves minimum to get from spawn to PokeCenter, thus, the highest possible score is ~1000
@@ -373,13 +336,9 @@ void Field::checkCollision()
             textscore.setCharacterSize(96);                                     //set size of score
             textscore.setFillColor(sf::Color::Black);                           //set colour of score
             textscore.setPosition(sf::Vector2f(100, field->getSize().y / 4));   //set position of score
-            field->draw(textscore);
 
-            field->display();   //display updated frame
-
-            while(!(sf::Keyboard::isKeyPressed(sf::Keyboard::R) || sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))){} //wait for reset or closing of window
-            
-            resetGame();        //reset the game
+            success = 1;                                                        //player did win
+            endOfGame(success);                                                 //show success screen
         }
     }
 
@@ -413,44 +372,57 @@ void Field::updateHealth()
         spriteHB.setTexture(textureHB);                         //set health bar sprite to 1 HP HB image
     } else if(player.getHealthPoints() == 0)                    //if remaining HP = 0
     {
-        std::cout << "Player lost" << std::endl;                //VON HIER
+        textureHB.loadFromFile("resources/health_bar_0.png");   //load health bar with 0 HP
+        spriteHB.setTexture(textureHB);                         //set health bar sprite to 0 HP HB image
         
-        failure.play();
+        std::cout << "Player lost" << std::endl;
+        failure.play();                                         //play sound effect for losing the game
 
-        field->clear();                                         
-
-        field->draw(spritef);
-        field->draw(spritePC);
-        for(int i = 0; i < (sizeof(spriteTree)/sizeof(spriteTree[0])); i++)
-        {
-            field->draw(spriteTree[i]);
-        }
-
-
-        textureHB.loadFromFile("resources/health_bar_0.png");
-        spriteHB.setTexture(textureHB);
-        field->draw(spriteHB);
-
-        textureDS.loadFromFile("resources/death_sprite.png");
-        textureDS.setSmooth(true);
-        spriteDS.setTexture(textureDS);
-        spriteDS.setOrigin(sf::Vector2f(textureDS.getSize().x / 2, textureDS.getSize().y / 2));
-        spriteDS.setPosition(sf::Vector2f(field->getSize().x / 2, field->getSize().y / 3));
-        field->draw(spriteDS);
-
-        textureDM.loadFromFile("resources/death_message.png");
-        textureDM.setSmooth(true);
-        spriteDM.setTexture(textureDM);
-        spriteDM.setOrigin(sf::Vector2f(textureDM.getSize().x / 2, textureDM.getSize().y / 2));
-        spriteDM.setPosition(sf::Vector2f(field->getSize().x / 2, field->getSize().y / 4 * 3));
-        field->draw(spriteDM);
-
-        field->display();
-
-        while(!(sf::Keyboard::isKeyPressed(sf::Keyboard::R) || sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))){}
-        
-        resetGame();                                                //BIS HIER WERD ICH MORGEN IN MATHE AUSLAGERN
+        success = 0;                                            //player didn't win
+        endOfGame(success);                                     //show death screen
     }
+}
+
+void Field::endOfGame(int success)
+{
+    field->clear();                                                         //clear last frame
+
+    if(success)                                                             //if player won
+    {
+        textureEOGS.loadFromFile("resources/success_sprite.png");           //load success image
+        textureEOGM.loadFromFile("resources/success_message.png");          //load success message image
+    } else                                                                  //otherwise
+    {
+        textureEOGS.loadFromFile("resources/death_sprite.png");             //load death image
+        textureEOGM.loadFromFile("resources/death_message.png");            //load death message image
+    }
+
+    textureEOGS.setSmooth(true);
+    textureEOGM.setSmooth(true);
+    spriteEOGS.setTexture(textureEOGS);                                                             //set texture of endOfGame sprite to success/death sprite
+    spriteEOGM.setTexture(textureEOGM);                                                             //set texture of endOfGame message to success/death message
+    spriteEOGS.setOrigin(sf::Vector2f(textureEOGS.getSize().x / 2, textureEOGS.getSize().y / 2));   //move origin of sprite (default: top left) to center of sprite
+    spriteEOGS.setPosition(sf::Vector2f(field->getSize().x / 2, field->getSize().y / 3));           //set position for success/death sprite
+    spriteEOGM.setOrigin(sf::Vector2f(textureEOGM.getSize().x / 2, textureEOGM.getSize().y / 2));   //move origin of sprite (default: top left) to center of sprite
+    spriteEOGM.setPosition(sf::Vector2f(field->getSize().x / 2, field->getSize().y / 4 * 3));       //set position for success/death message
+
+    //DRAW ALL ENTITIES OF ENDOFGAME SCREEN
+    field->draw(spritef);
+    field->draw(spritePC);
+    for(int i = 0; i < amountOfTrees; i++)      //for all trees (excluding invisible mountain rectangles)
+    {
+        field->draw(spriteTree[i]);
+    }
+    field->draw(spriteHB);
+    if(success) { field->draw(textscore); }     //only draw score if player won
+    field->draw(spriteEOGS);
+    field->draw(spriteEOGM);
+
+    field->display();                           //display updated frame
+
+    while(!(sf::Keyboard::isKeyPressed(sf::Keyboard::R) || sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))){}     //wait until player resets or quits
+        
+    resetGame();                                //reset the game
 }
 
 void Field::resetGame()
@@ -474,7 +446,7 @@ void Field::resetGame()
     }
 }
 
-void Field::checkPositions()    //note: superiority: PokeCenter/player > trees > trainers/Pokemon - lower superiority changes position in case of an overlap.
+void Field::checkPositions()    //note: superiority: PokeCenter/player > trees > trainers/Pokemon - lower superiority changes position in case of an overlap. Revise this in the future to get rid of the redundancies.
 {
     int done = 0;   //checks whether all entities spawned in distinct positions
 
@@ -489,7 +461,7 @@ void Field::checkPositions()    //note: superiority: PokeCenter/player > trees >
             newPosY = collectables[i].giveRandomNumber(0,900);      //select new random y position for Pokemon
             collectables[i].spriteC.setPosition(newPosX,newPosY);   //set new position
             field->draw(collectables[i].spriteC);
-            done += 1;
+            done++;
         }
     }
 
@@ -504,7 +476,7 @@ void Field::checkPositions()    //note: superiority: PokeCenter/player > trees >
             newPosY = enemies[i].giveRandomNumber(0,900);           //select new random y position for trainer
             enemies[i].spriteE.setPosition(newPosX,newPosY);        //set new position
             field->draw(enemies[i].spriteE);
-            done += 1;
+            done++;
         }
     }
 
@@ -519,7 +491,7 @@ void Field::checkPositions()    //note: superiority: PokeCenter/player > trees >
             newPosY = enemies[0].giveRandomNumber(0,900);           //select new random y position for tree
             spriteTree[i].setPosition(newPosX,newPosY);             //set new position
             field->draw(spriteTree[i]);
-            done += 1;
+            done++;
         }
     
     }
@@ -551,7 +523,7 @@ void Field::checkPositions()    //note: superiority: PokeCenter/player > trees >
     {
         for(int k = 0; k < (sizeof(enemies)/sizeof(enemies[0])); k++)           //for all trainers
         {
-            if(enemies[i].spriteE.getGlobalBounds().intersects(collectables[k].spriteC.getGlobalBounds()))      //if Pokemon spawned on trainer
+            if(collectables[i].spriteC.getGlobalBounds().intersects(enemies[k].spriteE.getGlobalBounds()))      //if Pokemon spawned on trainer
             {
                 std::cout << "C x E, ";
                 int newPosX,newPosY;
@@ -626,8 +598,8 @@ void Field::checkPositions()    //note: superiority: PokeCenter/player > trees >
                 int newPosX,newPosY;
                 newPosX = enemies[k].giveRandomNumber(0,1920);          //select new random x position for trainer
                 newPosY = enemies[k].giveRandomNumber(0,900);           //select new random y position for trainer
-                enemies[i].spriteE.setPosition(newPosX,newPosY);        //set new position
-                field->draw(enemies[i].spriteE);
+                enemies[k].spriteE.setPosition(newPosX,newPosY);        //set new position
+                field->draw(enemies[k].spriteE);
                 done += 1;
             }
         }
@@ -685,7 +657,8 @@ void Field::checkPositions()    //note: superiority: PokeCenter/player > trees >
     {
         std::cout << done << " overlap(s), determining new spawn layout" << std::endl;
         checkPositions();       //determine new spawn layout
-    } else {
+    } else
+    {
         std::cout << "Successfully loaded spawn layout" << std::endl;
     }
 }
