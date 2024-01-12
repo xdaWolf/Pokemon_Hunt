@@ -1,19 +1,45 @@
 {
+  "version": "2.0.0",
   "tasks": [
     {
+      "label": "compile",
+      "type": "shell",
+      "command": "g++",
+      "args": [
+        "-g",
+        "-I",
+        "src/include",
+        "main.cpp",
+        "field.cpp",
+        "enemy.cpp",
+        "player.cpp",
+        "collectable.cpp",
+        "enemy2.cpp",
+        "-o",
+        "main.exe",
+        "-L",
+        "src/lib",
+        "-lsfml-graphics",
+        "-lsfml-window",
+        "-lsfml-system",
+        "-lsfml-network",
+        "-lsfml-audio"
+      ],
+      "group": "build"
+    },
+    {
       "type": "cppbuild",
-      "label": "C/C++: g++.exe Aktive Datei kompilieren",
-      "command": "C:/mingw64 SFML/bin/g++.exe",
+      "label": "C/C++: gdb.exe Aktive Datei kompilieren",
+      "command": "C:\\VSC Zusatzsoftware\\C\\mingw64\\bin\\gdb.exe",
       "args": [
         "-fdiagnostics-color=always",
         "-g",
         "${file}",
         "-o",
-        "${fileDirname}\\${fileBasenameNoExtension}.exe",
-        "-mwindows"
+        "${fileDirname}\\${fileBasenameNoExtension}.exe"
       ],
       "options": {
-        "cwd": "C:/mingw64 SFML/bin"
+        "cwd": "${fileDirname}"
       },
       "problemMatcher": ["$gcc"],
       "group": {
@@ -22,6 +48,5 @@
       },
       "detail": "Vom Debugger generierte Aufgabe."
     }
-  ],
-  "version": "2.0.0"
+  ]
 }
