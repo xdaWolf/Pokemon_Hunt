@@ -1,22 +1,21 @@
 {
-    "configurations": [
-        {
-            "name": "Win32",
-            "includePath": [
-                "${workspaceFolder}/**",
-                "C:\\VSC Programmieren\\C++\\Zweites Semester\\ProgrammierenAufgabe\\src\\include"
-            ],
-            "defines": [
-                "_DEBUG",
-                "UNICODE",
-                "_UNICODE"
-            ],
-            "cStandard": "gnu17",
-            "cppStandard": "gnu++17",
-            "intelliSenseMode": "windows-gcc-x64",
-            "compilerPath": "C:/mingw64 SFML/bin/g++.exe",
-            "configurationProvider": "ms-vscode.makefile-tools"
-        }
-    ],
-    "version": 4
+  "configurations": [
+    {
+      "name": "Win32",
+      "includePath": [
+        "${workspaceFolder}/**",
+        //"C:\\VSC Programmieren\\C++\\Zweites Semester\\Pokemon_Hunt\\src\\include"
+        "C:\\Users\\z004bz6y\\OneDrive - Siemens AG\\Documents\\VSC\\GitHub\\Pokemon_Hunt\\src\\include"
+      ],
+      "defines": ["_DEBUG", "UNICODE", "_UNICODE"],
+      "cStandard": "gnu17",
+      "cppStandard": "gnu++17",
+      "intelliSenseMode": "windows-gcc-x64",
+      //"compilerPath": "C:\\mingw64 SFML\\bin\\gdb.exe"
+      //"compilerPath": "C:\\VSC Zusatzsoftware\\C\\mingw64\\bin\\gdb.exe"
+      "compilerPath": "C:\\msys64\\mingw64\\bin\\gdb.exe",
+      "configurationProvider": "ms-vscode.makefile-tools"
+    }
+  ],
+  "version": 4
 }
