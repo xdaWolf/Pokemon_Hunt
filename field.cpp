@@ -736,3 +736,159 @@ void Field::checkPositions() // note: superiority: PokeCenter/player > trees > t
         std::cout << "Successfully loaded spawn layout" << std::endl;
     }
 }
+
+/*
+    CODE FÜR NACHHER, Klassen
+
+    void Field::checkPositions()
+{
+    int done = 0; // Überprüft, ob alle Entitäten an unterschiedlichen Positionen erscheinen
+
+    // Überprüfe Überlappungen für jede Entitätstyp-Kombination
+    checkOverlap(player.spriteP, collectables);
+    checkOverlap(player.spriteP, enemies);
+    checkOverlap(player.spriteP, spriteTree);
+
+    checkOverlap(collectables, collectables);
+    checkOverlap(collectables, enemies);
+    checkOverlap(collectables, spriteTree);
+    checkOverlap(collectables, spritePC);
+
+    checkOverlap(spriteTree, spriteTree);
+    checkOverlap(spriteTree, enemies);
+    checkOverlap(spriteTree, spritePC);
+
+    checkOverlap(enemies, enemies);
+    checkOverlap(enemies, spritePC);
+
+    if (done != 0)
+    {
+        std::cout << done << " Überlappung(en), neue Anordnung wird bestimmt" << std::endl;
+        checkPositions(); // Bestimme neue Anordnung
+    }
+    else
+    {
+        std::cout << "Erfolgreiches Laden der Anordnung" << std::endl;
+    }
+}
+
+// Überprüfe Überlappung für eine Entität mit einer Gruppe von Entitäten
+template <typename T>
+void Field::checkOverlap(sf::Sprite &entity, T &entities)
+{
+    for (int i = 0; i < entities.size(); i++)
+    {
+        if (entity.getGlobalBounds().intersects(entities[i].sprite.getGlobalBounds()))
+        {
+            std::cout << entityToString(entity) << " x " << entityToString(entities[i].sprite) << ", ";
+            setNewPosition(entities[i].sprite);
+            done++;
+        }
+    }
+}
+
+// Überprüfe Überlappung für zwei verschiedene Gruppen von Entitäten
+template <typename T, typename U>
+void Field::checkOverlap(T &group1, U &group2)
+{
+    for (int i = 0; i < group1.size(); i++)
+    {
+        for (int k = 0; k < group2.size(); k++)
+        {
+            if (group1[i].sprite.getGlobalBounds().intersects(group2[k].sprite.getGlobalBounds()))
+            {
+                std::cout << entityToString(group1[i].sprite) << " x " << entityToString(group2[k].sprite) << ", ";
+                setNewPosition(group2[k].sprite);
+                done++;
+            }
+        }
+    }
+}
+
+// Setze eine neue Position für eine Entität
+void Field::setNewPosition(sf::Sprite &entity)
+{
+    int newPosX = entity.giveRandomNumber(0, 1920);
+    int newPosY = entity.giveRandomNumber(0, 900);
+    entity.setPosition(newPosX, newPosY);
+    field->draw(entity);
+}
+
+*****************************************************************************************************************************
+
+void Field::checkPositions() // Note: Priority: PokeCenter/player > trees > trainers/Pokemon - lower priority changes position in case of an overlap. Consider revising to eliminate redundancies in the future.
+{
+    int done = 0; // Checks whether all entities spawn at distinct positions
+
+    // Check overlaps for each entity type combination
+    checkOverlap(player.spriteP, collectables);
+    checkOverlap(player.spriteP, enemies);
+    checkOverlap(player.spriteP, spriteTree);
+
+    checkOverlap(collectables, collectables);
+    checkOverlap(collectables, enemies);
+    checkOverlap(collectables, spriteTree);
+    checkOverlap(collectables, spritePC);
+
+    checkOverlap(spriteTree, spriteTree);
+    checkOverlap(spriteTree, enemies);
+    checkOverlap(spriteTree, spritePC);
+
+    checkOverlap(enemies, enemies);
+    checkOverlap(enemies, spritePC);
+
+    if (done != 0)
+    {
+        std::cout << done << " overlap(s), determining new spawn layout" << std::endl;
+        checkPositions(); // Determine new spawn layout
+    }
+    else
+    {
+        std::cout << "Successfully loaded spawn layout" << std::endl;
+    }
+}
+
+// Check overlap for an entity with a group of entities
+template <typename T>
+void Field::checkOverlap(sf::Sprite &entity, T &entities)
+{
+    for (int i = 0; i < entities.size(); i++)
+    {
+        if (entity.getGlobalBounds().intersects(entities[i].sprite.getGlobalBounds()))
+        {
+            std::cout << entityToString(entity) << " x " << entityToString(entities[i].sprite) << ", ";
+            setNewPosition(entities[i].sprite);
+            done++;
+        }
+    }
+}
+
+// Check overlap for two different groups of entities
+template <typename T, typename U>
+void Field::checkOverlap(T &group1, U &group2)
+{
+    for (int i = 0; i < group1.size(); i++)
+    {
+        for (int k = 0; k < group2.size(); k++)
+        {
+            if (group1[i].sprite.getGlobalBounds().intersects(group2[k].sprite.getGlobalBounds()))
+            {
+                std::cout << entityToString(group1[i].sprite) << " x " << entityToString(group2[k].sprite) << ", ";
+                setNewPosition(group2[k].sprite);
+                done++;
+            }
+        }
+    }
+}
+
+// Set a new position for an entity
+void Field::setNewPosition(sf::Sprite &entity)
+{
+    int newPosX = entity.giveRandomNumber(0, 1920);
+    int newPosY = entity.giveRandomNumber(0, 900);
+    entity.setPosition(newPosX, newPosY);
+    field->draw(entity);
+}
+
+
+*/

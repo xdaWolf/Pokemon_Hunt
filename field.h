@@ -86,7 +86,13 @@ private:
     void checkPositions();       // checks whether any objects spawned on top of each other
     void openMenu();             // opens the menu
     void closeMenu();            // closes the menu
-
+    /*
+    template <typename T>
+    void checkOverlap(sf::Sprite &entity, T &entities);
+    template <typename T, typename U>
+    void checkOverlap(T &group1, U &group2);
+    void setNewPosition(sf::Sprite &entity);
+    */
 public:
     Field();  // constructor
     ~Field(); // destructor
