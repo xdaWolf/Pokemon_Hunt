@@ -31,6 +31,7 @@ private:
     int positionCY[3];          // IMPORTANT: same number as collectables array size and positionCX
     int success;                // acts as bool, saves whether player has won
     bool menuIsOpen;            // saves whether menu is open
+    bool prevMenuKeyPressed;    // saves whether menu key was pressed in previous frame
 
     sf::Time InputDelay = sf::seconds(0.0001f); // input delay, added for smooth movement
     sf::Clock InputDelayTimer;                  // timer, added for smooth movement

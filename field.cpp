@@ -94,6 +94,7 @@ Field::Field()
     moves = 0;        // initialize the moves variable which is used for the score calculation
     checkPositions(); // check whether entities tried to spawn on one another when they weren't supposed to
     menuIsOpen = false;
+    prevMenuKeyPressed = false;
 }
 
 Field::~Field() // destructor
@@ -128,65 +129,73 @@ void Field::update() // manages all the game data
     {
         if (event.type == sf::Event::Closed) // if window gets closed by user
         {
-            field->close(); // close everything *****************************closes without user interaction after opening menu******************************************************
+            field->close();
         }
-        if (InputDelayTimer.getElapsedTime() > InputDelay) // if a certain input delay has passed
-        {
-            if ((InputDelayTimer.getElapsedTime() > InputDelay) && ((sf::Keyboard::isKeyPressed(sf::Keyboard::W)) || (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) || (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) || (sf::Keyboard::isKeyPressed(sf::Keyboard::D) || (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) || (sf::Keyboard::isKeyPressed(sf::Keyboard::R) || (sf::Keyboard::isKeyPressed(sf::Keyboard::M))))))
-            { // and if any of the 6 used keys is pressed
-                // CLOSE/RESET/MENU
-                if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) // if "Esc" is pressed
-                {
-                    field->close(); // close everything
-                }
-                if (sf::Keyboard::isKeyPressed(sf::Keyboard::R)) // if "R" is pressed
-                {
-                    resetGame(); // reset the game
-                }
-                if (sf::Keyboard::isKeyPressed(sf::Keyboard::M)) // if "M" is pressed
-                {
-                    if (menuIsOpen == false)
-                    {
-                        openMenu(); // open the menu
-                        menuIsOpen = true;
-                    }
-                    else if (menuIsOpen == true)
-                    {
-                        closeMenu(); // close the menu
-                        menuIsOpen = false;
-                    }
-                }
+    }
+
+    bool currentMenuKeyPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::M);
+
+    if (InputDelayTimer.getElapsedTime() > InputDelay) // if a certain input delay has passed
+    {
+        if ((sf::Keyboard::isKeyPressed(sf::Keyboard::W)) || (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) || (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) || (sf::Keyboard::isKeyPressed(sf::Keyboard::D) || (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) || (sf::Keyboard::isKeyPressed(sf::Keyboard::R) || (sf::Keyboard::isKeyPressed(sf::Keyboard::M)))))
+        { // and if any of the 6 used keys is pressed
+            // CLOSE/RESET/MENU
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) // if "Esc" is pressed
+            {
+                field->close(); // close everything
+            }
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::R)) // if "R" is pressed
+            {
+                resetGame(); // reset the game
+            }
+
+            // MENU
+            if (currentMenuKeyPressed && !prevMenuKeyPressed)
+            {
                 if (menuIsOpen == false)
                 {
-                    // WASD MOVEMENT
-                    if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) // if "W" is pressed
-                    {
-                        direction = 0;                                                                   // current direction: up
-                        player.setTexture("resources/pikachu_" + std::to_string(movement % 2) + ".png"); // alternate between the two animation frames
-                        playerPosY -= speed;                                                             // move player up
-                        moves++;                                                                         // player has done a move
-                    }
-                    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) // if "W" is pressed
-                    {
-                        direction = 1;                                                                       // current direction: left
-                        player.setTexture("resources/pikachu_" + std::to_string(movement % 2 + 2) + ".png"); // alternate between the two animation frames
-                        playerPosX -= speed;                                                                 // move player to the right
-                        moves++;                                                                             // player has done a move
-                    }
-                    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) // if "S" is pressed
-                    {
-                        direction = 2;                                                                       // current direction: down
-                        player.setTexture("resources/pikachu_" + std::to_string(movement % 2 + 4) + ".png"); // alternate between the two animation frames
-                        playerPosY += speed;                                                                 // move player down
-                        moves++;                                                                             // player has done a move
-                    }
-                    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) // if "D" is pressed
-                    {
-                        direction = 3;                                                                       // current direction: right
-                        player.setTexture("resources/pikachu_" + std::to_string(movement % 2 + 6) + ".png"); // alternate between the two animation frames
-                        playerPosX += speed;                                                                 // move player right
-                        moves++;                                                                             // player has done a move
-                    }
+                    openMenu(); // open the menu
+                    menuIsOpen = true;
+                }
+                else
+                {
+                    closeMenu(); // close the menu
+                    menuIsOpen = false;
+                }
+
+                InputDelayTimer.restart(); // Restart the cooldown timer after opening or closing the menu.
+            }
+
+            if (menuIsOpen == false)
+            {
+                // WASD MOVEMENT
+                if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) // if "W" is pressed
+                {
+                    direction = 0;                                                                   // current direction: up
+                    player.setTexture("resources/pikachu_" + std::to_string(movement % 2) + ".png"); // alternate between the two animation frames
+                    playerPosY -= speed;                                                             // move player up
+                    moves++;                                                                         // player has done a move
+                }
+                else if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) // if "A" is pressed
+                {
+                    direction = 1;                                                                       // current direction: left
+                    player.setTexture("resources/pikachu_" + std::to_string(movement % 2 + 2) + ".png"); // alternate between the two animation frames
+                    playerPosX -= speed;                                                                 // move player to the left
+                    moves++;                                                                             // player has done a move
+                }
+                else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) // if "S" is pressed
+                {
+                    direction = 2;                                                                       // current direction: down
+                    player.setTexture("resources/pikachu_" + std::to_string(movement % 2 + 4) + ".png"); // alternate between the two animation frames
+                    playerPosY += speed;                                                                 // move player down
+                    moves++;                                                                             // player has done a move
+                }
+                else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) // if "D" is pressed
+                {
+                    direction = 3;                                                                       // current direction: right
+                    player.setTexture("resources/pikachu_" + std::to_string(movement % 2 + 6) + ".png"); // alternate between the two animation frames
+                    playerPosX += speed;                                                                 // move player right
+                    moves++;                                                                             // player has done a move
                 }
 
                 InputDelayTimer.restart(); // restart input delay timer
@@ -206,14 +215,16 @@ void Field::update() // manages all the game data
         {
             playerPosY = (player.spriteP.getTexture()->getSize().y) / 2;
         }
-        if (playerPosY > 920 - (player.spriteP.getTexture()->getSize().y) / 2) // 920 in order to prevent player from walking across the trees of the background image
+        if (playerPosY > 920 - (player.spriteP.getTexture()->getSize().y) / 2)
         {
-            playerPosY = 920 - (player.spriteP.getTexture()->getSize().y) / 2; // 920 in order to prevent player from walking across the trees of the background image
+            playerPosY = 920 - (player.spriteP.getTexture()->getSize().y) / 2;
         }
 
         player.spriteP.setPosition(playerPosX, playerPosY); // set player sprite to updated position
         player.shapeP.setPosition(playerPosX, playerPosY);  // set player shape  to updated position
     }
+
+    prevMenuKeyPressed = currentMenuKeyPressed;
 }
 
 void Field::render() // displays the game field
@@ -225,12 +236,6 @@ void Field::render() // displays the game field
     field->draw(spriteHB);
     field->draw(spriteCPB);
     field->draw(spritePC);
-
-    if (menuIsOpen == true)
-    {
-        field->draw(dimOverlay);
-        field->draw(spriteM);
-    }
 
     for (int i = 0; i < (sizeof(enemies) / sizeof(enemies[0])); i++) // for all trainers
     {
@@ -261,15 +266,18 @@ void Field::render() // displays the game field
     if (menuIsOpen == false)
     {
         pokeballMovement(); // moving Pokeballs
+        checkCollision();   // checking for any sort of player - entity collision
     }
-    checkCollision(); // checking for any sort of player - entity collision
 
     field->draw(player.spriteP);
 
-    if (menuIsOpen == false)
+    if (menuIsOpen == true)
     {
-        field->display(); // display updated frame
+        field->draw(dimOverlay);
+        field->draw(spriteM);
     }
+
+    field->display(); // display updated frame
 }
 
 void Field::pokeballMovement()
@@ -433,17 +441,18 @@ void Field::updateHealth()
 
 void Field::openMenu()
 {
+    dimOverlay.setFillColor(sf::Color(0, 0, 0, 150));
     field->draw(dimOverlay); // draw rectangle
-    field->draw(spriteM);    // draw menu
-    field->display();        // display updated frame
+    spriteM.setPosition(1500, 540);
+    field->draw(spriteM); // draw menu
 }
 
 void Field::closeMenu()
 {
     spriteM.setPosition(sf::Vector2f(-1000, -1000)); // set position out of view to "destroy" it
     field->draw(spriteM);                            // draw menu
-    dimOverlay.setFillColor(sf::Color());            // set colour of rectangle to transparent
-    menuIsOpen = false;
+    dimOverlay.setFillColor(sf::Color::Transparent); // set colour of rectangle to transparent
+    field->draw(dimOverlay);                         // draw rectangle
 }
 
 void Field::endOfGame(int success)
