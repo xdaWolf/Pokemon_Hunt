@@ -20,34 +20,32 @@ When adding new sprites, format the file names like this: "<nameOfSprite>_<nextN
 
 Note:
 - "Collectable" and "Pokemon" are used synonymously.
-- "Enemy" and "Trainer" are used synonymously.
-- "Enemy2" and "Pokeballs" are used synonymously.
 - "CPB" is short for "collected Pokemon box"
 */
 
-#include "field.h"
+#include "Field.h"
 
 #include <stdio.h>
 #include <iostream>
 #include <string>
 #include <stdlib.h>
-#include <windows.h>                    //include all necessary external files
+#include <windows.h> //include all necessary external files
 
-int main(int argc, char* argv[])
-{   
-    Field field;                        //create a field to play on
-    
-    sf::Music backgroundmusic;          //variable used for background music
-    backgroundmusic.openFromFile("resources/backgroundmusic.wav");  //load background music file
-    backgroundmusic.setVolume(30);      //set volume of background music
-    backgroundmusic.play();             //start the background music
+int main(int argc, char *argv[])
+{
+    Field field; // create a field to play on
 
-    while (field.getFieldIsOpen())      //as long as field wasn't closed
+    sf::Music backgroundmusic;                                     // variable used for background music
+    backgroundmusic.openFromFile("resources/backgroundmusic.wav"); // load background music file
+    backgroundmusic.setVolume(30);                                 // set volume of background music
+    backgroundmusic.play();                                        // start the background music
+
+    while (field.getFieldIsOpen()) // as long as field wasn't closed
     {
-        field.update();                 //update the current field
+        field.update(); // update the current field
 
-        field.render();                 //render the updated field
+        field.render(); // render the updated field
     }
 
-    return 0;                           //return 0 if game was closed successfully
+    return 0; // return 0 if game was closed successfully
 }
