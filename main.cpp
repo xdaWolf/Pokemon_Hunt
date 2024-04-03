@@ -20,12 +20,10 @@ When adding new sprites, format the file names like this: "<nameOfSprite>_<nextN
 
 Note:
 - "Collectable" and "Pokemon" are used synonymously.
-- "Enemy" and "Trainer" are used synonymously.
-- "Enemy2" and "Pokeballs" are used synonymously.
 - "CPB" is short for "collected Pokemon box"
 */
 
-#include "field.h"
+#include "Field.h"
 
 #include <stdio.h>
 #include <iostream>

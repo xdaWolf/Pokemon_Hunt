@@ -1,14 +1,21 @@
-all: compile link main
+CXX := g++
+CXXFLAGS := -g -I src/include
+LDFLAGS := -L src/lib
+LIBS := -lsfml-graphics -lsfml-window -lsfml-system -lsfml-network -lsfml-audio
 
-compile:
-	g++ -I src/include -c main.cpp -o main.o
-	g++ -I src/include -c field.cpp -o field.o
-	g++ -I src/include -c enemy.cpp -o enemy.o
-	g++ -I src/include -c player.cpp -o player.o
-	g++ -I src/include -c collectable.cpp -o collectable.o
-	g++ -I src/include -c enemy2.cpp -o enemy2.o
+SRCS := main.cpp Field.cpp Player.cpp Collectable.cpp BaseEntity.cpp EndOfGame.cpp Trainer.cpp Pokeball.cpp HealthBar.cpp PokeBox.cpp PokeCenter.cpp Obstacle.cpp Menu.cpp
+OBJS := $(SRCS:.cpp=.o)
+TARGET := main
 
-link:
-	g++ -o main main.o enemy.o enemy2.o field.o player.o collectable.o -L src/lib -lsfml-graphics -lsfml-window -lsfml-system -lsfml-network -lsfml-audio
-main:
-	main
+.PHONY: all clean
+
+all: $(TARGET)
+
+$(TARGET): $(OBJS)
+	$(CXX) $(LDFLAGS) -o $@ $^ $(LIBS)
+
+%.o: %.cpp
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+clean:
+	.\clean.bat

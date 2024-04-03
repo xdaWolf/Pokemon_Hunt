@@ -1,9 +1,15 @@
 #pragma once
 
-#include "enemy.h"
-#include "player.h"
-#include "collectable.h"
-#include "enemy2.h"
+#include "Player.h"
+#include "Collectable.h"
+#include "Trainer.h"
+#include "Pokeball.h"
+#include "EndOfGame.h"
+#include "HealthBar.h"
+#include "PokeBox.h"
+#include "PokeCenter.h"
+#include "Obstacle.h"
+#include "Menu.h"
 
 #include <SFML/System.hpp>
 #include <SFML/Window.hpp>
@@ -26,7 +32,6 @@ private:
     int score;                  // used to calculate score, moves is used
     int direction;              // saves in which direction the player is moving
     int playerPosX, playerPosY; // saves position of player (X & Y)
-    int amountOfTrees = 1;      // IMPORTANT: this number + the amount of invisible rectangles (default: 2) has to be equal to spriteTree/textureTree array size as declared below
     int positionCX[3];          // IMPORTANT: same number as collectables array size and positionCY
     int positionCY[3];          // IMPORTANT: same number as collectables array size and positionCX
     int success;                // acts as bool, saves whether player has won
@@ -43,11 +48,17 @@ private:
     // OBJECTS
     // amount of each object (trainers, Pokeballs, Pokemon, trees), reduce any to lower difficulty (and vice versa)
     Player player;
-    Enemy enemies[4];
-    Enemy2 pokeballs[5];
-    Collectable collectables[1]; // IMPORTANT: same number as positionCX and positionCY
-    sf::Sprite spriteTree[6];    // IMPORTANT: this number is the sum of amountOfTrees and amount of transparent rectangles. Check "amountOfTrees" variable. Maybe implement vector here.
-    sf::Texture textureTree[6];  // IMPORTANT: this number is the sum of amountOfTrees and amount of transparent rectangles. Check "amountOfTrees" variable. Maybe implement vector here.
+    Trainer trainers[4];
+    Pokeball pokeballs[5];
+
+    Collectable collectables[3]; // IMPORTANT: same number as positionCX and positionCY
+    // sf::Sprite spriteTree[6];    // IMPORTANT: this number is the sum of amountOfTrees and amount of transparent rectangles. Check "amountOfTrees" variable. Maybe implement vector here.
+    // sf::Texture textureTree[6];  // IMPORTANT: this number is the sum of amountOfTrees and amount of transparent rectangles. Check "amountOfTrees" variable. Maybe implement vector here.
+
+    Obstacle trees[3];
+
+    Obstacle mountainTopRight;
+    Obstacle mountainTopLeft;
 
     // PRIVATE VISUALS
     sf::RenderWindow *field; // field is realised as renderwindow
@@ -55,37 +66,31 @@ private:
     sf::Sprite spritef; // visuals for field
     sf::Texture texturef;
 
-    sf::Sprite spriteHB; // visuals for health bar
-    sf::Texture textureHB;
+    HealthBar healthbar;
 
-    sf::Sprite spriteCPB; // visuals for collected Pokemon box
-    sf::Texture textureCPB;
+    PokeBox pokebox;
 
-    sf::Sprite spritePC; // visuals for PokeCenter
-    sf::Texture texturePC;
+    PokeCenter pokecenter;
 
-    sf::Sprite spriteEOGS; // visuals for endOfGame success/death sprite
-    sf::Texture textureEOGS;
-
-    sf::Sprite spriteEOGM; // visuals for endOfGame success/death message
-    sf::Texture textureEOGM;
+    EndOfGame endOfGameSprite;  // visuals for endOfGame success/death sprite
+    EndOfGame endOfGameMessage; // visuals for endOfGame success/death message
 
     sf::Font pokemonhollow; // visuals for score
     sf::Text textscore;
 
-    sf::Sprite spriteM; // visuals for menu
-    sf::Texture textureM;
+    Menu menu;
     sf::RectangleShape dimOverlay; // set colour of rectangle to transparent
 
     // PRIVATE METHODS
-    void pokeballMovement();     // moves Pokeballs
-    void checkCollision();       // checks for any collision between sprites on the field
-    void updateHealth();         // update health of player
-    void endOfGame(int success); // success/death screen
-    void resetGame();            // resets the game
-    void checkPositions();       // checks whether any objects spawned on top of each other
-    void openMenu();             // opens the menu
-    void closeMenu();            // closes the menu
+    void pokeballMovement();      // moves Pokeballs
+    void checkCollision();        // checks for any collision between sprites on the field
+    void updateHealth();          // update health of player
+    void endOfGame(int pSuccess); // success/death screen
+    void resetGame();             // resets the game
+    void checkPositions();        // checks whether any objects spawned on top of each other
+    void openMenu();              // opens the menu
+    void closeMenu();             // closes the menu
+
     /*
     template <typename T>
     void checkOverlap(sf::Sprite &entity, T &entities);

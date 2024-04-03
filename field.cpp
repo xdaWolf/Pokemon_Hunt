@@ -1,4 +1,4 @@
-#include "field.h"
+#include "Field.h"
 
 #include <stdio.h>
 #include <iostream>
@@ -12,7 +12,7 @@ Field::Field()
     std::cout << "Field constructor" << std::endl;
 
     // SET VISUALS - FIELD
-    // field = new sf::RenderWindow(sf::VideoMode::getDesktopMode(), "Pokemon-Hunt", sf::Style::Fullscreen);   //open a full-screen window called "Pokemon-Hunt"
+    // field = new sf::RenderWindow(sf::VideoMode::getDesktopMode(), "Pokemon-Hunt", sf::Style::Fullscreen); // open a full-screen window called "Pokemon-Hunt"
     field = new sf::RenderWindow(sf::VideoMode(1920, 1080), "Pokemon-Hunt"); // open a 1920x1080 window called "Pokemon-Hunt", IMPORTANT: only use this if upper method doesn't work properly on your device (for example if secondary monitor is used)
     field->setFramerateLimit(60);                                            // don't exceed a framerate of 60fps
     texturef.loadFromFile("resources/backgroundv3.png");                     // load background image
@@ -37,59 +37,18 @@ Field::Field()
     failure.setVolume(25);
     damage.setVolume(35);
 
-    // SET VISUALS - HEALTH-BAR
-    textureHB.loadFromFile("resources/health_bar_3.png"); // load full health bar
-    textureHB.setSmooth(true);
-    spriteHB.setTexture(textureHB);                                                         // set health bar sprite to full health bar image
-    spriteHB.setOrigin(sf::Vector2f(textureHB.getSize().x / 2, textureHB.getSize().y / 2)); // move origin of sprite (default: top left) to center of sprite
-    spriteHB.setPosition(1600, 50);                                                         // place health bar sprite in the top right of the screen
-
-    // SET VISUALS - COLLECTED POKEMON BOX
-    textureCPB.loadFromFile("resources/collected_pokemon.png"); // load collected Pokemon box
-    textureCPB.setSmooth(true);
-    spriteCPB.setTexture(textureCPB);                                                          // set collected Pokemon sprite to collected Pokemon box
-    spriteCPB.setOrigin(sf::Vector2f(textureCPB.getSize().x / 2, textureCPB.getSize().y / 2)); // move origin of sprite (default: top left) to center of sprite
-    spriteCPB.setPosition(250, 1000);                                                          // place collected Pokemon sprite in the bottom left of the screen
-
-    // SET VISUALS - POKE CENTER
-    texturePC.loadFromFile("resources/pokecenter.png"); // load Pokecenter image
-    texturePC.setSmooth(true);
-    spritePC.setTexture(texturePC);                                                         // set Pokecenter sprite to Pokecenter image
-    spritePC.setOrigin(sf::Vector2f(texturePC.getSize().x / 2, texturePC.getSize().y / 2)); // move origin of sprite (default: top left) to center of sprite
-    spritePC.setPosition(1800, 500);                                                        // place Pokecenter sprite on the right of the screen
-
     // SET VISUALS - TREES
-    for (int i = 0; i < (sizeof(spriteTree) / sizeof(spriteTree[0])); i++) // for all trees and invisible rectangles. Note: lack of giveRandomNumber function: using giveRandomNumber of enemies[0]
+    for (int i = 0; i < (sizeof(trees) / sizeof(trees[0])); i++) // for all trees
     {
-        if (i < amountOfTrees)
-        {
-            textureTree[i].loadFromFile("resources/tree_" + std::to_string(enemies[0].giveRandomNumber(1, 1)) + ".png"); // load random tree image
-            textureTree[i].setSmooth(true);
-            spriteTree[i].setTexture(textureTree[i]);                                                              // set current tree sprite to selected tree image
-            spriteTree[i].setOrigin(sf::Vector2f(textureTree[i].getSize().x / 2, textureTree[i].getSize().y / 2)); // move origin of sprite (default: top left) to center of sprite
-            spriteTree[i].setPosition(enemies[0].giveRandomNumber(0, 1920), enemies[0].giveRandomNumber(0, 900));  // set tree sprite at random spot on the map
-        }
-        else if (i == (amountOfTrees - 1) + 1)
-        {
-            textureTree[i].loadFromFile("resources/mountainTopRight.png"); // load transparent image in size of the invisible rectangle needed
-            textureTree[i].setSmooth(true);
-            spriteTree[i].setTexture(textureTree[i]);                                         // set current "tree" sprite to transparent image. This was done due to the fact that these rectangles act in the same way as trees do.
-            spriteTree[i].setPosition(texturef.getSize().x - textureTree[i].getSize().x, -3); // set "tree" sprite in the top right of the screen
-        }
-        else if (i == (amountOfTrees - 1) + 2)
-        {
-            textureTree[i].loadFromFile("resources/mountainTopLeft.png"); // load transparent image in size of the invisible rectangle needed
-            textureTree[i].setSmooth(true);
-            spriteTree[i].setTexture(textureTree[i]); // set current "tree" sprite to transparent image. This was done due to the fact that these rectangles act in the same way as trees do.
-            spriteTree[i].setPosition(0, 0);          // set "tree" sprite in the top left of the screen
-        }
+        trees[i].setTexture("resources/tree_" + std::to_string(trees[0].giveRandomNumber(1, 1)) + ".png");
+        trees[i].initializeSpriteAndTexture();
     }
-    // SET VISUALS - MENU
-    textureM.loadFromFile("resources/pause_menu.png"); // load menu image
-    textureM.setSmooth(true);
-    spriteM.setTexture(textureM);                                                        // set menu sprite to menu image
-    spriteM.setOrigin(sf::Vector2f(textureM.getSize().x / 2, textureM.getSize().y / 2)); // move origin of sprite (default: top left) to center of sprite
-    spriteM.setPosition(1500, 540);                                                      // place menu sprite at the right side of the screen
+    mountainTopLeft.setTexture("resources/mountainTopLeft.png");
+    mountainTopLeft.initializeSpriteAndTexture();                  // load mountainTopLeft image
+    mountainTopLeft.sprite.setPosition(48, 99);                    // set position of mountainTopLeft
+    mountainTopRight.setTexture("resources/mountainTopRight.png"); // load mountainTopRight image
+    mountainTopRight.initializeSpriteAndTexture();                 // initialize mountainTopRight
+    mountainTopRight.sprite.setPosition(1590, 72);                 // set position of mountainTopRight
 
     moves = 0;        // initialize the moves variable which is used for the score calculation
     checkPositions(); // check whether entities tried to spawn on one another when they weren't supposed to
@@ -115,8 +74,8 @@ const bool Field::getMenuIsOpen() const // returns if menu is open
 
 void Field::update() // manages all the game data
 {
-    playerPosX = player.spriteP.getPosition().x; // save current player x position
-    playerPosY = player.spriteP.getPosition().y; // save current player y position
+    playerPosX = player.sprite.getPosition().x; // save current player x position
+    playerPosY = player.sprite.getPosition().y; // save current player y position
 
     int movement, speed;
     movement = playerPosY + playerPosX; // walking animation, as long as speed is odd
@@ -125,12 +84,12 @@ void Field::update() // manages all the game data
     sf::Event event;
 
     while (field->pollEvent(event))
-        ; // as long as any input is being made
     {
-        if (event.type == sf::Event::Closed) // if window gets closed by user
+        if (event.type == sf::Event::Closed)
         {
             field->close();
         }
+        // Weitere Verarbeitung von Ereignissen je nach Bedarf
     }
 
     bool currentMenuKeyPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::M);
@@ -203,25 +162,25 @@ void Field::update() // manages all the game data
         }
 
         // Window borders - keeping the player half its size away from any edges of the field
-        if (playerPosX < (player.spriteP.getTexture()->getSize().x) / 2)
+        if (playerPosX < (player.sprite.getTexture()->getSize().x) / 2)
         {
-            playerPosX = (player.spriteP.getTexture()->getSize().x) / 2;
+            playerPosX = (player.sprite.getTexture()->getSize().x) / 2;
         }
-        if (playerPosX > (int)field->getSize().x - (player.spriteP.getTexture()->getSize().x) / 2)
+        if (playerPosX > (int)field->getSize().x - (player.sprite.getTexture()->getSize().x) / 2)
         {
-            playerPosX = field->getSize().x - (player.spriteP.getTexture()->getSize().x) / 2;
+            playerPosX = field->getSize().x - (player.sprite.getTexture()->getSize().x) / 2;
         }
-        if (playerPosY < (player.spriteP.getTexture()->getSize().y) / 2)
+        if (playerPosY < (player.sprite.getTexture()->getSize().y) / 2)
         {
-            playerPosY = (player.spriteP.getTexture()->getSize().y) / 2;
+            playerPosY = (player.sprite.getTexture()->getSize().y) / 2;
         }
-        if (playerPosY > 920 - (player.spriteP.getTexture()->getSize().y) / 2)
+        if (playerPosY > 920 - (player.sprite.getTexture()->getSize().y) / 2)
         {
-            playerPosY = 920 - (player.spriteP.getTexture()->getSize().y) / 2;
+            playerPosY = 920 - (player.sprite.getTexture()->getSize().y) / 2;
         }
 
-        player.spriteP.setPosition(playerPosX, playerPosY); // set player sprite to updated position
-        player.shapeP.setPosition(playerPosX, playerPosY);  // set player shape  to updated position
+        player.sprite.setPosition(playerPosX, playerPosY); // set player sprite to updated position
+        player.shapeP.setPosition(playerPosX, playerPosY); // set player shape  to updated position
     }
 
     prevMenuKeyPressed = currentMenuKeyPressed;
@@ -233,35 +192,38 @@ void Field::render() // displays the game field
 
     // DRAW ALL ENTITIES
     field->draw(spritef);
-    field->draw(spriteHB);
-    field->draw(spriteCPB);
-    field->draw(spritePC);
+    field->draw(healthbar.sprite);
+    field->draw(pokebox.sprite);
+    field->draw(pokecenter.sprite);
 
-    for (int i = 0; i < (sizeof(enemies) / sizeof(enemies[0])); i++) // for all trainers
+    for (int i = 0; i < (sizeof(trainers) / sizeof(trainers[0])); i++) // for all trainers
     {
-        field->draw(enemies[i].spriteE);
+        field->draw(trainers[i].sprite);
     }
 
     for (int i = 0; i < (sizeof(collectables) / sizeof(collectables[0])); i++) // for all Pokemon
     {
-        field->draw(collectables[i].spriteC);
+        field->draw(collectables[i].sprite);
 
-        if (!(collectables[i].spriteC.getGlobalBounds().intersects(spriteCPB.getGlobalBounds()))) // if collectable is not intersecting with the collected Pokemon box
+        if (!(collectables[i].sprite.getGlobalBounds().intersects(pokebox.sprite.getGlobalBounds()))) // if collectable is not intersecting with the collected Pokemon box
         {
-            positionCX[i] = collectables[i].spriteC.getPosition().x; // save its X position in a variable (used for resetting game)
-            positionCY[i] = collectables[i].spriteC.getPosition().y; // save its Y position in a variable (used for resetting game)
+            positionCX[i] = collectables[i].sprite.getPosition().x; // save its X position in a variable (used for resetting game)
+            positionCY[i] = collectables[i].sprite.getPosition().y; // save its Y position in a variable (used for resetting game)
         }
     }
 
     for (int i = 0; i < (sizeof(pokeballs) / sizeof(pokeballs[0])); i++) // for all Pokeballs
     {
-        field->draw(pokeballs[i].spriteE2);
+        field->draw(pokeballs[i].sprite);
     }
 
-    for (int i = 0; i < (sizeof(spriteTree) / sizeof(spriteTree[0])); i++) // for all trees
+    for (int i = 0; i < (sizeof(trees) / sizeof(trees[0])); i++) // for all trees
     {
-        field->draw(spriteTree[i]);
+        field->draw(trees[i].sprite);
     }
+
+    field->draw(mountainTopLeft.sprite);
+    field->draw(mountainTopRight.sprite);
 
     if (menuIsOpen == false)
     {
@@ -269,12 +231,12 @@ void Field::render() // displays the game field
         checkCollision();   // checking for any sort of player - entity collision
     }
 
-    field->draw(player.spriteP);
+    field->draw(player.sprite);
 
     if (menuIsOpen == true)
     {
         field->draw(dimOverlay);
-        field->draw(spriteM);
+        field->draw(menu.sprite);
     }
 
     field->display(); // display updated frame
@@ -283,73 +245,73 @@ void Field::render() // displays the game field
 void Field::pokeballMovement()
 {
     for (int i = 0; i < (sizeof(pokeballs) / sizeof(pokeballs[0])); i++)
-    {                                                                                                                                             // for all Pokeballs
-        pokeballs[i].spriteE2.setPosition(((pokeballs[i].spriteE2.getPosition().x) - pokeballs[i].speed), pokeballs[i].spriteE2.getPosition().y); // move Pokeball to the left (by an amount depending on its speed)
+    {                                                                                                                                       // for all Pokeballs
+        pokeballs[i].sprite.setPosition(((pokeballs[i].sprite.getPosition().x) - pokeballs[i].speed), pokeballs[i].sprite.getPosition().y); // move Pokeball to the left (by an amount depending on its speed)
 
-        if (pokeballs[i].spriteE2.getPosition().x <= -100) // if Pokeball has passed the left screen border
+        if (pokeballs[i].sprite.getPosition().x <= -100) // if Pokeball has passed the left screen border
         {
-            pokeballs[i].speed = pokeballs[i].fRand(7.5, 9.5); // select new random speed
+            pokeballs[i].speed = pokeballs[i].giveRandomDouble(7.5, 9.5); // select new random speed
             int newPosY;
-            newPosY = pokeballs[i].giveRandomNumber(0, 900);  // select new random spawn height
-            pokeballs[i].spriteE2.setPosition(1970, newPosY); // set Pokeball position to the right of the screen at selected height
+            newPosY = pokeballs[i].giveRandomNumber(0, 900); // select new random spawn height
+            pokeballs[i].sprite.setPosition(1970, newPosY);  // set Pokeball position to the right of the screen at selected height
         }
     }
 }
 
 void Field::checkCollision()
 {
-    for (int i = 0; i < (sizeof(enemies) / sizeof(enemies[0])); i++) // for all trainers
+    for (int i = 0; i < (sizeof(trainers) / sizeof(trainers[0])); i++) // for all trainers
     {
-        if (player.spriteP.getGlobalBounds().intersects(enemies[i].spriteE.getGlobalBounds())) // if player touches trainer
+        if (player.sprite.getGlobalBounds().intersects(trainers[i].sprite.getGlobalBounds())) // if player touches trainer
         {
             std::cout << "Player hit trainer" << std::endl;
             player.setHealthPoints(player.getHealthPoints() - 1); // reduce HP by 1
             std::cout << "Player has " << player.getHealthPoints() << " HP left" << std::endl;
-            player.spriteP.setPosition(sf::Vector2f(player.spawnPX, player.spawnPY)); // reset player sprite position
-            player.shapeP.setPosition(sf::Vector2f(player.spawnPX, player.spawnPY));  // reset player shape  position
-            updateHealth();                                                           // update health
+            player.sprite.setPosition(sf::Vector2f(player.spawnPX, player.spawnPY)); // reset player sprite position
+            player.shapeP.setPosition(sf::Vector2f(player.spawnPX, player.spawnPY)); // reset player shape  position
+            updateHealth();                                                          // update health
         }
     }
 
     for (int i = 0; i < (sizeof(pokeballs) / sizeof(pokeballs[0])); i++) // for all Pokeballs
     {
-        if (player.spriteP.getGlobalBounds().intersects(pokeballs[i].spriteE2.getGlobalBounds())) // if player touches Pokeball
+        if (player.sprite.getGlobalBounds().intersects(pokeballs[i].sprite.getGlobalBounds())) // if player touches Pokeball
         {
             std::cout << "Player hit Pokeball" << std::endl;
             player.setHealthPoints(player.getHealthPoints() - 1); // reduce HP by 1
             std::cout << "Player has " << player.getHealthPoints() << " HP left" << std::endl;
-            player.spriteP.setPosition(sf::Vector2f(player.spawnPX, player.spawnPY)); // reset player sprite position
-            player.shapeP.setPosition(sf::Vector2f(player.spawnPX, player.spawnPY));  // reset player shape  position
-            updateHealth();                                                           // update health
+            player.sprite.setPosition(sf::Vector2f(player.spawnPX, player.spawnPY)); // reset player sprite position
+            player.shapeP.setPosition(sf::Vector2f(player.spawnPX, player.spawnPY)); // reset player shape  position
+            updateHealth();                                                          // update health
         }
     }
 
     for (int i = 0; i < (sizeof(collectables) / sizeof(collectables[0])); i++) // for all Pokemon
     {
-        if (player.spriteP.getGlobalBounds().intersects(collectables[i].spriteC.getGlobalBounds())) // if player touches Pokemon
+        if (player.sprite.getGlobalBounds().intersects(collectables[i].sprite.getGlobalBounds())) // if player touches Pokemon
         {
             std::cout << "Player collected Pokemon" << std::endl;
             player.setCollected(player.getCollected() + 1); // increase amount of collected Pokemon by 1
             std::cout << "Player has collected " << player.getCollected() << " Pokemon" << std::endl;
-            collectables[i].spriteC.setScale(0.5, 0.5); // shrink collected Pokemon
-            collected.play();                           // play sound effect for collecting Pokemon
+            collectables[i].sprite.setScale(0.5, 0.5); // shrink collected Pokemon
+            collected.play();                          // play sound effect for collecting Pokemon
 
             if ((sizeof(collectables) / sizeof(collectables[0])) > 1) // if there are 2 or more Pokemon
             {
-                collectables[i].spriteC.setPosition(92 + (271 / ((sizeof(collectables) / sizeof(collectables[0])) - 1) * (player.getCollected() - 1)), 1000); // move collected Pokemon to the CPB. The rather complex calculation makes any amount of collectables possible.
+                collectables[i].sprite.setPosition(115 + (271 / ((sizeof(collectables) / sizeof(collectables[0])) - 1) * (player.getCollected() - 1)), 1020); // move collected Pokemon to the CPB. The rather complex calculation makes any amount of collectables possible.
                 // 92  = spriteCPB.getPosition().x - textureCPB.getSize().x / 2 + 25                                                                     //explains the origin of the "92"  above in case a different sized CPB is needed
                 // 271 = spriteCPB.getPosition().x + textureCPB.getSize().x / 2 - 25 - collectables[i].getTexture().x - (92)                             //explains the origin of the "271" above in case a different sized CPB is needed
             }
             else // if there's only 1 Pokemon
             {
-                collectables[i].spriteC.setPosition(spriteCPB.getPosition().x - collectables[i].spriteC.getTexture()->getSize().x / 2, 1000); // place it in the center of the CPB
+                collectables[i].sprite.setPosition(pokebox.sprite.getPosition().x - collectables[i].sprite.getTexture()->getSize().x / 2, 1000); // place it in the center of the CPB
             }
         }
     }
 
-    for (int i = 0; i < (sizeof(spriteTree) / sizeof(spriteTree[0])); i++) // for all trees
+    for (int i = 0; i < (sizeof(trees) / sizeof(trees[0])); i++) // for all trees
     {
-        while (player.spriteP.getGlobalBounds().intersects(spriteTree[i].getGlobalBounds())) // as long as player is within the tree
+        while (player.sprite.getGlobalBounds().intersects(trees[i].sprite.getGlobalBounds())) // as long as player is within the tree
         {
             switch (direction)
             {                 // note: moving the player one pixel at a time here to prevent the feeling of false hitboxes
@@ -366,11 +328,31 @@ void Field::checkCollision()
                 playerPosX--; // move player to the left
                 break;
             }
-            player.spriteP.setPosition(playerPosX, playerPosY); // set new player position
+            player.sprite.setPosition(playerPosX, playerPosY); // set new player position
         }
     }
 
-    if (player.spriteP.getGlobalBounds().intersects(spritePC.getGlobalBounds())) // if player touches PokeCenter
+    while (player.sprite.getGlobalBounds().intersects(mountainTopLeft.sprite.getGlobalBounds()) || player.sprite.getGlobalBounds().intersects(mountainTopRight.sprite.getGlobalBounds())) // if player touches mountainTopLeft
+    {
+        switch (direction)
+        {                 // note: moving the player one pixel at a time here to prevent the feeling of false hitboxes
+        case 0:           // if direction is up
+            playerPosY++; // move player down
+            break;
+        case 1:           // if direction is left
+            playerPosX++; // move player to the right
+            break;
+        case 2:           // if direction is down
+            playerPosY--; // move player up
+            break;
+        case 3:           // if direction is right
+            playerPosX--; // move player to the left
+            break;
+        }
+        player.sprite.setPosition(playerPosX, playerPosY); // set new player position
+    }
+
+    if (player.sprite.getGlobalBounds().intersects(pokecenter.sprite.getGlobalBounds())) // if player touches PokeCenter
     {
         if (player.getCollected() >= sizeof(collectables) / sizeof(collectables[0])) // if player has collected all Pokemon
         {
@@ -418,18 +400,15 @@ void Field::updateHealth()
 
     if (player.getHealthPoints() == 2) // if remaining HP = 2
     {
-        textureHB.loadFromFile("resources/health_bar_2.png"); // load health bar with 2 HP
-        spriteHB.setTexture(textureHB);                       // set health bar sprite to 2 HP HB image
+        healthbar.setTexture("resources/health_bar_2.png"); // load health bar with 2 HP
     }
     else if (player.getHealthPoints() == 1) // if remaining HP = 1
     {
-        textureHB.loadFromFile("resources/health_bar_1.png"); // load health bar with 1 HP
-        spriteHB.setTexture(textureHB);                       // set health bar sprite to 1 HP HB image
+        healthbar.setTexture("resources/health_bar_1.png"); // load health bar with 1 HP
     }
     else if (player.getHealthPoints() == 0) // if remaining HP = 0
     {
-        textureHB.loadFromFile("resources/health_bar_0.png"); // load health bar with 0 HP
-        spriteHB.setTexture(textureHB);                       // set health bar sprite to 0 HP HB image
+        healthbar.setTexture("resources/health_bar_0.png"); // load health bar with 2 HP
 
         std::cout << "Player lost" << std::endl;
         failure.play(); // play sound effect for losing the game
@@ -443,56 +422,56 @@ void Field::openMenu()
 {
     dimOverlay.setFillColor(sf::Color(0, 0, 0, 150));
     field->draw(dimOverlay); // draw rectangle
-    spriteM.setPosition(1500, 540);
-    field->draw(spriteM); // draw menu
+    menu.sprite.setPosition(960, 540);
+    field->draw(menu.sprite); // draw menu
 }
 
 void Field::closeMenu()
 {
-    spriteM.setPosition(sf::Vector2f(-1000, -1000)); // set position out of view to "destroy" it
-    field->draw(spriteM);                            // draw menu
-    dimOverlay.setFillColor(sf::Color::Transparent); // set colour of rectangle to transparent
-    field->draw(dimOverlay);                         // draw rectangle
+    menu.sprite.setPosition(sf::Vector2f(-1000, -1000)); // set position out of view to "destroy" it
+    field->draw(menu.sprite);                            // draw menu
+    dimOverlay.setFillColor(sf::Color::Transparent);     // set colour of rectangle to transparent
+    field->draw(dimOverlay);                             // draw rectangle
 }
 
-void Field::endOfGame(int success)
+void Field::endOfGame(int pSuccess)
 {
     field->clear(); // clear last frame
 
-    if (success) // if player won
+    if (pSuccess) // if player won
     {
-        textureEOGS.loadFromFile("resources/success_sprite.png");  // load success image
-        textureEOGM.loadFromFile("resources/success_message.png"); // load success message image
+        endOfGameSprite.setTexture("resources/success_sprite.png");
+        endOfGameMessage.setTexture("resources/success_message.png");
+        endOfGameMessage.initializeSpriteAndTexture();
+        endOfGameSprite.initializeSpriteAndTexture();
     }
     else // otherwise
     {
-        textureEOGS.loadFromFile("resources/death_sprite.png");  // load death image
-        textureEOGM.loadFromFile("resources/death_message.png"); // load death message image
+        endOfGameSprite.setTexture("resources/death_sprite.png");
+        endOfGameMessage.setTexture("resources/death_message.png");
+        endOfGameMessage.initializeSpriteAndTexture();
+        endOfGameSprite.initializeSpriteAndTexture();
     }
 
-    textureEOGS.setSmooth(true);
-    textureEOGM.setSmooth(true);
-    spriteEOGS.setTexture(textureEOGS);                                                           // set texture of endOfGame sprite to success/death sprite
-    spriteEOGM.setTexture(textureEOGM);                                                           // set texture of endOfGame message to success/death message
-    spriteEOGS.setOrigin(sf::Vector2f(textureEOGS.getSize().x / 2, textureEOGS.getSize().y / 2)); // move origin of sprite (default: top left) to center of sprite
-    spriteEOGS.setPosition(sf::Vector2f(field->getSize().x / 2, field->getSize().y / 3));         // set position for success/death sprite
-    spriteEOGM.setOrigin(sf::Vector2f(textureEOGM.getSize().x / 2, textureEOGM.getSize().y / 2)); // move origin of sprite (default: top left) to center of sprite
-    spriteEOGM.setPosition(sf::Vector2f(field->getSize().x / 2, field->getSize().y / 4 * 3));     // set position for success/death message
+    endOfGameSprite.sprite.setPosition(sf::Vector2f(field->getSize().x / 2, field->getSize().y / 3));      // set position for success/death sprite
+    endOfGameMessage.sprite.setPosition(sf::Vector2f(field->getSize().x / 2, field->getSize().y / 4 * 3)); // set position for success/death message
 
     // DRAW ALL ENTITIES OF ENDOFGAME SCREEN
     field->draw(spritef);
-    field->draw(spritePC);
-    for (int i = 0; i < amountOfTrees; i++) // for all trees (excluding invisible mountain rectangles)
+    field->draw(pokecenter.sprite);
+    for (int i = 0; i < (sizeof(trees) / sizeof(trees[0])); i++) // for all trees (excluding invisible mountain rectangles)
     {
-        field->draw(spriteTree[i]);
+        field->draw(trees[i].sprite);
     }
-    field->draw(spriteHB);
-    if (success)
+    field->draw(mountainTopLeft.sprite);
+    field->draw(mountainTopRight.sprite);
+    field->draw(healthbar.sprite);
+    if (pSuccess)
     {
         field->draw(textscore);
     } // only draw score if player won
-    field->draw(spriteEOGS);
-    field->draw(spriteEOGM);
+    field->draw(endOfGameSprite.sprite);
+    field->draw(endOfGameMessage.sprite);
 
     field->display(); // display updated frame
 
@@ -505,22 +484,21 @@ void Field::endOfGame(int success)
 
 void Field::resetGame()
 {
-    player.setHealthPoints(3);                            // reset HP
-    player.setCollected(0);                               // reset amount of collected Pokemon
-    moves = 0;                                            // reset move counter
-    textureHB.loadFromFile("resources/health_bar_3.png"); // load full health bar
-    spriteHB.setTexture(textureHB);                       // set health bar sprite to full health bar image
-    field->draw(spriteHB);
+    player.setHealthPoints(3);                          // reset HP
+    player.setCollected(0);                             // reset amount of collected Pokemon
+    moves = 0;                                          // reset move counter
+    healthbar.setTexture("resources/health_bar_3.png"); // load health bar with 3 HP
+    field->draw(healthbar.sprite);
     playerPosX = player.spawnPX; // reset player position (X)
     playerPosY = player.spawnPY; // reset player position (Y)
-    field->draw(player.spriteP);
+    field->draw(player.sprite);
     for (int i = 0; i < (sizeof(collectables) / sizeof(collectables[0])); i++) // for all Pokemon
     {
-        if (collectables[i].spriteC.getGlobalBounds().intersects(spriteCPB.getGlobalBounds())) // if Pokemon was collected before / is placed on the CPB
+        if (collectables[i].sprite.getGlobalBounds().intersects(pokebox.sprite.getGlobalBounds())) // if Pokemon was collected before / is placed on the CPB
         {
-            collectables[i].spriteC.setScale(1, 1); // enlarge Pokemon to original size
+            collectables[i].sprite.setScale(1, 1); // enlarge Pokemon to original size
         }
-        collectables[i].spriteC.setPosition(positionCX[i], positionCY[i]); // place Pokemon at original spawn position
+        collectables[i].sprite.setPosition(positionCX[i], positionCY[i]); // place Pokemon at original spawn position
     }
 }
 
@@ -531,44 +509,44 @@ void Field::checkPositions() // note: superiority: PokeCenter/player > trees > t
     // PLAYER x POKEMON
     for (int i = 0; i < (sizeof(collectables) / sizeof(collectables[0])); i++) // for all Pokemon
     {
-        if (player.spriteP.getGlobalBounds().intersects(collectables[i].spriteC.getGlobalBounds())) // if Pokemon spawned on player
+        if (player.sprite.getGlobalBounds().intersects(collectables[i].sprite.getGlobalBounds())) // if Pokemon spawned on player
         {
             std::cout << "P x C, ";
             int newPosX, newPosY;
-            newPosX = collectables[i].giveRandomNumber(0, 1920);   // select new random x position for Pokemon
-            newPosY = collectables[i].giveRandomNumber(0, 900);    // select new random y position for Pokemon
-            collectables[i].spriteC.setPosition(newPosX, newPosY); // set new position
-            field->draw(collectables[i].spriteC);
+            newPosX = collectables[i].giveRandomNumber(0, 1920);  // select new random x position for Pokemon
+            newPosY = collectables[i].giveRandomNumber(0, 900);   // select new random y position for Pokemon
+            collectables[i].sprite.setPosition(newPosX, newPosY); // set new position
+            field->draw(collectables[i].sprite);
             done++;
         }
     }
 
     // PLAYER x ENEMY
-    for (int i = 0; i < (sizeof(enemies) / sizeof(enemies[0])); i++) // for all trainers
+    for (int i = 0; i < (sizeof(trainers) / sizeof(trainers[0])); i++) // for all trainers
     {
-        if (player.spriteP.getGlobalBounds().intersects(enemies[i].spriteE.getGlobalBounds())) // if trainer spawned on player
+        if (player.sprite.getGlobalBounds().intersects(trainers[i].sprite.getGlobalBounds())) // if trainer spawned on player
         {
             std::cout << "P x E, ";
             int newPosX, newPosY;
-            newPosX = enemies[i].giveRandomNumber(0, 1920);   // select new random x position for trainer
-            newPosY = enemies[i].giveRandomNumber(0, 900);    // select new random y position for trainer
-            enemies[i].spriteE.setPosition(newPosX, newPosY); // set new position
-            field->draw(enemies[i].spriteE);
+            newPosX = trainers[i].giveRandomNumber(0, 1920);  // select new random x position for trainer
+            newPosY = trainers[i].giveRandomNumber(0, 900);   // select new random y position for trainer
+            trainers[i].sprite.setPosition(newPosX, newPosY); // set new position
+            field->draw(trainers[i].sprite);
             done++;
         }
     }
 
     // PLAYER x TREE
-    for (int i = 0; i < amountOfTrees; i++) // for all trees (excluding invisible mountain rectangles)
+    for (int i = 0; i < (sizeof(trees) / sizeof(trees[0])); i++) // for all trees (excluding invisible mountain rectangles)
     {
-        if (player.spriteP.getGlobalBounds().intersects(spriteTree[i].getGlobalBounds())) // if tree spawned on player
+        if (player.sprite.getGlobalBounds().intersects(trees[i].sprite.getGlobalBounds())) // if tree spawned on player
         {
             std::cout << "P x T, ";
             int newPosX, newPosY;
-            newPosX = enemies[0].giveRandomNumber(0, 1920); // select new random x position for tree
-            newPosY = enemies[0].giveRandomNumber(0, 900);  // select new random y position for tree
-            spriteTree[i].setPosition(newPosX, newPosY);    // set new position
-            field->draw(spriteTree[i]);
+            newPosX = trainers[0].giveRandomNumber(0, 1920); // select new random x position for tree
+            newPosY = trainers[0].giveRandomNumber(0, 900);  // select new random y position for tree
+            trees[i].sprite.setPosition(newPosX, newPosY);   // set new position
+            field->draw(trees[i].sprite);
             done++;
         }
     }
@@ -578,14 +556,14 @@ void Field::checkPositions() // note: superiority: PokeCenter/player > trees > t
     {
         for (int k = i + 1; k < (sizeof(collectables) / sizeof(collectables[0])); k++) // for all other Pokemon
         {
-            if (collectables[i].spriteC.getGlobalBounds().intersects(collectables[k].spriteC.getGlobalBounds())) // if Pokemon spawned on another Pokemon
+            if (collectables[i].sprite.getGlobalBounds().intersects(collectables[k].sprite.getGlobalBounds())) // if Pokemon spawned on another Pokemon
             {
                 std::cout << "C x C, ";
                 int newPosX, newPosY;
-                newPosX = collectables[i].giveRandomNumber(0, 1920);   // select new random x position for Pokemon
-                newPosY = collectables[i].giveRandomNumber(0, 900);    // select new random y position for Pokemon
-                collectables[i].spriteC.setPosition(newPosX, newPosY); // set new position
-                field->draw(collectables[i].spriteC);
+                newPosX = collectables[i].giveRandomNumber(0, 1920);  // select new random x position for Pokemon
+                newPosY = collectables[i].giveRandomNumber(0, 900);   // select new random y position for Pokemon
+                collectables[i].sprite.setPosition(newPosX, newPosY); // set new position
+                field->draw(collectables[i].sprite);
                 done += 1;
             }
         }
@@ -594,34 +572,34 @@ void Field::checkPositions() // note: superiority: PokeCenter/player > trees > t
     // COLLECTABLE x ENEMY
     for (int i = 0; i < (sizeof(collectables) / sizeof(collectables[0])); i++) // for all Pokemon
     {
-        for (int k = 0; k < (sizeof(enemies) / sizeof(enemies[0])); k++) // for all trainers
+        for (int k = 0; k < (sizeof(trainers) / sizeof(trainers[0])); k++) // for all trainers
         {
-            if (collectables[i].spriteC.getGlobalBounds().intersects(enemies[k].spriteE.getGlobalBounds())) // if Pokemon spawned on trainer
+            if (collectables[i].sprite.getGlobalBounds().intersects(trainers[k].sprite.getGlobalBounds())) // if Pokemon spawned on trainer
             {
                 std::cout << "C x E, ";
                 int newPosX, newPosY;
-                newPosX = collectables[i].giveRandomNumber(0, 1920);   // select new random x position for Pokemon
-                newPosY = collectables[i].giveRandomNumber(0, 900);    // select new random y position for Pokemon
-                collectables[i].spriteC.setPosition(newPosX, newPosY); // set new position
-                field->draw(collectables[i].spriteC);
+                newPosX = collectables[i].giveRandomNumber(0, 1920);  // select new random x position for Pokemon
+                newPosY = collectables[i].giveRandomNumber(0, 900);   // select new random y position for Pokemon
+                collectables[i].sprite.setPosition(newPosX, newPosY); // set new position
+                field->draw(collectables[i].sprite);
                 done += 1;
             }
         }
     }
 
     // COLLECTABLE x TREE
-    for (int i = 0; i < (sizeof(spriteTree) / sizeof(spriteTree[0])); i++) // for all trees (including invisible mountain rectangles)
+    for (int i = 0; i < (sizeof(trees) / sizeof(trees[0])); i++) // for all trees (including invisible mountain rectangles)
     {
         for (int k = 0; k < (sizeof(collectables) / sizeof(collectables[0])); k++) // for all Pokemon
         {
-            if (spriteTree[i].getGlobalBounds().intersects(collectables[k].spriteC.getGlobalBounds())) // if Pokemon spawned on tree
+            if (trees[i].sprite.getGlobalBounds().intersects(collectables[k].sprite.getGlobalBounds())) // if Pokemon spawned on tree
             {
                 std::cout << "C x T, ";
                 int newPosX, newPosY;
-                newPosX = collectables[k].giveRandomNumber(0, 1920);   // select new random x position for Pokemon
-                newPosY = collectables[k].giveRandomNumber(0, 900);    // select new random y position for Pokemon
-                collectables[k].spriteC.setPosition(newPosX, newPosY); // set new position
-                field->draw(collectables[k].spriteC);
+                newPosX = collectables[k].giveRandomNumber(0, 1920);  // select new random x position for Pokemon
+                newPosY = collectables[k].giveRandomNumber(0, 900);   // select new random y position for Pokemon
+                collectables[k].sprite.setPosition(newPosX, newPosY); // set new position
+                field->draw(collectables[k].sprite);
                 done += 1;
             }
         }
@@ -630,98 +608,98 @@ void Field::checkPositions() // note: superiority: PokeCenter/player > trees > t
     // COLLECTABLE x POKECENTER
     for (int i = 0; i < (sizeof(collectables) / sizeof(collectables[0])); i++) // for all Pokemon
     {
-        if (collectables[i].spriteC.getGlobalBounds().intersects(spritePC.getGlobalBounds())) // if Pokemon spawned on PokeCenter
+        if (collectables[i].sprite.getGlobalBounds().intersects(pokecenter.sprite.getGlobalBounds())) // if Pokemon spawned on PokeCenter
         {
             std::cout << "C x PC, ";
             int newPosX, newPosY;
-            newPosX = collectables[i].giveRandomNumber(0, 1920);   // select new random x position for Pokemon
-            newPosY = collectables[i].giveRandomNumber(0, 900);    // select new random y position for Pokemon
-            collectables[i].spriteC.setPosition(newPosX, newPosY); // set new position
-            field->draw(collectables[i].spriteC);
+            newPosX = collectables[i].giveRandomNumber(0, 1920);  // select new random x position for Pokemon
+            newPosY = collectables[i].giveRandomNumber(0, 900);   // select new random y position for Pokemon
+            collectables[i].sprite.setPosition(newPosX, newPosY); // set new position
+            field->draw(collectables[i].sprite);
             done += 1;
         }
     }
 
     // TREE x TREE
-    for (int i = 0; i < amountOfTrees; i++) // for all trees (excluding invisible mountain rectangles)
+    for (int i = 0; i < (sizeof(trees) / sizeof(trees[0])); i++) // for all trees (excluding invisible mountain rectangles)
     {
-        for (int k = i + 1; k < amountOfTrees; k++) // for all other trees (excluding invisible mountain rectangles)
+        for (int k = i + 1; k < (sizeof(trees) / sizeof(trees[0])); k++) // for all other trees (excluding invisible mountain rectangles)
         {
-            if (spriteTree[i].getGlobalBounds().intersects(spriteTree[k].getGlobalBounds())) // if tree spawned on another tree
+            if (trees[i].sprite.getGlobalBounds().intersects(trees[k].sprite.getGlobalBounds())) // if tree spawned on another tree
             {
                 std::cout << "T x T, ";
                 int newPosX, newPosY;
-                newPosX = enemies[0].giveRandomNumber(0, 1920); // select new random x position for tree
-                newPosY = enemies[0].giveRandomNumber(0, 900);  // select new random y position for tree
-                spriteTree[i].setPosition(newPosX, newPosY);    // set new position, note: keep "i" here, issue with using spriteTree[k]: if tree spawns on invisible mountain rectangle, the rectangle will be moved instead of the tree
-                field->draw(spriteTree[i]);
+                newPosX = trainers[0].giveRandomNumber(0, 1920); // select new random x position for tree
+                newPosY = trainers[0].giveRandomNumber(0, 900);  // select new random y position for tree
+                trees[i].sprite.setPosition(newPosX, newPosY);   // set new position, note: keep "i" here, issue with using trees[k]: if tree spawns on invisible mountain rectangle, the rectangle will be moved instead of the tree
+                field->draw(trees[i].sprite);
                 done += 1;
             }
         }
     }
 
     // TREE x ENEMY
-    for (int i = 0; i < (sizeof(spriteTree) / sizeof(spriteTree[0])); i++) // for all trees (including invisible mountain rectangles)
+    for (int i = 0; i < (sizeof(trees) / sizeof(trees[0])); i++) // for all trees (including invisible mountain rectangles)
     {
-        for (int k = 0; k < (sizeof(enemies) / sizeof(enemies[0])); k++) // for all trainers
+        for (int k = 0; k < (sizeof(trainers) / sizeof(trainers[0])); k++) // for all trainers
         {
-            if (spriteTree[i].getGlobalBounds().intersects(enemies[k].spriteE.getGlobalBounds())) // if tree spawned on trainer
+            if (trees[i].sprite.getGlobalBounds().intersects(trainers[k].sprite.getGlobalBounds())) // if tree spawned on trainer
             {
                 std::cout << "T x E, ";
                 int newPosX, newPosY;
-                newPosX = enemies[k].giveRandomNumber(0, 1920);   // select new random x position for trainer
-                newPosY = enemies[k].giveRandomNumber(0, 900);    // select new random y position for trainer
-                enemies[k].spriteE.setPosition(newPosX, newPosY); // set new position
-                field->draw(enemies[k].spriteE);
+                newPosX = trainers[k].giveRandomNumber(0, 1920);  // select new random x position for trainer
+                newPosY = trainers[k].giveRandomNumber(0, 900);   // select new random y position for trainer
+                trainers[k].sprite.setPosition(newPosX, newPosY); // set new position
+                field->draw(trainers[k].sprite);
                 done += 1;
             }
         }
     }
 
     // TREE x POKECENTER
-    for (int i = 0; i < amountOfTrees; i++) // for all trees (excluding invisible mountain rectangles)
+    for (int i = 0; i < (sizeof(trees) / sizeof(trees[0])); i++) // for all trees (excluding invisible mountain rectangles)
     {
-        if (spriteTree[i].getGlobalBounds().intersects(spritePC.getGlobalBounds())) // if tree spawned on PokeCenter
+        if (trees[i].sprite.getGlobalBounds().intersects(pokecenter.sprite.getGlobalBounds())) // if tree spawned on PokeCenter
         {
             std::cout << "T x PC, ";
             int newPosX, newPosY;
-            newPosX = enemies[0].giveRandomNumber(0, 1920); // select new random x position for trainer
-            newPosY = enemies[0].giveRandomNumber(0, 900);  // select new random y position for trainer
-            spriteTree[i].setPosition(newPosX, newPosY);    // set new position
-            field->draw(spriteTree[i]);
+            newPosX = trainers[0].giveRandomNumber(0, 1920); // select new random x position for trainer
+            newPosY = trainers[0].giveRandomNumber(0, 900);  // select new random y position for trainer
+            trees[i].sprite.setPosition(newPosX, newPosY);   // set new position
+            field->draw(trees[i].sprite);
             done += 1;
         }
     }
 
     // ENEMY x ENEMY
-    for (int i = 0; i < (sizeof(enemies) / sizeof(enemies[0])); i++) // for all trainers
+    for (int i = 0; i < (sizeof(trainers) / sizeof(trainers[0])); i++) // for all trainers
     {
-        for (int k = i + 1; k < (sizeof(enemies) / sizeof(enemies[0])); k++) // for all other trainers
+        for (int k = i + 1; k < (sizeof(trainers) / sizeof(trainers[0])); k++) // for all other trainers
         {
-            if (enemies[i].spriteE.getGlobalBounds().intersects(enemies[k].spriteE.getGlobalBounds())) // if trainer spawns on another trainer
+            if (trainers[i].sprite.getGlobalBounds().intersects(trainers[k].sprite.getGlobalBounds())) // if trainer spawns on another trainer
             {
                 std::cout << "E x E, ";
                 int newPosX, newPosY;
-                newPosX = enemies[i].giveRandomNumber(0, 1920);   // select new random x position for trainer
-                newPosY = enemies[i].giveRandomNumber(0, 900);    // select new random y position for trainer
-                enemies[i].spriteE.setPosition(newPosX, newPosY); // set new position
-                field->draw(enemies[i].spriteE);
+                newPosX = trainers[i].giveRandomNumber(0, 1920);  // select new random x position for trainer
+                newPosY = trainers[i].giveRandomNumber(0, 900);   // select new random y position for trainer
+                trainers[i].sprite.setPosition(newPosX, newPosY); // set new position
+                field->draw(trainers[i].sprite);
                 done += 1;
             }
         }
     }
 
     // ENEMY x POKECENTER
-    for (int i = 0; i < (sizeof(enemies) / sizeof(enemies[0])); i++) // for all trainers
+    for (int i = 0; i < (sizeof(trainers) / sizeof(trainers[0])); i++) // for all trainers
     {
-        if (enemies[i].spriteE.getGlobalBounds().intersects(spritePC.getGlobalBounds())) // if trainer spawns on PokeCenter
+        if (trainers[i].sprite.getGlobalBounds().intersects(pokecenter.sprite.getGlobalBounds())) // if trainer spawns on PokeCenter
         {
             std::cout << "E x PC, ";
             int newPosX, newPosY;
-            newPosX = enemies[i].giveRandomNumber(0, 1920);   // select new random x position for trainer
-            newPosY = enemies[i].giveRandomNumber(0, 900);    // select new random y position for trainer
-            enemies[i].spriteE.setPosition(newPosX, newPosY); // set new position
-            field->draw(enemies[i].spriteE);
+            newPosX = trainers[i].giveRandomNumber(0, 1920);  // select new random x position for trainer
+            newPosY = trainers[i].giveRandomNumber(0, 900);   // select new random y position for trainer
+            trainers[i].sprite.setPosition(newPosX, newPosY); // set new position
+            field->draw(trainers[i].sprite);
             done += 1;
         }
     }
@@ -745,9 +723,9 @@ void Field::checkPositions() // note: superiority: PokeCenter/player > trees > t
     int done = 0; // Überprüft, ob alle Entitäten an unterschiedlichen Positionen erscheinen
 
     // Überprüfe Überlappungen für jede Entitätstyp-Kombination
-    checkOverlap(player.spriteP, collectables);
-    checkOverlap(player.spriteP, enemies);
-    checkOverlap(player.spriteP, spriteTree);
+    checkOverlap(player.sprite, collectables);
+    checkOverlap(player.sprite, enemies);
+    checkOverlap(player.sprite, spriteTree);
 
     checkOverlap(collectables, collectables);
     checkOverlap(collectables, enemies);
@@ -821,9 +799,9 @@ void Field::checkPositions() // Note: Priority: PokeCenter/player > trees > trai
     int done = 0; // Checks whether all entities spawn at distinct positions
 
     // Check overlaps for each entity type combination
-    checkOverlap(player.spriteP, collectables);
-    checkOverlap(player.spriteP, enemies);
-    checkOverlap(player.spriteP, spriteTree);
+    checkOverlap(player.sprite, collectables);
+    checkOverlap(player.sprite, enemies);
+    checkOverlap(player.sprite, spriteTree);
 
     checkOverlap(collectables, collectables);
     checkOverlap(collectables, enemies);
