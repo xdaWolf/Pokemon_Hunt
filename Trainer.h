@@ -6,14 +6,12 @@
 #define TRAINER_H_
 using namespace sf;
 /*
-    Trainer class:
+    Trainer class: objects on the screen, if player collides, damage is dealt
 */
 
 class Trainer : public BaseEntity
 {
 private:
-    // VARIABLES
-
 public:
     // METHODS
     Trainer();  // constructor

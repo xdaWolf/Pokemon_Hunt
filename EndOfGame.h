@@ -6,14 +6,12 @@
 #define ENDOFGAME_H_
 using namespace sf;
 /*
-    EndOfGame class:
+    EndOfGame class: used to display pictures at the end of the game
 */
 
 class EndOfGame : public BaseEntity
 {
 private:
-    // VARIABLES
-
 public:
     // METHODS
     EndOfGame();  // constructor

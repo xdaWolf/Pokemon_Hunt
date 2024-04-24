@@ -21,9 +21,9 @@ void Pokeball::initializeSpriteAndTexture()
     this->speed = giveRandomDouble(7.5, 9.5); // select random speed for Pokeball
     const_cast<Texture *>(this->getTexture())->setSmooth(true);
     int positionX, positionY;
-    positionX = 1970;                               // select random horizontal spawn point
-    positionY = giveRandomNumber(0, 900);           // select random vertical spawn point
-    this->sprite.setPosition(positionX, positionY); // set "sprite" at spawn point
+    positionX = 1970;                     // select random horizontal spawn point
+    positionY = giveRandomNumber(0, 900); // select random vertical spawn point
+    this->sprite.setPosition(positionX, positionY);
 }
 
 int Pokeball::giveRandomNumber(int pMin, int pMax)
@@ -54,4 +54,15 @@ int Pokeball::giveRandomNumber(int pMin, int pMax)
             return spawnheight; // otherwise keep the random spawn height
         }
     }
+}
+
+int Pokeball::giveRandomNumberWithoutSpawnProof(int pMin, int pMax)
+{
+    auto start = std::chrono::steady_clock::now();
+    int dfe = 100; // distance from edges (in pixels, implementation idea: automatic number using size of respective sprite)
+    Sleep(10);
+    auto end = std::chrono::steady_clock::now();
+    int microseconds = std::chrono::duration_cast<std::chrono::microseconds>(end - start).count(); // get a pseudo-random number by counting the microseconds it took the program to process the lines above
+
+    return microseconds % (pMax - 2 * dfe) + dfe; // return random number, no spawn proof is available, used for survival game mode
 }

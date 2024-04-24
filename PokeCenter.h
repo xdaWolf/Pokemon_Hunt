@@ -6,14 +6,12 @@
 #define POKECENTER_H_
 using namespace sf;
 /*
-    PokeCenter class:
+    PokeCenter class: player needs to go with all collectables to the PokeCenter to win the game
 */
 
 class PokeCenter : public BaseEntity
 {
 private:
-    // VARIABLES
-
 public:
     // METHODS
     PokeCenter();  // constructor

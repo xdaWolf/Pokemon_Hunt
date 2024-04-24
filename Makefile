@@ -1,13 +1,17 @@
 CXX := g++
-CXXFLAGS := -g -I src/include
-LDFLAGS := -L src/lib
+CXXFLAGS := -g -I src/include 
+LDFLAGS := -L src/lib -L src/include
 LIBS := -lsfml-graphics -lsfml-window -lsfml-system -lsfml-network -lsfml-audio
+TEST_LIBS := -lsfml-graphics -lsfml-window -lsfml-system -lsfml-network -lsfml-audio -lpthread
 
-SRCS := main.cpp Field.cpp Player.cpp Collectable.cpp BaseEntity.cpp EndOfGame.cpp Trainer.cpp Pokeball.cpp HealthBar.cpp PokeBox.cpp PokeCenter.cpp Obstacle.cpp Menu.cpp
+SRCS := main.cpp Field.cpp Player.cpp Collectable.cpp BaseEntity.cpp EndOfGame.cpp Trainer.cpp Pokeball.cpp HealthBar.cpp PokeBox.cpp PokeCenter.cpp Obstacle.cpp Menu.cpp SurvivalGameMode.cpp NormalGameMode.cpp Sounds.cpp Observer.cpp Subject.cpp Button.cpp
 OBJS := $(SRCS:.cpp=.o)
 TARGET := main
+TEST_SRCS := Test_Field.cpp
+TEST_OBJS := $(TEST_SRCS:.cpp=.o)
+TEST_TARGET := test
 
-.PHONY: all clean
+.PHONY: all clean test
 
 all: $(TARGET)
 
@@ -19,3 +23,12 @@ $(TARGET): $(OBJS)
 
 clean:
 	.\clean.bat
+
+test: $(TEST_TARGET)
+	./$(TEST_TARGET)
+
+$(TEST_TARGET): $(TEST_OBJS) $(filter-out main.o, $(OBJS))
+	$(CXX) $(LDFLAGS) -o $@ $^ $(TEST_LIBS)
+
+$(TEST_OBJS): %.o: %.cpp
+	$(CXX) $(CXXFLAGS) -c $< -o $@

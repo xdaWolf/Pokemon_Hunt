@@ -7,7 +7,7 @@
 #include <chrono>
 #include <windows.h> //include all necessary external files
 
-EndOfGame::EndOfGame() : BaseEntity()
+EndOfGame::EndOfGame() : BaseEntity() // constructor
 {
     std::cout << "EndOfGame constructor" << std::endl;
 }

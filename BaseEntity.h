@@ -9,6 +9,7 @@
 #ifndef BASEENTITY_H_
 #define BASEENTITY_H_
 using namespace sf;
+
 /*
     BaseEntity class: abstract Base Class that defines basic properties of the entities in the game
 */
@@ -17,19 +18,21 @@ class BaseEntity
 {
 private:
     // VARIABLES
-    Texture texture; // texture
+    Texture texture;
 
 public:
+    // VARIABLES
+    Sprite sprite;
+
+    // METHODS
     BaseEntity();  // constructor
     ~BaseEntity(); // destructor
 
-    // VISUALS
-    Sprite sprite; // sprite
     void setTexture(const std::string &pTexturePath);
     const Texture *getTexture() const;
-    virtual int giveRandomNumber(int pMin, int pMax);  // randomization of Pokemon spawn location
-    double giveRandomDouble(double pMin, double pMax); // randomization of Pokeball speed
-    virtual void initializeSpriteAndTexture();         // initialize sprite and texture                          // abstract method
+    virtual int giveRandomNumber(int pMin, int pMax);  // returns the random number (int) between pMin and pMax
+    double giveRandomDouble(double pMin, double pMax); // returns the random number (double) between pMin and pMax
+    virtual void initializeSpriteAndTexture();         // initialize sprite and texture
 };
 
 #endif

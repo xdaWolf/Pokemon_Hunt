@@ -6,7 +6,7 @@
 #include <stdlib.h>
 #include <string.h> //include all necessary external files
 
-Player::Player() : BaseEntity() // constructor
+Player::Player() : BaseEntity(), Observer() // constructor
 {
     std::cout << "Player constructor" << std::endl;
     setTexture("resources/pikachu_5.png");                                                          // load image of player
@@ -37,7 +37,13 @@ void Player::setTexture(const std::string &pTexture) // change texture of player
 int Player::getHealthPoints() { return hp; }        // get health points
 void Player::setHealthPoints(int pHp) { hp = pHp; } // set health points
 
-int Player::getCollected() { return collected; }      // get amount of collected Pokemon
-void Player::setCollected(int pC) { collected = pC; } // set amount of collected Pokemon
+int Player::getCollected() { return collected; } // get amount of collected Pokemon
 
 int Player::getSpeed() { return speed; } // get player speed
+
+void Player::refresh(int pHealth, int pSpeed, int pCollected)
+{
+    hp = pHealth;
+    speed = pSpeed;
+    collected = pCollected;
+}

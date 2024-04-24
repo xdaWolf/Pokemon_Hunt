@@ -9,6 +9,7 @@
 
 BaseEntity::BaseEntity() // constructor
 {
+    std::cout << "BaseEntity constructor" << std::endl;
 }
 
 BaseEntity::~BaseEntity() {} // destructor
@@ -29,12 +30,12 @@ const Texture *BaseEntity::getTexture() const
 
 void BaseEntity::initializeSpriteAndTexture()
 {
-    this->texture.setSmooth(true);
-    this->sprite.setOrigin(sf::Vector2f(this->texture.getSize().x / 2, this->texture.getSize().y / 2));
+    texture.setSmooth(true);
+    sprite.setOrigin(sf::Vector2f(texture.getSize().x / 2, texture.getSize().y / 2));
     int positionX, positionY;
-    positionX = giveRandomNumber(0, 1920);          // select random horizontal spawn point
-    positionY = giveRandomNumber(0, 900);           // select random vertical spawn point
-    this->sprite.setPosition(positionX, positionY); // set "sprite" at spawn point
+    positionX = giveRandomNumber(0, 1920);    // select random horizontal spawn point
+    positionY = giveRandomNumber(0, 900);     // select random vertical spawn point
+    sprite.setPosition(positionX, positionY); // set sprite at spawn point
 }
 
 int BaseEntity::giveRandomNumber(int pMin, int pMax)
