@@ -6,23 +6,23 @@
 #define POKEBALL_H_
 using namespace sf;
 /*
-    Pokeball class:
+    Pokeball class: create pokeball objects that are visualized on the field. The player has to avoid them.
 */
 
 class Pokeball : public BaseEntity
 {
 private:
-    // VARIABLES
-
 public:
+    // VARIABLES
+    double speed; // speed of pokeball
+
     // METHODS
     Pokeball();  // constructor
     ~Pokeball(); // destructor
 
-    double speed; // speed of pokeball
-
     void initializeSpriteAndTexture() override;
     int giveRandomNumber(int pMin, int pMax) override;
+    int giveRandomNumberWithoutSpawnProof(int pMin, int pMax);
 };
 
 #endif

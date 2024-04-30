@@ -6,7 +6,7 @@
 #define HEALTHBAR_H_
 using namespace sf;
 /*
-    HealthBar class:
+    HealthBar class: Class for the health bar of the player, health bar is on the top right of the screen
 */
 
 class HealthBar : public BaseEntity
@@ -19,7 +19,7 @@ public:
     HealthBar();  // constructor
     ~HealthBar(); // destructor
 
-    void initializeSpriteAndTexture() override; // initialize sprite and texture
+    void initializeSpriteAndTexture() override;
 };
 
 #endif

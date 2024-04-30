@@ -6,21 +6,18 @@
 #define OBSTACLE_H_
 using namespace sf;
 /*
-    Obstacle class:
+    Obstacle class: create obstacles that are visualized on the field. The player has to move around them.
 */
 
 class Obstacle : public BaseEntity
 {
 private:
-    // VARIABLES
-
 public:
     // METHODS
-
     Obstacle();  // constructor
     ~Obstacle(); // destructor
 
-    void initializeSpriteAndTexture() override; // initializes sprite and texture
+    void initializeSpriteAndTexture() override;
 };
 
 #endif

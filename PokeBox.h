@@ -6,20 +6,18 @@
 #define POKEBOX_H_
 using namespace sf;
 /*
-    PokeBox class:
+    PokeBox class: sprite that is displayed at the bottom left corner of the screen, collected pokemons are displayed in the pokebox
 */
 
 class PokeBox : public BaseEntity
 {
 private:
-    // VARIABLES
-
 public:
     // METHODS
     PokeBox();  // constructor
     ~PokeBox(); // destructor
 
-    void initializeSpriteAndTexture() override; // initialize sprite and texture
+    void initializeSpriteAndTexture() override;
 };
 
 #endif

@@ -13,18 +13,9 @@ using namespace sf;
 class Collectable : public BaseEntity
 {
 private:
-    // VARIABLES
-    // sf::Texture textureC; // texture of Pokemon
-
 public:
     Collectable();  // constructor
     ~Collectable(); // destructor
-
-    // VISUALS
-    // sf::Sprite spriteC; // sprite of Pokemon
-
-    // METHODS
-    // int giveRandomNumber(int pMin, int pMax); // randomization of Pokemon spawn location
 };
 
 #endif
